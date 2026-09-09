@@ -1,0 +1,238 @@
+/* =============================================
+   GELD FINANÇAS PESSOAIS — Identidade Visual
+   Manual Editorial v2.0
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+
+/* --- Sobrescreve TODAS as variáveis do Impact --- */
+:root {
+  /* Fontes */
+  --default-font: 'Inter', sans-serif !important;
+  --heading-font: 'Poppins', sans-serif !important;
+  --nav-font: 'Poppins', sans-serif !important;
+
+  /* Cores globais */
+  --background-color:  #ffffff !important;
+  --default-color:     #475467 !important;
+  --heading-color:     #0D1426 !important;
+  --accent-color:      #0057FF !important;
+  --surface-color:     #ffffff !important;
+  --contrast-color:    #ffffff !important;
+
+  /* Nav */
+  --nav-color:                      #0D1426 !important;
+  --nav-hover-color:                #0057FF !important;
+  --nav-mobile-background-color:    #ffffff !important;
+  --nav-dropdown-background-color:  #ffffff !important;
+  --nav-dropdown-color:             #0D1426 !important;
+  --nav-dropdown-hover-color:       #0057FF !important;
+}
+
+/* --- Sobrescreve .light-background --- */
+.light-background {
+  --background-color: #F2F4F7 !important;
+  --surface-color:    #ffffff !important;
+}
+
+/* --- Sobrescreve .dark-background --- */
+.dark-background {
+  --background-color: #0D1426 !important;
+  --default-color:    #ffffff !important;
+  --heading-color:    #ffffff !important;
+  --surface-color:    #1a2d5a !important;
+  --contrast-color:   #ffffff !important;
+}
+
+/* --- Sobrescreve .accent-background (footer, hero) --- */
+.accent-background {
+  --background-color: #0D1426 !important;
+  --default-color:    #ffffff !important;
+  --heading-color:    #ffffff !important;
+  --accent-color:     #0057FF !important;
+  --surface-color:    #1a2d5a !important;
+  --contrast-color:   #ffffff !important;
+}
+
+/* --- Tipografia --- */
+body {
+  font-family: 'Inter', sans-serif;
+  color: #475467;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #0D1426;
+}
+
+/* --- Header --- */
+.header .branding {
+  background-color: #ffffff;
+}
+
+.header .topbar {
+  background-color: #0D1426 !important;
+}
+
+.header .sitename {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #0D1426;
+}
+
+/* Logo imagem */
+.header .logo img {
+  height: 52px;
+  width: auto;
+}
+
+/* --- Hero --- */
+.hero {
+  background: linear-gradient(135deg, #0D1426 0%, #1a2d5a 60%, #0057FF 100%) !important;
+}
+
+/* --- Botões --- */
+.btn-get-started,
+.btn-primary {
+  background-color: #0057FF !important;
+  border-color: #0057FF !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.btn-get-started:hover,
+.btn-primary:hover {
+  background-color: #0041cc !important;
+  border-color: #0041cc !important;
+}
+
+/* --- Section title underline --- */
+.section-title h2::after {
+  background-color: #0057FF !important;
+}
+
+/* --- Footer --- */
+.footer {
+  background-color: #0D1426 !important;
+}
+
+.footer h4 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer a:hover {
+  color: #0057FF !important;
+}
+
+/* --- Scroll top --- */
+.scroll-top {
+  background-color: #0057FF !important;
+}
+
+/* --- Cards hover --- */
+.services .service-item:hover,
+.icon-box:hover {
+  border-color: #0057FF !important;
+  box-shadow: 0 8px 32px rgba(0, 87, 255, 0.12) !important;
+}
+
+/* --- Fixes de legibilidade --- */
+
+/* Hero: títulos brancos sobre fundo escuro */
+.hero h2,
+.hero h2 span,
+.hero p {
+  color: #ffffff !important;
+}
+
+/* Hero icon-boxes: texto branco */
+.hero .icon-box .title a,
+.hero .icon-box .icon i {
+  color: #ffffff !important;
+}
+
+/* Contato: links e textos visíveis */
+.contact .info-item h3 {
+  color: #0D1426 !important;
+}
+
+.contact .info-item p,
+.contact .info-item a {
+  color: #475467 !important;
+}
+
+.contact .info-item i {
+  color: #0057FF !important;
+}
+
+/* FAQ / Como funciona: texto legível */
+.faq .faq-item h3,
+.faq .faq-item .num {
+  color: #0D1426 !important;
+}
+
+.faq .faq-content p {
+  color: #475467 !important;
+}
+
+/* Stats: texto legível */
+.stats .stats-item p,
+.stats .stats-item span {
+  color: #475467 !important;
+}
+
+.stats .stats-item strong {
+  color: #0D1426 !important;
+}
+
+.stats .stats-item i {
+  color: #0057FF !important;
+}
+
+/* Team: texto legível */
+.team .member h4 {
+  color: #0D1426 !important;
+}
+
+.team .member span {
+  color: #0057FF !important;
+}
+
+/* About: check icons */
+.about .bi-check-circle-fill {
+  color: #0057FF !important;
+}
+
+/* CTA dark background: tudo branco */
+.call-to-action h3,
+.call-to-action p {
+  color: #ffffff !important;
+}
+
+/* --- Logos oficiais Geld --- */
+.header .logo img {
+  height: 52px;
+  width: auto;
+}
+
+.footer .logo img {
+  height: 48px;
+  width: auto;
+}
+
+/* --- Corrige max-height do logo que vem do main.css --- */
+.header .logo img {
+  height: 80px !important;
+  max-height: 80px !important;
+  width: auto !important;
+  margin-right: 0 !important;
+}
+
+.footer .logo img {
+  height: 72px !important;
+  max-height: 72px !important;
+  width: auto !important;
+}
