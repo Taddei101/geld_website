@@ -5,22 +5,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
 
-/* --- Sobrescreve TODAS as variáveis do Impact --- */
+/* --- Variáveis --- */
 :root {
-  /* Fontes */
   --default-font: 'Inter', sans-serif !important;
   --heading-font: 'Poppins', sans-serif !important;
   --nav-font: 'Poppins', sans-serif !important;
-
-  /* Cores globais */
   --background-color:  #ffffff !important;
   --default-color:     #475467 !important;
   --heading-color:     #0D1426 !important;
   --accent-color:      #0057FF !important;
   --surface-color:     #ffffff !important;
   --contrast-color:    #ffffff !important;
-
-  /* Nav */
   --nav-color:                      #0D1426 !important;
   --nav-hover-color:                #0057FF !important;
   --nav-mobile-background-color:    #ffffff !important;
@@ -29,13 +24,11 @@
   --nav-dropdown-hover-color:       #0057FF !important;
 }
 
-/* --- Sobrescreve .light-background --- */
 .light-background {
   --background-color: #F2F4F7 !important;
   --surface-color:    #ffffff !important;
 }
 
-/* --- Sobrescreve .dark-background --- */
 .dark-background {
   --background-color: #0D1426 !important;
   --default-color:    #ffffff !important;
@@ -44,7 +37,6 @@
   --contrast-color:   #ffffff !important;
 }
 
-/* --- Sobrescreve .accent-background (footer, hero) --- */
 .accent-background {
   --background-color: #0D1426 !important;
   --default-color:    #ffffff !important;
@@ -55,175 +47,13 @@
 }
 
 /* --- Tipografia --- */
-body {
-  font-family: 'Inter', sans-serif;
-  color: #475467;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  color: #0D1426;
-}
+body { font-family: 'Inter', sans-serif; color: #475467; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0D1426; }
 
 /* --- Header --- */
-.header .branding {
-  background-color: #ffffff;
-}
-
-.header .topbar {
-  background-color: #0D1426 !important;
-}
-
-.header .sitename {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  color: #0D1426;
-}
-
-/* Logo imagem */
-.header .logo img {
-  height: 52px;
-  width: auto;
-}
-
-/* --- Hero --- */
-.hero {
-  background: linear-gradient(135deg, #0D1426 0%, #1a2d5a 60%, #0057FF 100%) !important;
-}
-
-/* --- Botões --- */
-.btn-get-started,
-.btn-primary {
-  background-color: #0057FF !important;
-  border-color: #0057FF !important;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-}
-
-.btn-get-started:hover,
-.btn-primary:hover {
-  background-color: #0041cc !important;
-  border-color: #0041cc !important;
-}
-
-/* --- Section title underline --- */
-.section-title h2::after {
-  background-color: #0057FF !important;
-}
-
-/* --- Footer --- */
-.footer {
-  background-color: #0D1426 !important;
-}
-
-.footer h4 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.footer a:hover {
-  color: #0057FF !important;
-}
-
-/* --- Scroll top --- */
-.scroll-top {
-  background-color: #0057FF !important;
-}
-
-/* --- Cards hover --- */
-.services .service-item:hover,
-.icon-box:hover {
-  border-color: #0057FF !important;
-  box-shadow: 0 8px 32px rgba(0, 87, 255, 0.12) !important;
-}
-
-/* --- Fixes de legibilidade --- */
-
-/* Hero: títulos brancos sobre fundo escuro */
-.hero h2,
-.hero h2 span,
-.hero p {
-  color: #ffffff !important;
-}
-
-/* Hero icon-boxes: texto branco */
-.hero .icon-box .title a,
-.hero .icon-box .icon i {
-  color: #ffffff !important;
-}
-
-/* Contato: links e textos visíveis */
-.contact .info-item h3 {
-  color: #0D1426 !important;
-}
-
-.contact .info-item p,
-.contact .info-item a {
-  color: #475467 !important;
-}
-
-.contact .info-item i {
-  color: #0057FF !important;
-}
-
-/* FAQ / Como funciona: texto legível */
-.faq .faq-item h3,
-.faq .faq-item .num {
-  color: #0D1426 !important;
-}
-
-.faq .faq-content p {
-  color: #475467 !important;
-}
-
-/* Stats: texto legível */
-.stats .stats-item p,
-.stats .stats-item span {
-  color: #475467 !important;
-}
-
-.stats .stats-item strong {
-  color: #0D1426 !important;
-}
-
-.stats .stats-item i {
-  color: #0057FF !important;
-}
-
-/* Team: texto legível */
-.team .member h4 {
-  color: #0D1426 !important;
-}
-
-.team .member span {
-  color: #0057FF !important;
-}
-
-/* About: check icons */
-.about .bi-check-circle-fill {
-  color: #0057FF !important;
-}
-
-/* CTA dark background: tudo branco */
-.call-to-action h3,
-.call-to-action p {
-  color: #ffffff !important;
-}
-
-/* --- Logos oficiais Geld --- */
-.header .logo img {
-  height: 52px;
-  width: auto;
-}
-
-.footer .logo img {
-  height: 48px;
-  width: auto;
-}
-
-/* --- Corrige max-height do logo que vem do main.css --- */
+.header .branding { background-color: #ffffff; }
+.header .topbar { background-color: #0D1426 !important; }
+.header .sitename { font-family: 'Poppins', sans-serif; font-weight: 700; color: #0D1426; }
 .header .logo img {
   height: 80px !important;
   max-height: 80px !important;
@@ -231,8 +61,348 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 0 !important;
 }
 
+/* --- Hero --- */
+.hero { background: linear-gradient(135deg, #0D1426 0%, #1a2d5a 60%, #0057FF 100%) !important; }
+.hero h2, .hero h2 span, .hero p { color: #ffffff !important; }
+.hero .icon-box .title a, .hero .icon-box .icon i { color: #ffffff !important; }
+
+/* Hero logo */
+.hero-logo {
+  max-width: 500px;
+  margin: 40px;
+  border-radius: 10px;
+}
+
+/* --- Botões --- */
+.btn-get-started, .btn-primary {
+  background-color: #0057FF !important;
+  border-color: #0057FF !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+.btn-get-started:hover, .btn-primary:hover {
+  background-color: #0041cc !important;
+  border-color: #0041cc !important;
+}
+
+/* --- Seções --- */
+.section-title h2::after { background-color: #0057FF !important; }
+.about .bi-check-circle-fill { color: #0057FF !important; }
+.call-to-action h3, .call-to-action p { color: #ffffff !important; }
+
+/* --- Contato --- */
+.contact .info-item h3 { color: #0D1426 !important; }
+.contact .info-item p, .contact .info-item a { color: #475467 !important; }
+.contact .info-item i { color: #0057FF !important; }
+
+/* --- FAQ / Como funciona --- */
+.faq .faq-item h3, .faq .faq-item .num { color: #0D1426 !important; }
+.faq .faq-content p { color: #475467 !important; }
+
+/* --- Stats --- */
+.stats .stats-item p, .stats .stats-item span { color: #475467 !important; }
+.stats .stats-item strong { color: #0D1426 !important; }
+.stats .stats-item i { color: #0057FF !important; }
+
+/* --- Team --- */
+.team .member h4 { color: #0D1426 !important; }
+.team .member span { color: #0057FF !important; }
+
+/* Biografia do membro */
+.member-bio {
+  font-size: 0.9rem;
+  color: #475467;
+}
+
+/* --- Services --- */
+.services .service-item:hover, .icon-box:hover {
+  border-color: #0057FF !important;
+  box-shadow: 0 8px 32px rgba(0, 87, 255, 0.12) !important;
+}
+
+/* --- Footer --- */
+.footer { background-color: #0D1426 !important; }
+.footer h4 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #ffffff; }
+.footer a:hover { color: #0057FF !important; }
 .footer .logo img {
   height: 72px !important;
   max-height: 72px !important;
   width: auto !important;
 }
+.footer-logo-img {
+  height: 48px;
+  width: auto;
+}
+.footer-tagline {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* --- Scroll top --- */
+.scroll-top { background-color: #0057FF !important; }
+
+/* =============================================
+   VÍDEO + GRÁFICOS — Seção About
+   ============================================= */
+
+/* Wrapper do vídeo com overlay */
+.video-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* Vídeo ocupa 100% do wrapper */
+.video-fill {
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Overlay escuro sobre o vídeo com gráfico */
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 20, 38, 0.65); /* ← transparência: 0=transparente, 1=opaco */
+  border-radius: 1rem;                 /* ← arredondamento das bordas */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Container do canvas do gráfico */
+.chart-container {
+  position: relative;
+  height: 160px; /* ← altura do gráfico */
+}
+
+/* Label superior do gráfico (uppercase pequeno) */
+.chart-label-upper {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+/* Título do gráfico */
+.chart-title {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+/* Legenda do gráfico */
+.chart-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Item da legenda */
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Traço da legenda */
+.legend-dot {
+  width: 10px;
+  height: 3px;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+/* Cor azul Geld */
+.legend-dot--blue {
+  background: #0057FF; /* ← cor da linha de renda */
+}
+
+/* Cor branca/risco */
+.legend-dot--white {
+  background: rgba(255, 255, 255, 0.5); /* ← cor da linha de risco */
+}
+
+/* =============================================
+   GELD — RESPONSIVO MOBILE
+   ============================================= */
+
+@media (max-width: 768px) {
+
+  /* --- Logo menor no header --- */
+  .header .logo img {
+    height: 44px !important;
+    max-height: 44px !important;
+  }
+
+  /* --- Hero compacto --- */
+  .hero .container {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .hero h2 {
+    font-size: 1.6rem !important;
+  }
+
+  .hero p {
+    font-size: 0.9rem !important;
+  }
+
+  /* Hero logo menor */
+  .hero-logo {
+    max-width: 220px !important;
+    margin: 16px auto !important;
+    display: block !important;
+  }
+
+  /* Icon boxes do hero: 2 por linha */
+  .hero .icon-boxes .col-xl-3 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
+  /* --- About: vídeos menores --- */
+  .video-wrapper video {
+    max-height: 220px;
+    object-fit: cover;
+  }
+
+  /* Gráfico menor no mobile */
+  .chart-container {
+    height: 120px !important;
+  }
+
+  /* --- Seção títulos --- */
+  .section-title h2 {
+    font-size: 1.4rem !important;
+  }
+
+  .section-title p {
+    font-size: 0.9rem !important;
+  }
+
+  /* --- Serviços: 1 por linha em telas pequenas --- */
+  .services .col-lg-4 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* --- Stats: 2 por linha --- */
+  .stats .col-lg-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
+  /* --- Team: lado a lado --- */
+  .team .col-xl-4 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
+  .team .member img {
+    height: 160px;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* --- FAQ: sem padding lateral --- */
+  .faq .content.px-xl-5 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* --- Footer logo menor --- */
+  .footer .logo img {
+    height: 48px !important;
+    max-height: 48px !important;
+  }
+
+  /* --- Footer: links lado a lado --- */
+  .footer .col-lg-2 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
+  /* --- Contato: info compacta --- */
+  .contact .info-item {
+    padding: 12px !important;
+  }
+
+  /* --- CTA: texto menor --- */
+  .call-to-action h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .call-to-action p {
+    font-size: 0.85rem !important;
+  }
+
+}
+
+/* Telas muito pequenas (iPhone SE etc) */
+@media (max-width: 400px) {
+
+  .hero h2 {
+    font-size: 1.3rem !important;
+  }
+
+  .hero-logo {
+    max-width: 180px !important;
+  }
+
+  /* Team: 1 por linha em telas muito pequenas */
+  .team .col-xl-4 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Stats: 1 por linha */
+  .stats .col-lg-6 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+}
+
+/* --- Icon boxes: fontes responsivas --- */
+.icon-box .title {
+  font-size: 0.85rem !important;
+  line-height: 1.3 !important;
+}
+
+.icon-box .icon i {
+  font-size: 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .icon-box {
+    padding: 16px 10px !important;
+  }
+
+  .icon-box .title {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .icon-box .icon {
+    margin-bottom: 8px !important;
+  }
+
+  .icon-box .icon i {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .icon-box .title {
+    font-size: 0.7rem !important;
+  }
+}
+
+/* hero mobile removido - causava conflito */
