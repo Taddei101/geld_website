@@ -130,7 +130,18 @@
         <div class="row gy-4">
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <h3>Um escritório independente de planejamento financeiro e gestão patrimonial</h3>
-            <img src="/static/img/about.jpg" class="img-fluid rounded-4 mb-4" alt="">
+            <div class="position-relative mb-4">
+  <video autoplay muted loop playsinline class="img-fluid rounded-4" style="width:100%;object-fit:cover;">
+    <source src="/static/video/ceu.mp4" type="video/mp4">
+  </video>
+  <div style="position:absolute;inset:0;background:rgba(13,20,38,0.65);border-radius:1rem;display:flex;flex-direction:column;justify-content:center;padding:20px;">
+    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Patrimônio administrado</p>
+    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 12px;">Crescimento 2019 → 2025 (R$ mi)</p>
+    <div style="position:relative;height:160px;">
+      <canvas id="chart-barras" role="img" aria-label="Crescimento patrimônio"></canvas>
+    </div>
+  </div>
+</div>
             <p>Ajudamos pessoas e famílias a organizar a vida financeira, transformar objetivos em estratégia e manter os investimentos alinhados ao que realmente importa.</p>
             <p>Nosso trabalho não começa pela escolha de produtos financeiros. Começa pela compreensão da vida do cliente: renda, patrimônio, compromissos, objetivos e decisões.</p>
           </div>
@@ -146,7 +157,20 @@
                 <li><i class="bi bi-check-circle-fill"></i> <span><strong>Independência e transparência</strong> — a orientação preserva o interesse do cliente e respeita sua realidade.</span></li>
               </ul>
               <div class="position-relative mt-4">
-                <img src="/static/img/about-2.jpg" class="img-fluid rounded-4" alt="">
+                <video autoplay muted loop playsinline class="img-fluid rounded-4" style="width:100%;object-fit:cover;">
+                  <source src="/static/video/mar.mp4" type="video/mp4">
+                </video>
+                <div style="position:absolute;inset:0;background:rgba(13,20,38,0.65);border-radius:1rem;display:flex;flex-direction:column;justify-content:center;padding:20px;">
+    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Evolução da carteira</p>
+    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 12px;">Renda acumulada vs exposição a risco</p>
+    <div style="position:relative;height:160px;">
+      <canvas id="chart-linha" role="img" aria-label="Renda vs risco"></canvas>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:3px;background:#0057FF;display:inline-block;border-radius:2px;"></span>Renda</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:3px;background:rgba(255,255,255,0.5);display:inline-block;border-radius:2px;"></span>Risco</span>
+    </div>
+  </div>
               </div>
             </div>
           </div>
@@ -489,5 +513,21 @@
   <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="/static/js/main.js"></script>
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function(){
+  var barCtx=document.getElementById('chart-barras').getContext('2d');
+  var barChart=new Chart(barCtx,{type:'bar',data:{labels:['2019','2020','2021','2022','2023','2024','2025'],datasets:[{label:'Patrimônio',data:[0,0,0,0,0,0,0],backgroundColor:'#0057FF',borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1800,easing:'easeOutQuart'},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(v){return 'R$ '+v.raw+' mi';}}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.08)'},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9},callback:function(v){return 'R$'+v+'M';}},min:0,max:9}}}});
+  setTimeout(function(){barChart.data.datasets[0].data=[0.8,1.5,2.2,3.1,4.4,6.0,8.0];barChart.update();},400);
+
+  var lineCtx=document.getElementById('chart-linha').getContext('2d');
+  var ll=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var lineChart=new Chart(lineCtx,{type:'line',data:{labels:ll,datasets:[{label:'Renda',data:ll.map(function(){return null;}),borderColor:'#0057FF',borderWidth:2,pointRadius:2,fill:false,tension:0.4},{label:'Risco',data:ll.map(function(){return null;}),borderColor:'rgba(255,255,255,0.5)',borderWidth:2,borderDash:[4,3],pointRadius:2,fill:false,tension:0.4}]},options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.08)'},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9},callback:function(v){return v+'%';}},min:0,max:12}}}});
+  var rd=[4.2,4.5,4.8,5.1,5.6,5.9,6.2,6.8,7.1,7.4,7.8,8.0],rk=[9.5,9.0,8.4,8.0,7.5,7.0,6.5,6.0,5.6,5.2,4.8,4.5],s=0;
+  function al(){if(s>=ll.length)return;lineChart.data.datasets[0].data[s]=rd[s];lineChart.data.datasets[1].data[s]=rk[s];lineChart.update('none');s++;setTimeout(al,120);}
+  setTimeout(al,600);
+})();
+</script>
 </body>
 </html>
