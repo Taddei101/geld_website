@@ -1900,7 +1900,6 @@ section,
 # Contact Section
 --------------------------------------------------------------*/
 .contact .info-container {
-  background-color: var(--accent-color);
   height: 100%;
   padding: 20px;
 }
