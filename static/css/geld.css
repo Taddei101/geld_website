@@ -302,8 +302,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 600; c
 
   /* --- Team: lado a lado --- */
   .team .col-xl-4 {
-    flex: 0 0 50% !important;
-    max-width: 50% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
   }
 
   .team .member img {
