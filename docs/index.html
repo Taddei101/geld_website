@@ -56,10 +56,10 @@
           <ul>
             <li><a href="#hero" class="active">Início</a></li>
             <li><a href="#about">A Geld</a></li>
-            <li><a href="newsletter/newsletter.pdf" target="_blank">Newsletter</a></li>
             <li><a href="#services">Serviços</a></li>
             <li><a href="#how">Como Funciona</a></li>
             <li><a href="#team">Equipe</a></li>
+            <li><a href="newsletter/newsletter.pdf" target="_blank" rel="noopener noreferrer">Newsletter</a></li>
             <li><a href="#contact">Contato</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -160,10 +160,10 @@
     <source src="video/ceu.mp4" type="video/mp4">
   </video>
   <div style="position:absolute;inset:0;background:rgba(13,20,38,0.65);border-radius:1rem;display:flex;flex-direction:column;justify-content:center;padding:20px;">
-    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Patrimônio administrado</p>
-    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 12px;">Crescimento 2019 → 2025 (R$ mi)</p>
-    <div style="position:relative;height:160px;">
-      <canvas id="chart-barras" role="img" aria-label="Crescimento patrimônio"></canvas>
+    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Patrimônio sob gestão</p>
+    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 8px;">Crescimento 2019 → 2025 (R$)</p>
+    <div style="position:relative;height:200px;">
+      <canvas id="chart-barras" role="img" aria-label="Crescimento do patrimônio sob gestão da Geld de R$512k em 2019 a R$7,9M em 2025"></canvas>
     </div>
   </div>
 </div>
@@ -186,14 +186,14 @@
                   <source src="video/mar.mp4" type="video/mp4">
                 </video>
                 <div style="position:absolute;inset:0;background:rgba(13,20,38,0.65);border-radius:1rem;display:flex;flex-direction:column;justify-content:center;padding:20px;">
-    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Evolução da carteira</p>
-    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 12px;">Renda acumulada vs exposição a risco</p>
-    <div style="position:relative;height:160px;">
-      <canvas id="chart-linha" role="img" aria-label="Renda vs risco"></canvas>
+    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Rentabilidade acumulada mês a mês</p>
+    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 8px;">Carteira balanceada vs CDB 110% CDI · 2019–2024</p>
+    <div style="position:relative;height:140px;">
+      <canvas id="chart-linha" role="img" aria-label="Rentabilidade acumulada mensal da carteira balanceada versus CDB 110% CDI de 2019 a 2024"></canvas>
     </div>
     <div style="display:flex;gap:12px;margin-top:8px;">
-      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:3px;background:#0057FF;display:inline-block;border-radius:2px;"></span>Renda</span>
-      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:3px;background:rgba(255,255,255,0.5);display:inline-block;border-radius:2px;"></span>Risco</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:3px;background:white;display:inline-block;border-radius:2px;"></span>Carteira</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:2px;background:#eb6834;display:inline-block;border-radius:2px;"></span>CDB 110%</span>
     </div>
   </div>
               </div>
@@ -558,16 +558,133 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 (function(){
-  var barCtx=document.getElementById('chart-barras').getContext('2d');
-  var barChart=new Chart(barCtx,{type:'bar',data:{labels:['2019','2020','2021','2022','2023','2024','2025'],datasets:[{label:'Patrimônio',data:[0,0,0,0,0,0,0],backgroundColor:'#0057FF',borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1800,easing:'easeOutQuart'},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(v){return 'R$ '+v.raw+' mi';}}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.08)'},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9},callback:function(v){return 'R$'+v+'M';}},min:0,max:9}}}});
-  setTimeout(function(){barChart.data.datasets[0].data=[0.8,1.5,2.2,3.1,4.4,6.0,8.0];barChart.update();},400);
+  var TC='rgba(255,255,255,0.6)', GC='rgba(255,255,255,0.07)';
 
+  /* ── Gráfico 1: Crescimento patrimônio Geld ── */
+  var anos=['2019','2020','2021','2022','2023','2024','2025'];
+  var dados=[0.512,0.98,1.74,2.61,3.90,5.80,7.90];
+  var barCanvas=document.getElementById('chart-barras');
+  var barChart=new Chart(barCanvas,{
+    type:'bar',
+    data:{
+      labels:anos,
+      datasets:[{
+        data:dados,
+        backgroundColor:dados.map(function(_,i){return i===dados.length-1?'#191970':'rgba(0,87,255,0.45)';}),
+        borderRadius:4,
+        borderSkipped:false
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      animation:{duration:1400,easing:'easeOutQuart'},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return 'R$ '+c.raw.toFixed(2).replace('.',',')+'M';}}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:TC,font:{size:9}}},
+        y:{display:false,min:0,max:10.5}
+      },
+      layout:{padding:{top:10,bottom:2}}
+    }
+  });
+
+  /* Rótulos e curva após animação */
+  setTimeout(function(){
+    var ctx2=barCanvas.getContext('2d');
+    var meta=barChart.getDatasetMeta(0);
+    if(!meta.data||!meta.data.length) return;
+    var b0=meta.data[0], bN=meta.data[6];
+    ctx2.save();
+    /* valor 1ª barra */
+    ctx2.font='500 10px Inter,sans-serif';
+    ctx2.fillStyle='rgba(255,255,255,0.7)';
+    ctx2.textAlign='center';
+    ctx2.fillText('R$ 512k',b0.x,b0.y-7);
+    /* valor última barra */
+    ctx2.font='600 11px Inter,sans-serif';
+    ctx2.fillStyle='#ffffff';
+    ctx2.fillText('R$ 7,9M',bN.x,bN.y-14);
+    /* curva */
+    var x0=b0.x,xN=bN.x,yS=b0.y-26,yE=bN.y-26;
+    var top=barChart.chartArea.top+2;
+    ctx2.beginPath();
+    ctx2.moveTo(x0,yS);
+    ctx2.bezierCurveTo(x0+(xN-x0)*0.2,top,x0+(xN-x0)*0.75,top,xN-8,yE);
+    ctx2.setLineDash([4,3]);
+    ctx2.strokeStyle='rgba(255,255,255,0.45)';
+    ctx2.lineWidth=1.5;
+    ctx2.stroke();
+    /* seta */
+    ctx2.setLineDash([]);
+    var ang=Math.atan2(yE-top,(xN-8)-(x0+(xN-x0)*0.75));
+    ctx2.beginPath();
+    ctx2.moveTo(xN-8,yE);
+    ctx2.lineTo(xN-8-9*Math.cos(ang-0.42),yE-9*Math.sin(ang-0.42));
+    ctx2.moveTo(xN-8,yE);
+    ctx2.lineTo(xN-8-9*Math.cos(ang+0.42),yE-9*Math.sin(ang+0.42));
+    ctx2.strokeStyle='rgba(255,255,255,0.45)';
+    ctx2.lineWidth=1.5;
+    ctx2.stroke();
+    /* label +15x */
+    ctx2.font='500 10px Inter,sans-serif';
+    ctx2.fillStyle='rgba(255,255,255,0.55)';
+    ctx2.textAlign='center';
+    ctx2.fillText('+15× em 6 anos',x0+(xN-x0)*0.48,top-8);
+    ctx2.restore();
+  },1500);
+
+  /* ── Gráfico 2: Rentabilidade % acumulada carteira vs CDB ── */
+  var IVVB11=[1.77,6.44,6.20,3.98,-6.35,4.04,1.18,6.58,2.51,-1.75,10.46,-3.41,6.77,-4.42,2.16,17.90,3.02,3.46,1.08,12.78,-1.53,-0.68,3.65,0.02,4.74,5.00,5.28,1.56,-3.64,-2.31,7.68,1.46,0.39,10.98,-0.87,4.64,-11.30,-5.72,-4.01,-4.90,-4.28,1.03,8.21,-3.62,-5.53,3.16,5.91,-3.54,1.42,0.48,0.20,0.00,1.52,0.86,1.94,3.26,-3.58,-2.01,6.71,3.17,3.50,5.43,4.09,-0.55,5.91,10.26,2.32,2.06,-1.42,5.74,8.91,1.20];
+  var PETR4=[0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,-5.73,-10.93,-44.79,29.02,12.69,5.95,3.02,-1.40,-10.42,-3.42,31.47,13.82,-5.82,-16.67,8.36,1.30,13.76,9.53,-8.56,7.06,0.15,0.07,8.00,7.95,13.71,5.10,-1.62,-1.06,10.41,-7.09,22.27,19.24,-10.32,0.03,1.83,-8.10,6.41,-3.18,-7.09,13.38,10.21,20.04,5.35,6.39,8.45,0.29,7.46,0.81,8.62,-0.77,-6.93,15.59,-3.67,0.64,-1.68,8.05,-8.53,-0.28,8.33,0.06];
+  var CPLE3=[10.94,-1.63,-1.29,19.77,21.03,1.67,2.92,16.79,-9.30,7.50,21.94,6.06,13.60,-0.09,-25.56,-8.87,12.03,1.41,9.81,-8.44,-4.89,-5.00,18.69,11.06,-11.21,-7.48,21.74,-14.11,5.27,-4.15,3.42,3.66,11.93,-12.91,3.35,10.07,5.18,-4.09,11.66,-4.12,9.61,-3.92,1.57,1.39,-5.49,13.06,11.09,-8.52,0.15,-8.14,-1.27,13.94,-6.61,23.95,-0.61,-0.98,3.83,-3.58,11.56,7.84,-5.48,2.34,-5.77,-4.74,-0.73,1.84,8.32,4.45,-2.03,-3.75,0.23,-3.84];
+  var TAEE11=[8.98,-2.95,-0.64,5.85,2.76,2.37,2.43,3.49,2.49,0.28,-0.19,10.73,-0.71,-3.13,-13.87,6.47,7.06,-1.54,3.06,0.10,-0.89,0.68,22.49,1.07,-3.72,-4.80,27.40,7.40,-0.46,-4.63,2.98,-0.24,-5.46,2.29,-1.72,4.89,4.95,3.30,11.95,-0.36,-3.19,-4.36,4.76,6.41,-6.55,3.18,-11.92,0.38,11.03,-4.24,-1.86,4.71,1.45,1.95,-4.36,-2.82,1.05,-2.23,9.43,5.27,-2.20,-4.04,2.57,-3.00,1.48,-0.15,-1.29,6.71,-3.41,2.28,-0.95,-3.61];
+  var ITUB4=[0.99,0.99,0.99,0.99,0.99,0.99,0.99,0.99,0.99,0.99,0.99,0.99,-11.50,0.28,-27.81,-1.32,1.25,10.53,5.72,-12.21,-4.40,4.43,21.71,11.00,-10.23,-9.31,9.71,-1.35,7.51,0.93,1.73,2.46,-6.45,-2.24,-2.95,-6.33,20.99,0.66,7.96,-13.09,9.66,-13.29,4.26,10.40,8.78,8.40,-14.43,-2.18,1.38,0.45,-1.71,5.78,1.64,8.85,0.83,-4.17,0.09,-1.38,17.73,5.96,-3.46,6.98,2.72,-9.43,-1.00,5.20,4.58,8.37,-0.94,-2.98,-6.87,-4.93];
+  var CDI=[0.54,0.49,0.47,0.52,0.54,0.47,0.57,0.50,0.47,0.48,0.38,0.38,0.38,0.29,0.34,0.28,0.24,0.22,0.19,0.16,0.16,0.16,0.15,0.16,0.15,0.13,0.20,0.21,0.27,0.30,0.36,0.42,0.44,0.48,0.59,0.76,0.73,0.75,0.92,0.83,1.03,1.01,1.03,1.17,1.07,1.02,1.02,1.12,1.12,0.92,1.17,0.92,1.12,1.07,1.07,1.14,0.97,1.00,0.92,0.90,0.97,0.80,0.83,0.89,0.83,0.79,0.79,0.74,0.75,0.92,0.77,0.89];
+  var pesos={IVVB11:0.36,PETR4:0.29,CPLE3:0.27,TAEE11:0.05,ITUB4:0.03};
+  var ativos={IVVB11:IVVB11,PETR4:PETR4,CPLE3:CPLE3,TAEE11:TAEE11,ITUB4:ITUB4};
+  var APORTE=1000;
+  var meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var anosL=[2019,2020,2021,2022,2023,2024];
+  var labels=['Jan/19'];
+  anosL.forEach(function(a){meses.forEach(function(m){labels.push(m+'/'+String(a).slice(2));});});
+  var cartPat=0,cdbPat=0;
+  var cartSerie=[0],cdbSerie=[0],aportSerie=[0];
+  for(var i=0;i<72;i++){
+    cartPat+=APORTE; cdbPat+=APORTE;
+    var rc=0;
+    Object.keys(pesos).forEach(function(t){rc+=pesos[t]*ativos[t][i];});
+    cartPat=cartPat*(1+rc/100);
+    cdbPat=cdbPat*(1+CDI[i]*1.10/100);
+    cartSerie.push(parseFloat(cartPat.toFixed(0)));
+    cdbSerie.push(parseFloat(cdbPat.toFixed(0)));
+    aportSerie.push((i+1)*APORTE);
+  }
+  var cartPct=[],cdbPct=[];
+  for(var j=0;j<cartSerie.length;j++){
+    var base=aportSerie[j]||1;
+    cartPct.push(j===0?0:parseFloat(((cartSerie[j]/base-1)*100).toFixed(1)));
+    cdbPct.push(j===0?0:parseFloat(((cdbSerie[j]/base-1)*100).toFixed(1)));
+  }
   var lineCtx=document.getElementById('chart-linha').getContext('2d');
-  var ll=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var lineChart=new Chart(lineCtx,{type:'line',data:{labels:ll,datasets:[{label:'Renda',data:ll.map(function(){return null;}),borderColor:'#0057FF',borderWidth:2,pointRadius:2,fill:false,tension:0.4},{label:'Risco',data:ll.map(function(){return null;}),borderColor:'rgba(255,255,255,0.5)',borderWidth:2,borderDash:[4,3],pointRadius:2,fill:false,tension:0.4}]},options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.08)'},ticks:{color:'rgba(255,255,255,0.7)',font:{size:9},callback:function(v){return v+'%';}},min:0,max:12}}}});
-  var rd=[4.2,4.5,4.8,5.1,5.6,5.9,6.2,6.8,7.1,7.4,7.8,8.0],rk=[9.5,9.0,8.4,8.0,7.5,7.0,6.5,6.0,5.6,5.2,4.8,4.5],s=0;
-  function al(){if(s>=ll.length)return;lineChart.data.datasets[0].data[s]=rd[s];lineChart.data.datasets[1].data[s]=rk[s];lineChart.update('none');s++;setTimeout(al,120);}
-  setTimeout(al,600);
+  new Chart(lineCtx,{
+    type:'line',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Carteira',data:cartPct,borderColor:'#FAF9F6',borderWidth:2,pointRadius:0,fill:false,tension:0.15},
+        {label:'CDB 110%',data:cdbPct,borderColor:'#eb6834',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0.15}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      animation:{duration:1800,easing:'easeOutQuart',delay:400},
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:function(c){return c.dataset.label+': '+(c.raw>=0?'+':'')+c.raw+'% s/ aportado';}}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:TC,font:{size:8},maxTicksLimit:7,autoSkip:true}},
+        y:{grid:{color:GC},ticks:{color:TC,font:{size:8},callback:function(v){return (v>=0?'+':'')+v+'%';}}}
+      },
+      interaction:{mode:'index',intersect:false}
+    }
+  });
 })();
 </script>
 </body>
