@@ -677,7 +677,7 @@
     options:{
       responsive:true,maintainAspectRatio:false,
       animation:{duration:1800,easing:'easeOutQuart',delay:400},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:function(c){return c.dataset.label+': '+(c.raw>=0?'+':'')+c.raw+'% s/ aportado';}}}},
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:function(c){return c.dataset.label+': '+(c.raw>=0?'+':'')+c.raw+'%';}}}},
       scales:{
         x:{grid:{display:false},ticks:{color:TC,font:{size:8},maxTicksLimit:7,autoSkip:true}},
         y:{grid:{color:GC},ticks:{color:TC,font:{size:8},callback:function(v){return (v>=0?'+':'')+v+'%';}}}
