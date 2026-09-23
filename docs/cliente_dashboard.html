@@ -80,7 +80,7 @@
         <div class="container" >
           <div class="row d-flex justify-content-center align-items-center text-center ">
             <div class="col-lg-8" >
-              <h1 style="color:#fff; font-family:'Poppins',sans-serif; margin-block: clamp(1.5rem, 5vh, 4rem);">Acesse sua conta Geld</h1>
+              <h1 style="color:#fff; font-family:'Poppins',sans-serif; margin-block: clamp(1.5rem, 5vh, 4rem);">Sua área Geld</h1>
               
             </div>
           </div>
@@ -89,47 +89,22 @@
       
     </div><!-- End Page Title -->
 
-    <!-- Login Section -->
-    <section id="login" class="login section">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+     <!-- Dashboard Section -->
+    <section id="dashboard" class="login section">
+      <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 col-md-7">
             <div class="card">
-              <div class="card-body p-4 p-md-5">
-
-                <form id="login-form" class="php-email-form">
-
-                  <div class="mb-3">
-                    <label for="login-email" class="form-label">E-mail</label>
-                    <input type="email" class="form-control" name="email" id="login-email" required>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="login-password" class="form-label">Senha</label>
-                    <input type="password" class="form-control" name="password" id="login-password" required>
-                  </div>
-
-                  <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="login-remember">
-                      <label class="form-check-label" for="login-remember">Lembrar-me</label>
-                    </div>
-                    <a href="#" class="link-primary small">Esqueci minha senha</a>
-                  </div>
-
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-get-started w-100">Entrar</button>
-                    
-                  </div>
-                <p id="login-erro" class="text-danger small text-center mt-3 mb-0 d-none"></p>
-                </form>
-
+              <div class="card-body p-4 p-md-5 text-center">
+                <h3 id="saudacao">Carregando...</h3>
+                <button id="sair" class="btn btn-get-started w-100 mt-4">Sair</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section><!-- /Login Section -->
+    </section><!-- /Dashboard Section -->
+
 
   </main>
 
@@ -181,35 +156,29 @@
 
   <script>
   const API = 'http://127.0.0.1:5000';
+  const token = sessionStorage.getItem('geld_token');
 
-  document.getElementById('login-form').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const erro = document.getElementById('login-erro');
-    erro.classList.add('d-none');
+  function voltarParaLogin() {
+    sessionStorage.removeItem('geld_token');
+    window.location.href = 'login.html';
+  }
 
+  async function carregar() {
+    if (!token) return voltarParaLogin();
     try {
-      const resposta = await fetch(API + '/api/cliente/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: document.getElementById('login-email').value,
-          senha: document.getElementById('login-password').value,
-        }),
+      const resposta = await fetch(API + '/api/cliente/me', {
+        headers: { Authorization: 'Bearer ' + token },
       });
+      if (resposta.status === 401) return voltarParaLogin();
       const dados = await resposta.json();
-
-      if (resposta.ok) {
-        sessionStorage.setItem('geld_token', dados.token);
-        window.location.href = 'cliente_dashboard.html';
-      } else {
-        erro.textContent = dados.erro;
-        erro.classList.remove('d-none');
-      }
+      document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome;
     } catch (e) {
-      erro.textContent = 'Não foi possível conectar. Tente mais tarde.';
-      erro.classList.remove('d-none');
+      document.getElementById('saudacao').textContent = 'Não foi possível conectar. Tente mais tarde.';
     }
-  });
+  }
+
+  document.getElementById('sair').addEventListener('click', voltarParaLogin);
+  carregar();
 </script>
 
 </body>
