@@ -180,7 +180,10 @@
   <script src="js/main.js"></script>
 
   <script>
-  const API = 'http://127.0.0.1:5000';
+  const API = location.hostname.endsWith('geldfp.com.br')
+  ? 'https://geld.pythonanywhere.com'
+  : 'http://127.0.0.1:5000';
+  c
 
   document.getElementById('login-form').addEventListener('submit', async (evento) => {
     evento.preventDefault();
