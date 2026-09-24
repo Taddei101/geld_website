@@ -97,31 +97,26 @@
             <div class="card">
               <div class="card-body p-4 p-md-5">
 
-                <form id="login-form" class="php-email-form" method="post">
+                 <form id="troca-form" method="post">
+                  <p class="small mb-4">Por segurança, crie uma senha nova antes de continuar.</p>
 
                   <div class="mb-3">
-                    <label for="login-email" class="form-label">E-mail</label>
-                    <input type="email" class="form-control" name="email" id="login-email" required>
+                    <label for="senha-atual" class="form-label">Senha atual</label>
+                    <input type="password" class="form-control" id="senha-atual" required>
                   </div>
 
                   <div class="mb-3">
-                    <label for="login-password" class="form-label">Senha</label>
-                    <input type="password" class="form-control" name="password" id="login-password" required>
+                    <label for="nova-senha" class="form-label">Nova senha (mínimo 8 caracteres)</label>
+                    <input type="password" class="form-control" id="nova-senha" minlength="8" required>
                   </div>
 
-                  <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="login-remember">
-                      <label class="form-check-label" for="login-remember">Lembrar-me</label>
-                    </div>
-                    <a href="#" class="link-primary small">Esqueci minha senha</a>
+                  <div class="mb-4">
+                    <label for="confirma-senha" class="form-label">Repita a nova senha</label>
+                    <input type="password" class="form-control" id="confirma-senha" minlength="8" required>
                   </div>
 
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-get-started w-100">Entrar</button>
-                    
-                  </div>
-                <p id="login-erro" class="text-danger small text-center mt-3 mb-0 d-none"></p>
+                  <button type="submit" class="btn btn-get-started w-100">Salvar nova senha</button>
+                  <p id="troca-erro" class="text-danger small text-center mt-3 mb-0 d-none"></p>
                 </form>
 
               </div>
@@ -181,31 +176,37 @@
 
   <script>
   const API = location.hostname.endsWith('geldfp.com.br')
-  ? 'https://geld.pythonanywhere.com'
-  : 'http://127.0.0.1:5000';
-  
+    ? 'https://geld.pythonanywhere.com'
+    : 'http://127.0.0.1:5000';
 
-  document.getElementById('login-form').addEventListener('submit', async (evento) => {
+  const token = sessionStorage.getItem('geld_token');
+  if (!token) window.location.href = 'login.html';
+
+  document.getElementById('troca-form').addEventListener('submit', async (evento) => {
     evento.preventDefault();
-    const erro = document.getElementById('login-erro');
+    const erro = document.getElementById('troca-erro');
     erro.classList.add('d-none');
 
+    const nova = document.getElementById('nova-senha').value;
+    if (nova !== document.getElementById('confirma-senha').value) {
+      erro.textContent = 'As duas senhas novas não são iguais.';
+      erro.classList.remove('d-none');
+      return;
+    }
+
     try {
-      const resposta = await fetch(API + '/api/cliente/login', {
+      const resposta = await fetch(API + '/api/cliente/trocar-senha', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({
-          email: document.getElementById('login-email').value,
-          senha: document.getElementById('login-password').value,
+          senha_atual: document.getElementById('senha-atual').value,
+          nova_senha: nova,
         }),
       });
       const dados = await resposta.json();
 
       if (resposta.ok) {
-        sessionStorage.setItem('geld_token', dados.token);
-         window.location.href = dados.precisa_trocar_senha
-          ? 'trocar_senha.html'
-          : 'cliente_dashboard.html';
+        window.location.href = 'cliente_dashboard.html';
       } else {
         erro.textContent = dados.erro;
         erro.classList.remove('d-none');

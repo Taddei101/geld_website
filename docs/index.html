@@ -27,6 +27,10 @@
   <!-- Main CSS File -->
   <link href="css/main.css" rel="stylesheet">
   <link href="css/geld.css" rel="stylesheet">
+  <style>
+    /* Newsletter: lista de edições com rolagem interna quando ficar longa */
+    .navmenu .dropdown ul.newsletter-list { max-height: 60vh; overflow-y: auto; }
+  </style>
 </head>
 
 <body class="index-page">
@@ -59,7 +63,15 @@
             <li><a href="#services">Serviços</a></li>
             <li><a href="#how">Como Funciona</a></li>
             <li><a href="#team">Equipe</a></li>
-            <li><a href="newsletter/newsletter.pdf" target="_blank" rel="noopener noreferrer">Newsletter</a></li>
+            <li class="dropdown"><a href="#"><span>Newsletter</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul class="newsletter-list">
+                
+                <li><a href="newsletter/SET2026.pdf" target="_blank" rel="noopener noreferrer">Set2026</a></li>
+                <!-- <li><a href="newsletter/OUT2026.pdf" target="_blank" rel="noopener noreferrer">Out2026</a></li> -->
+                <!-- <li><a href="newsletter/OUT2026.pdf" target="_blank" rel="noopener noreferrer">Nov2026</a></li> -->
+                <!-- <li><a href="newsletter/OUT2026.pdf" target="_blank" rel="noopener noreferrer">Dez2026</a></li> -->
+              </ul>
+            </li>
             
             <li><a href="#contact">Contato</a></li>
             <li><a href="login.html" class="active">Login</a></li>
@@ -555,6 +567,25 @@
   <script src="vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="js/main.js"></script>
+  <script>
+  /* Newsletter dropdown: no mobile, tocar no texto do item pai expande o submenu
+     (sem isso o main.js fecharia o painel). No desktop, o hover cuida da abertura. */
+  (function () {
+    var nav = document.getElementById('navmenu');
+    var mq = window.matchMedia('(max-width: 1199px)');
+    nav.addEventListener('click', function (e) {
+      var link = e.target.closest('.dropdown > a');
+      if (!link) return;
+      e.preventDefault();                                 // href="#" não rola a página
+      if (e.target.closest('.toggle-dropdown')) return;   // a setinha já é tratada pelo main.js
+      e.stopPropagation();                                // impede o main.js de fechar o menu
+      if (mq.matches) {
+        link.classList.toggle('active');
+        link.nextElementSibling.classList.toggle('dropdown-active');
+      }
+    }, true);
+  })();
+  </script>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
