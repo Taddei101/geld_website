@@ -102,6 +102,9 @@
             </div>
           </div>
         </div>
+         <div class="row justify-content-center mt-4">
+          <div class="col-lg-8" id="objetivos"></div>
+        </div>
       </div>
     </section><!-- /Dashboard Section -->
 
@@ -166,6 +169,37 @@
     window.location.href = 'login.html';
   }
 
+   const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  async function carregarObjetivos() {
+    const resposta = await fetch(API + '/api/cliente/snapshots', {
+      headers: { Authorization: 'Bearer ' + token },
+    });
+    if (resposta.status === 401) return voltarParaLogin();
+    const dados = await resposta.json();
+    const area = document.getElementById('objetivos');
+
+    if (dados.objetivos.length === 0) {
+      area.innerHTML = '<p class="text-center">Seus objetivos aparecerão aqui após a próxima atualização da sua carteira.</p>';
+      return;
+    }
+
+    for (const obj of dados.objetivos) {
+      const atual = obj.pontos[obj.pontos.length - 1].valor;
+      const pct = obj.valor_alvo ? Math.min(100, atual / obj.valor_alvo * 100) : 0;
+      area.innerHTML += `
+        <div class="card mb-3">
+          <div class="card-body p-4">
+            <h5>${obj.nome}</h5>
+            <p class="mb-2">${brl(atual)}${obj.valor_alvo ? ' de ' + brl(obj.valor_alvo) : ''}</p>
+            <div class="progress">
+              <div class="progress-bar" style="width: ${pct}%">${pct.toFixed(0)}%</div>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+
   async function carregar() {
     if (!token) return voltarParaLogin();
     try {
@@ -175,6 +209,7 @@
       if (resposta.status === 401) return voltarParaLogin();
       const dados = await resposta.json();
       document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome;
+      await carregarObjetivos();
     } catch (e) {
       document.getElementById('saudacao').textContent = 'Não foi possível conectar. Tente mais tarde.';
     }
