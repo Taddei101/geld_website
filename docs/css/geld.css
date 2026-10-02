@@ -246,7 +246,20 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 600; c
     padding-top: 20px !important;
     padding-bottom: 20px !important;
   }
+  /* --- Faixa do título (login, trocar senha, área do cliente) --- */
+  .faixa-cliente {
+    height: auto !important;
+    padding-top: 104px !important;
+  }
 
+  .faixa-cliente .container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .faixa-cliente h1 {
+    margin-block: 1.25rem !important;
+  }
   .hero h2 {
     font-size: 1.6rem !important;
   }
