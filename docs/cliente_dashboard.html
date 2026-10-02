@@ -102,9 +102,7 @@
             </div>
           </div>
         </div>
-         <div class="row justify-content-center mt-4">
-          <div class="col-lg-8" id="objetivos"></div>
-        </div>
+          <div class="row g-3 mt-4" id="objetivos"></div>
       </div>
     </section><!-- /Dashboard Section -->
 
@@ -170,6 +168,27 @@
   }
 
    const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+   const FOTOS = [
+    ['casa',   ['casa', 'apartamento', 'imovel']],
+    ['carro',  ['carro', 'veiculo']],
+    ['viagem', ['viagem', 'ferias']],
+    ['curso',  ['curso', 'faculdade', 'educacao', 'estudo']],
+    ['filho',  ['filho', 'filha', 'bebe']],
+    ['medico', ['medico', 'cirurgia', 'saude']],
+    ['aposentadoria', ['aposentadoria', 'previdencia', 'independencia']],
+  ];
+
+  function semAcento(texto) {
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  function fotoDoObjetivo(nome) {
+    const limpo = semAcento(nome);
+    for (const [arquivo, palavras] of FOTOS) {
+      if (palavras.some(p => limpo.includes(p))) return 'img/objetivos/' + arquivo + '.png';
+    }
+    return 'img/objetivos/generico.png';
+  }
 
   async function carregarObjetivos() {
     const resposta = await fetch(API + '/api/cliente/snapshots', {
@@ -186,14 +205,22 @@
 
     for (const obj of dados.objetivos) {
       const atual = obj.pontos[obj.pontos.length - 1].valor;
-      const pct = obj.valor_alvo ? Math.min(100, atual / obj.valor_alvo * 100) : 0;
+      const pct = obj.valor_alvo ? atual / obj.valor_alvo * 100 : 0;
+      const cor = pct >= 100 ? 'bg-success' : '';
+      const pctTexto = pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
       area.innerHTML += `
-        <div class="card mb-3">
-          <div class="card-body p-4">
-            <h5>${obj.nome}</h5>
-            <p class="mb-2">${brl(atual)}${obj.valor_alvo ? ' de ' + brl(obj.valor_alvo) : ''}</p>
-            <div class="progress">
-              <div class="progress-bar" style="width: ${pct}%">${pct.toFixed(0)}%</div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 overflow-hidden">
+            <div class="position-relative">
+              <img src="${fotoDoObjetivo(obj.nome)}" class="w-100 object-fit-cover" style="height: 180px" alt="">
+              <div class="progress bg-secondary rounded-pill position-absolute bottom-0 start-0 end-0 m-2" style="height: 1.75rem">
+                <div class="progress-bar rounded-pill ${cor}" style="width: ${Math.min(100, pct)}%"></div>
+                <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white">${pctTexto}</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <h6 class="mb-1">${obj.nome}</h6>
+              <small>${brl(atual)}${obj.valor_alvo ? ' de ' + brl(obj.valor_alvo) : ''}</small>
             </div>
           </div>
         </div>`;
