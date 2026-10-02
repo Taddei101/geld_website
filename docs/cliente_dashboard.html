@@ -226,7 +226,7 @@
       });
       if (resposta.status === 401) return voltarParaLogin();
       const dados = await resposta.json();
-      document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome;
+       document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome.trim().split(' ')[0];
       await carregarObjetivos();
     } catch (e) {
       document.getElementById('saudacao').textContent = 'Não foi possível conectar. Tente mais tarde.';
