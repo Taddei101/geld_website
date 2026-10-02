@@ -102,7 +102,7 @@
             </div>
           </div>
         </div>
-          <div class="row g-3 mt-4" id="objetivos"></div>
+          <div class="row g-3 mt-4 justify-content-center" id="objetivos"></div>
       </div>
     </section><!-- /Dashboard Section -->
 
@@ -209,10 +209,10 @@
       const cor = pct >= 100 ? 'bg-success' : '';
       const pctTexto = pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
       area.innerHTML += `
-        <div class="col-md-6 col-lg-4">
+        <div class="col-6 col-md-3 col-lg-2">
           <div class="card h-100 overflow-hidden">
             <div class="position-relative">
-              <img src="${fotoDoObjetivo(obj.nome)}" class="w-100 object-fit-cover" style="height: 180px" alt="">
+              <img src="${fotoDoObjetivo(obj.nome)}" class="w-100 object-fit-cover" style="aspect-ratio: 1 / 1" alt="">
               <div class="progress bg-secondary rounded-pill position-absolute bottom-0 start-0 end-0 m-2" style="height: 1.75rem">
                 <div class="progress-bar rounded-pill ${cor}" style="width: ${Math.min(100, pct)}%"></div>
                 <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white">${pctTexto}</span>
