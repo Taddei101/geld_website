@@ -43,7 +43,9 @@ async function carregarGraficos() {
     reais.push({ x: datas, y: dados.cdi_reais, name: 'CDI', mode: 'lines+markers', line: { color: CINZA, width: 2, dash: 'dot' } });
   }
   Plotly.newPlot('grafico-reais', reais, layout('Patrimônio (R$)', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true }), opcoes);
-  document.getElementById('carrossel-graficos').addEventListener('slide.bs.carousel', () => {
+  const carrossel = document.getElementById('carrossel-graficos');
+  bootstrap.Carousel.getOrCreateInstance(carrossel);
+  carrossel.addEventListener('slide.bs.carousel', () => {
     requestAnimationFrame(() => {
       Plotly.Plots.resize('grafico-retorno');
       Plotly.Plots.resize('grafico-reais');
