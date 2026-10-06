@@ -18,6 +18,7 @@ async function carregarGraficos() {
   Plotly.newPlot('grafico-retorno', linhas, {
     title: 'Retorno acumulado (%)',
     hovermode: 'x unified',
+    xaxis: { tickformat: '%d/%m/%y', hoverformat: '%d/%m/%Y', tickvals: datas.length <= 12 ? datas : undefined },
     yaxis: { ticksuffix: '%' },
     margin: { t: 50, r: 10, l: 50, b: 40 },
     legend: { orientation: 'h' },
