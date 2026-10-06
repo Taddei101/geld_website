@@ -8,10 +8,10 @@ async function carregarGraficos() {
 
   const datas = dados.pontos.map(p => p.data);
   const linhas = [
-    { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines+markers', line: { color: 'green' } },
+    { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines+markers', line: { color: '#0057FF', width: 3 } },
   ];
   if (dados.retorno_cdi) {
-    linhas.push({ x: datas, y: dados.retorno_cdi, name: 'CDI', mode: 'lines+markers', line: { color: 'royalblue' } });
+    linhas.push({ x: datas, y: dados.retorno_cdi, name: 'CDI', mode: 'lines+markers', line: { color: '#98A2B3', width: 2, dash: 'dot' } });
   }
 
   document.getElementById('patrimonio').classList.remove('d-none');
