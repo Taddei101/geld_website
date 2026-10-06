@@ -90,6 +90,15 @@
       
     </div><!-- End Page Title -->
 
+     <section id="patrimonio" class="section pt-4 pb-0 d-none">
+      <div class="container section-title pb-3">
+        <h2>Seu patrimônio</h2>
+      </div>
+      <div class="container">
+        <div id="grafico-retorno" style="height: 360px;"></div>
+      </div>
+    </section>
+
      <!-- Dashboard Section -->
      <section id="dashboard" class="login section pt-4">
       <div class="container section-title pb-3">
@@ -148,7 +157,8 @@
   <script src="vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="js/main.js"></script>
-
+  <script src="https://cdn.plot.ly/plotly-basic-2.35.2.min.js"></script>
+  <script src="js/cliente_graficos.js"></script>
   <script>
   const API = location.hostname.endsWith('geldfp.com.br')
   ? 'https://geld.pythonanywhere.com'
@@ -166,12 +176,19 @@
     ['casa',   ['casa', 'apartamento', 'imovel']],
     ['carro',  ['carro', 'veiculo']],
     ['viagem', ['viagem', 'ferias']],
-    ['curso',  ['curso', 'faculdade', 'educacao', 'estudo']],
+    ['curso',  ['curso', 'educacao', 'estudo']],
     ['filho',  ['filho', 'filha', 'bebe']],
-    ['medico', ['medico', 'cirurgia', 'saude']],
+    ['consulta', ['consulta', 'cirurgia', 'saude']],
     ['aposentadoria', ['aposentadoria', 'previdencia', 'independencia']],
     ['negocio', ['negocio', 'clinica', 'empresa']],
     ['caixa', ['caixa','caixa de emergencia', 'reserva']],
+
+    ['conserto', ['conserto','reparo', 'arrumar']],
+    ['emergencia', ['emergencia','eventualidade', 'surpresa']],
+    ['empreender', ['empreender','empreendimento', 'empreendedorismo']],
+    ['faculdade', ['faculdade','escola', 'colegio']],
+    ['reforma', ['reforma','mobilia', 'sofa', 'renovacao']],
+
   ];
 
   function semAcento(texto) {
@@ -233,6 +250,7 @@
       const dados = await resposta.json();
        document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome.trim().split(' ')[0];
       await carregarObjetivos();
+      carregarGraficos();
     } catch (e) {
       document.getElementById('saudacao').textContent = 'Não foi possível conectar. Tente mais tarde.';
     }
