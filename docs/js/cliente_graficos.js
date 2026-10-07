@@ -9,7 +9,7 @@ async function carregarGraficos() {
   const AZUL = '#0057FF';
   const CINZA = '#98A2B3';
   const datas = dados.pontos.map(p => p.data);
-  const MIN_MESES = 12;
+  const MIN_MESES = 6;
   const MAX_ROTULOS = 4;
   const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
   const eixo = [...datas];
