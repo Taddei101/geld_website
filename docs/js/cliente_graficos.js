@@ -9,18 +9,29 @@ async function carregarGraficos() {
   const AZUL = '#0057FF';
   const CINZA = '#98A2B3';
   const datas = dados.pontos.map(p => p.data);
+  const MIN_MESES = 12;
   const MAX_ROTULOS = 4;
-  const passo = Math.ceil(datas.length / MAX_ROTULOS);
-  const naMarca = (_, i) => (datas.length - 1 - i) % passo === 0;
-  const marcas = datas.filter(naMarca);
-  const rotulos = dados.meses.filter(naMarca);
+  const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const eixo = [...datas];
+  const nomes = [...dados.meses];
+  while (eixo.length < MIN_MESES) {
+    const [ano, mes] = eixo[eixo.length - 1].split('-').map(Number);
+    nomes.push(MESES[mes - 1] + '/' + String(ano).slice(2));
+    eixo.push(mes === 12 ? `${ano + 1}-01-01` : `${ano}-${String(mes + 1).padStart(2, '0')}-01`);
+  }
+  const passo = Math.ceil(eixo.length / MAX_ROTULOS);
+  const naMarca = (_, i) => (eixo.length - 1 - i) % passo === 0;
+  const marcas = eixo.filter(naMarca);
+  const rotulos = nomes.filter(naMarca);
+  const DIA = 24 * 60 * 60 * 1000;
+  const faixa = [new Date(eixo[0]).getTime() - 10 * DIA, new Date(eixo[eixo.length - 1]).getTime() + 10 * DIA];
 
   const layout = (titulo, eixoY) => ({
     title: titulo,
     hovermode: 'x unified',
     dragmode: false,
     separators: ',.',
-    xaxis: { tickvals: marcas, ticktext: rotulos, hoverformat: '%d/%m/%Y' },
+    xaxis: { range: faixa, tickvals: marcas, ticktext: rotulos, hoverformat: '%d/%m/%Y' },
     yaxis: eixoY,
     margin: { t: 50, r: 30, l: 50, b: 40 },
     legend: { orientation: 'h', y: -0.2 },
