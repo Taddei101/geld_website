@@ -9,9 +9,11 @@ async function carregarGraficos() {
   const AZUL = '#0057FF';
   const CINZA = '#98A2B3';
   const datas = dados.pontos.map(p => p.data);
-  const passo = Math.ceil(datas.length / 12);
-  const marcas = datas.filter((_, i) => i % passo === 0);
-  const rotulos = dados.meses.filter((_, i) => i % passo === 0);
+  const MAX_ROTULOS = 4;
+  const passo = Math.ceil(datas.length / MAX_ROTULOS);
+  const naMarca = (_, i) => (datas.length - 1 - i) % passo === 0;
+  const marcas = datas.filter(naMarca);
+  const rotulos = dados.meses.filter(naMarca);
 
   const layout = (titulo, eixoY) => ({
     title: titulo,
@@ -20,8 +22,8 @@ async function carregarGraficos() {
     separators: ',.',
     xaxis: { tickvals: marcas, ticktext: rotulos, hoverformat: '%d/%m/%Y' },
     yaxis: eixoY,
-    margin: { t: 50, r: 10, l: 50, b: 40 },
-    legend: { orientation: 'h' },
+    margin: { t: 50, r: 30, l: 50, b: 40 },
+    legend: { orientation: 'h', y: -0.2 },
   });
   const opcoes = { responsive: true, displayModeBar: false };
 
