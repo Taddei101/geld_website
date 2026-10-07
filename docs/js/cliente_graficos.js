@@ -41,19 +41,19 @@ async function carregarGraficos() {
   document.getElementById('patrimonio').classList.remove('d-none');
 
   const retorno = [
-    { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines+markers', line: { color: AZUL, width: 3 } },
+    { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines', line: { color: AZUL, width: 1.5 } },
   ];
   if (dados.retorno_cdi) {
-    retorno.push({ x: datas, y: dados.retorno_cdi, name: 'CDI', mode: 'lines+markers', line: { color: CINZA, width: 2, dash: 'dot' } });
+    retorno.push({ x: datas, y: dados.retorno_cdi, name: 'CDI', mode: 'lines', line: { color: CINZA, width: 1.5, dash: 'dot' } });
   }
   Plotly.newPlot('grafico-retorno', retorno, layout('Retorno acumulado (%)', { ticksuffix: '%' }), opcoes);
 
   const reais = [
-    { x: datas, y: dados.pontos.map(p => p.valor), name: 'Atual', mode: 'lines+markers', line: { color: AZUL, width: 3 } },
-    { x: datas, y: dados.investido, name: 'Investido', mode: 'lines+markers', line: { color: '#475467', width: 2, dash: 'dash' } },
+    { x: datas, y: dados.pontos.map(p => p.valor), name: 'Atual', mode: 'lines', line: { color: AZUL, width: 1.5 } },
+    { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', line: { color: '#475467', width: 1.5, dash: 'dash' } },
   ];
   if (dados.cdi_reais) {
-    reais.push({ x: datas, y: dados.cdi_reais, name: 'CDI', mode: 'lines+markers', line: { color: CINZA, width: 2, dash: 'dot' } });
+    reais.push({ x: datas, y: dados.cdi_reais, name: 'CDI', mode: 'lines', line: { color: CINZA, width: 1.5, dash: 'dot' } });
   }
   Plotly.newPlot('grafico-reais', reais, layout('Patrimônio (R$)', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true }), opcoes);
   const carrossel = document.getElementById('carrossel-graficos');
