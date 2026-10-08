@@ -6,13 +6,16 @@ async function carregarResumo() {
   const dados = await resposta.json();
   if (dados.total === null) return;
 
+  const AZUL = '#0057FF';
+  const VERDE = '#146c43';
   const reais = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
-  const partes = [];
-  if (dados.investido !== null) partes.push('Investimento ' + reais(dados.investido));
-  partes.push('Total ' + reais(dados.total));
-  partes.push('(' + dados.atualizado_em + ')');
+  const valor = (v, cor) => `<span class="fw-semibold" style="color:${cor}">${reais(v)}</span>`;
+
+  const partes = ['(' + dados.atualizado_em + ')'];
+  if (dados.investido !== null) partes.push('Investimento ' + valor(dados.investido, AZUL));
+  partes.push('Total ' + valor(dados.total, VERDE));
 
   const pilula = document.getElementById('resumo');
-  pilula.textContent = partes.join(' - ');
+  pilula.innerHTML = partes.join(' - ');
   pilula.classList.remove('d-none');
 }
