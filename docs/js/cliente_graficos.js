@@ -38,8 +38,6 @@ async function carregarGraficos() {
   });
   const opcoes = { responsive: true, displayModeBar: false };
 
-  document.getElementById('patrimonio').classList.remove('d-none');
-
   const retorno = [
     { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines', line: { color: AZUL, width: 1.5 } },
   ];
