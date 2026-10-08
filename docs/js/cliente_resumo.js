@@ -8,8 +8,11 @@ async function carregarResumo() {
 
   const reais = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
   const partes = [];
-  if (dados.investido !== null) partes.push('Investido ' + reais(dados.investido));
+  if (dados.investido !== null) partes.push('Investimento ' + reais(dados.investido));
   partes.push('Total ' + reais(dados.total));
-  partes.push('atualizado em ' + dados.atualizado_em);
-  document.getElementById('resumo').textContent = partes.join(' · ');
+  partes.push('(' + dados.atualizado_em + ')');
+
+  const pilula = document.getElementById('resumo');
+  pilula.textContent = partes.join(' - ');
+  pilula.classList.remove('d-none');
 }
