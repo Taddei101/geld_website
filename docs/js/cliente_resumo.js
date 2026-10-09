@@ -11,11 +11,13 @@ async function carregarResumo() {
   const reais = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
   const valor = (v, cor) => `<span class="fw-semibold" style="color:${cor}">${reais(v)}</span>`;
 
-  const partes = ['(' + dados.atualizado_em + ')'];
+  const partes = [];
   if (dados.investido !== null) partes.push('Investimento ' + valor(dados.investido, AZUL));
   partes.push('Total ' + valor(dados.total, VERDE));
 
   const pilula = document.getElementById('resumo');
   pilula.innerHTML = partes.join(' - ');
+  pilula.tabIndex = 0;
+  new bootstrap.Tooltip(pilula, { title: 'Atualizado em ' + dados.atualizado_em, placement: 'bottom' });
   pilula.classList.remove('d-none');
 }
