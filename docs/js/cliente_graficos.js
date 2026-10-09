@@ -58,7 +58,7 @@ async function carregarGraficos() {
   };
 
   const reais = [
-    { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', hoverinfo: 'none', line: { color: '#475467', width: 1.5, dash: 'dash', shape: 'hv' } },
+    { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', hoverinfo: 'none', line: { color: '#146c43', width: 1.5, shape: 'hv' }, fill: 'tozeroy', fillcolor: 'rgba(20, 108, 67, 0.12)' },
     { ...comDegrau(atual), name: 'Atual', mode: 'lines', hoverinfo: 'none', line: { color: AZUL, width: 1.5 }, fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.12)' },
   ];
   if (dados.cdi_reais) {
