@@ -50,6 +50,16 @@ async function carregarGraficos() {
     { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', line: { color: '#475467', width: 1.5, dash: 'dash', shape: 'hv' } },
     { x: datas, y: dados.pontos.map(p => p.valor), name: 'Atual', mode: 'lines', line: { color: AZUL, width: 1.5 }, fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.12)' },
   ];
+  reais.push({
+    x: datas,
+    y: dados.pontos.map(p => p.valor),
+    customdata: dados.pontos.map((p, i) => p.valor - dados.investido[i]),
+    name: 'Rendimento',
+    mode: 'lines',
+    line: { width: 0 },
+    showlegend: false,
+    hovertemplate: 'R$ %{customdata:,.0f}',
+  });
   if (dados.cdi_reais) {
     reais.push({ x: datas, y: dados.cdi_reais, name: 'CDI', mode: 'lines', line: { color: CINZA, width: 1.5, dash: 'dot' } });
   }
