@@ -33,7 +33,7 @@ async function carregarGraficos() {
     separators: ',.',
     xaxis: { range: faixa, tickvals: marcas, ticktext: rotulos, hoverformat: 'Posição em %d/%m/%Y'},
     yaxis: eixoY,
-    margin: { t: 50, r: 30, l: 50, b: 40 },
+    margin: { t: titulo ? 50 : 5, r: 30, l: 50, b: 40 },
     legend: { orientation: 'h', y: -0.2 },
   });
   const opcoes = { responsive: true, displayModeBar: false };
