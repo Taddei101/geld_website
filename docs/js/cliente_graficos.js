@@ -93,7 +93,7 @@ async function carregarGraficos() {
   };
   leitura(datas.length - 1);
 
-  Plotly.newPlot('grafico-reais', reais, layout('Patrimônio (R$)', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true }), opcoes).then(grafico => {
+  Plotly.newPlot('grafico-reais', reais, layout('', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true }), opcoes).then(grafico => {
     grafico.on('plotly_hover', e => {
       const i = datas.indexOf(e.points[0].x);
       if (i >= 0) leitura(i);
