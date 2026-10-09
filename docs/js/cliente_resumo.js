@@ -8,7 +8,7 @@ async function carregarResumo() {
 
   const AZUL = '#0057FF';
   const VERDE = '#146c43';
-  const reais = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  const reais = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const valor = (v, cor) => `<span class="fw-semibold" style="color:${cor}">${reais(v)}</span>`;
 
   const partes = [];

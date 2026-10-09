@@ -65,16 +65,31 @@ async function carregarGraficos() {
     reais.push({ ...comDegrau(dados.cdi_reais), name: 'CDI', mode: 'lines', hoverinfo: 'none', line: { color: CINZA, width: 1.5, dash: 'dot' } });
   }
 
-  const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
-  const leitura = i => {
-    const rendimento = atual[i] - dados.investido[i];
+  const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const pilula = document.getElementById('leitura-valor');
+  pilula.style.fontVariantNumeric = 'tabular-nums';
+  let mostrado = null;
+  let quadro = null;
+  const escrever = (rendimento, investido) => {
+    mostrado = rendimento;
     const sobe = rendimento >= 0;
     let texto = brl(rendimento) + ' <i class="bi bi-arrow-' + (sobe ? 'up' : 'down') + '"></i>';
-    if (dados.investido[i] > 0) texto += ' ' + (rendimento / dados.investido[i] * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
-    document.getElementById('leitura-titulo').textContent = 'Rendimento até ' + dados.meses[i];
-    const pilula = document.getElementById('leitura-valor');
+    if (investido > 0) texto += ' ' + (rendimento / investido * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
     pilula.innerHTML = texto;
     pilula.style.color = sobe ? '#146c43' : '#b42318';
+  };
+  const leitura = i => {
+    document.getElementById('leitura-titulo').textContent = 'Rendimento até ' + dados.meses[i];
+    const destino = atual[i] - dados.investido[i];
+    const origem = mostrado === null ? destino : mostrado;
+    const inicio = performance.now();
+    cancelAnimationFrame(quadro);
+    const passo = agora => {
+      const t = Math.min((agora - inicio) / 300, 1);
+      escrever(origem + (destino - origem) * t, dados.investido[i]);
+      if (t < 1) quadro = requestAnimationFrame(passo);
+    };
+    passo(inicio);
   };
   leitura(datas.length - 1);
 
