@@ -94,10 +94,13 @@ async function carregarGraficos() {
   leitura(datas.length - 1);
 
   Plotly.newPlot('grafico-reais', reais, layout('', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true }), opcoes).then(grafico => {
-    grafico.on('plotly_hover', e => {
+    const apontar = e => {
+      if (!e.points || !e.points.length) return;
       const i = datas.indexOf(e.points[0].x);
       if (i >= 0) leitura(i);
-    });
+    };
+    grafico.on('plotly_hover', apontar);
+    grafico.on('plotly_click', apontar);
     grafico.on('plotly_unhover', () => leitura(datas.length - 1));
   });
   const carrossel = document.getElementById('carrossel-graficos');
