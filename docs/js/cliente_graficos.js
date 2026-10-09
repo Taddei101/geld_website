@@ -31,7 +31,7 @@ async function carregarGraficos() {
     hovermode: 'x unified',
     dragmode: false,
     separators: ',.',
-    xaxis: { range: faixa, tickvals: marcas, ticktext: rotulos, hoverformat: '%d/%m/%Y' },
+    xaxis: { range: faixa, tickvals: marcas, ticktext: rotulos, hoverformat: 'Posição em %d/%m/%Y'},
     yaxis: eixoY,
     margin: { t: 50, r: 30, l: 50, b: 40 },
     legend: { orientation: 'h', y: -0.2 },
@@ -47,8 +47,8 @@ async function carregarGraficos() {
   Plotly.newPlot('grafico-retorno', retorno, layout('Retorno acumulado (%)', { ticksuffix: '%' }), opcoes);
 
   const reais = [
-    { x: datas, y: dados.pontos.map(p => p.valor), name: 'Atual', mode: 'lines', line: { color: AZUL, width: 1.5 } },
-    { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', line: { color: '#475467', width: 1.5, dash: 'dash' } },
+    { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', line: { color: '#475467', width: 1.5, dash: 'dash', shape: 'hv' } },
+    { x: datas, y: dados.pontos.map(p => p.valor), name: 'Atual', mode: 'lines', line: { color: AZUL, width: 1.5 }, fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.12)' },
   ];
   if (dados.cdi_reais) {
     reais.push({ x: datas, y: dados.cdi_reais, name: 'CDI', mode: 'lines', line: { color: CINZA, width: 1.5, dash: 'dot' } });
