@@ -171,16 +171,19 @@
         <div class="row gy-4">
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <h3>Um escritório independente de planejamento financeiro e gestão patrimonial</h3>
-            <div class="position-relative mb-4">
-  <video autoplay muted loop playsinline class="img-fluid rounded-4 video-fill">
+            <div class="position-relative mb-4" style="border-radius:1rem;overflow:hidden;">
+  <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
     <source src="video/ceu.mp4" type="video/mp4">
   </video>
-  <div style="position:absolute;inset:0;background:rgba(13,20,38,0.65);border-radius:1rem;display:flex;flex-direction:column;justify-content:center;padding:20px;">
-    <p style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">Patrimônio sob gestão</p>
-    <p style="color:#fff;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;margin:0 0 8px;">Crescimento 2019 → 2025 (R$)</p>
-    <div style="position:relative;height:200px;">
-      <canvas id="chart-barras" role="img" aria-label="Crescimento do patrimônio sob gestão da Geld de R$512k em 2019 a R$7,9M em 2025"></canvas>
-    </div>
+  <div style="position:relative;background:rgba(13,20,38,0.65);padding:20px;">
+  <div style="position:relative;height:160px;">
+    <canvas id="chart-mc" role="img" aria-label="Simulação ilustrativa da evolução do patrimônio ao longo de 20 anos, em vários cenários"></canvas>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
+    <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:3px;background:#FAF9F6;display:inline-block;border-radius:2px;"></span>Cenário central</span>
+    <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,0.65);"><span style="width:10px;height:1px;background:rgba(250,249,246,0.55);display:inline-block;"></span>Cenários simulados</span>
+  </div>
+  <p style="color:rgba(255,255,255,0.65);font-size:9px;line-height:1.35;margin:8px 0 0;">Simulação ilustrativa, em reais de hoje: R$ 100 mil iniciais, R$ 3 mil por mês, retorno de 4,5% ao ano acima da inflação e volatilidade de 9% ao ano. Não representa garantia de resultado.</p>
   </div>
 </div>
             <p>Ajudamos pessoas e famílias a organizar a vida financeira, transformar objetivos em estratégia e manter os investimentos alinhados ao que realmente importa.</p>
@@ -252,8 +255,8 @@
                 <div class="stats-item d-flex">
                   <i class="bi bi-patch-check flex-shrink-0"></i>
                   <div>
-                    <span>CEA + CGA</span>
-                    <p><strong>Certificações</strong> <span>ANBIMA CEA e CGA</span></p>
+                    <span>CFG + CGA</span>
+                    <p><strong>Certificações</strong> <span>ANBIMA CFG e CGA</span></p>
                   </div>
                 </div>
               </div>
@@ -593,82 +596,12 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="js/simulacao_objetivo.js"></script>
+  
 <script>
 (function(){
   var TC='rgba(255,255,255,0.6)', GC='rgba(255,255,255,0.07)';
-
-  /* ── Gráfico 1: Crescimento patrimônio Geld ── */
-  var anos=['2019','2020','2021','2022','2023','2024','2025'];
-  var dados=[0.512,0.98,1.74,2.61,3.90,5.80,7.90];
-  var barCanvas=document.getElementById('chart-barras');
-  var barChart=new Chart(barCanvas,{
-    type:'bar',
-    data:{
-      labels:anos,
-      datasets:[{
-        data:dados,
-        backgroundColor:dados.map(function(_,i){return i===dados.length-1?'#191970':'rgba(0,87,255,0.45)';}),
-        borderRadius:4,
-        borderSkipped:false
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      animation:{duration:1400,easing:'easeOutQuart'},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return 'R$ '+c.raw.toFixed(2).replace('.',',')+'M';}}}},
-      scales:{
-        x:{grid:{display:false},ticks:{color:TC,font:{size:9}}},
-        y:{display:false,min:0,max:10.5}
-      },
-      layout:{padding:{top:10,bottom:2}}
-    }
-  });
-
-  /* Rótulos e curva após animação */
-  setTimeout(function(){
-    var ctx2=barCanvas.getContext('2d');
-    var meta=barChart.getDatasetMeta(0);
-    if(!meta.data||!meta.data.length) return;
-    var b0=meta.data[0], bN=meta.data[6];
-    ctx2.save();
-    /* valor 1ª barra */
-    ctx2.font='500 10px Inter,sans-serif';
-    ctx2.fillStyle='rgba(255,255,255,0.7)';
-    ctx2.textAlign='center';
-    ctx2.fillText('R$ 512k',b0.x,b0.y-7);
-    /* valor última barra */
-    ctx2.font='600 11px Inter,sans-serif';
-    ctx2.fillStyle='#ffffff';
-    ctx2.fillText('R$ 7,9M',bN.x,bN.y-14);
-    /* curva */
-    var x0=b0.x,xN=bN.x,yS=b0.y-26,yE=bN.y-26;
-    var top=barChart.chartArea.top+2;
-    ctx2.beginPath();
-    ctx2.moveTo(x0,yS);
-    ctx2.bezierCurveTo(x0+(xN-x0)*0.2,top,x0+(xN-x0)*0.75,top,xN-8,yE);
-    ctx2.setLineDash([4,3]);
-    ctx2.strokeStyle='rgba(255,255,255,0.45)';
-    ctx2.lineWidth=1.5;
-    ctx2.stroke();
-    /* seta */
-    ctx2.setLineDash([]);
-    var ang=Math.atan2(yE-top,(xN-8)-(x0+(xN-x0)*0.75));
-    ctx2.beginPath();
-    ctx2.moveTo(xN-8,yE);
-    ctx2.lineTo(xN-8-9*Math.cos(ang-0.42),yE-9*Math.sin(ang-0.42));
-    ctx2.moveTo(xN-8,yE);
-    ctx2.lineTo(xN-8-9*Math.cos(ang+0.42),yE-9*Math.sin(ang+0.42));
-    ctx2.strokeStyle='rgba(255,255,255,0.45)';
-    ctx2.lineWidth=1.5;
-    ctx2.stroke();
-    /* label +15x */
-    ctx2.font='500 10px Inter,sans-serif';
-    ctx2.fillStyle='rgba(255,255,255,0.55)';
-    ctx2.textAlign='center';
-    ctx2.fillText('+15× em 6 anos',x0+(xN-x0)*0.48,top-8);
-    ctx2.restore();
-  },1500);
-
+  
   /* ── Gráfico 2: Rentabilidade % acumulada carteira vs CDB ── */
   var IVVB11=[1.77,6.44,6.20,3.98,-6.35,4.04,1.18,6.58,2.51,-1.75,10.46,-3.41,6.77,-4.42,2.16,17.90,3.02,3.46,1.08,12.78,-1.53,-0.68,3.65,0.02,4.74,5.00,5.28,1.56,-3.64,-2.31,7.68,1.46,0.39,10.98,-0.87,4.64,-11.30,-5.72,-4.01,-4.90,-4.28,1.03,8.21,-3.62,-5.53,3.16,5.91,-3.54,1.42,0.48,0.20,0.00,1.52,0.86,1.94,3.26,-3.58,-2.01,6.71,3.17,3.50,5.43,4.09,-0.55,5.91,10.26,2.32,2.06,-1.42,5.74,8.91,1.20];
   var PETR4=[0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,0.64,-5.73,-10.93,-44.79,29.02,12.69,5.95,3.02,-1.40,-10.42,-3.42,31.47,13.82,-5.82,-16.67,8.36,1.30,13.76,9.53,-8.56,7.06,0.15,0.07,8.00,7.95,13.71,5.10,-1.62,-1.06,10.41,-7.09,22.27,19.24,-10.32,0.03,1.83,-8.10,6.41,-3.18,-7.09,13.38,10.21,20.04,5.35,6.39,8.45,0.29,7.46,0.81,8.62,-0.77,-6.93,15.59,-3.67,0.64,-1.68,8.05,-8.53,-0.28,8.33,0.06];
