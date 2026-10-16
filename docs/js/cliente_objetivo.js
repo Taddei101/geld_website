@@ -2,6 +2,12 @@ function mostrarObjetivo(obj) {
   const mesAno = iso => iso ? iso.slice(5, 7) + '/' + iso.slice(0, 4) : '-';
   const reais = v => v === null || v === undefined ? '-' : brl(v);
   const atual = obj.pontos[obj.pontos.length - 1].valor;
+  const pctMeta = obj.valor_alvo && obj.valor_estimado != null
+    ? ` <span class="small text-secondary">(${Math.round(obj.valor_estimado / obj.valor_alvo * 100)}% da meta)</span>`
+    : '';
+  const aporte = obj.aporte_mensal == null ? '-'
+    : obj.aporte_mensal === 0 ? 'Nenhum, você está no caminho'
+    : reais(obj.aporte_mensal) + ' por mês';
   const item = (rotulo, valor) => `
     <div class="col-6 col-md-4">
       <div class="small text-secondary">${rotulo}</div>
@@ -13,7 +19,8 @@ function mostrarObjetivo(obj) {
     item('Valor desejado', reais(obj.valor_desejado)),
     item('Corrigido pela inflação', reais(obj.valor_alvo)),
     item('Você tem hoje', reais(atual)),
-    item('Falta', obj.valor_alvo ? reais(Math.max(0, obj.valor_alvo - atual)) : '-'),
+    item('Estimativa no prazo', reais(obj.valor_estimado) + pctMeta),
+    item('Para completar, aporte', aporte),    
   ];
   const quadro = document.getElementById('detalhe-objetivo');
   quadro.innerHTML = `
@@ -21,6 +28,7 @@ function mostrarObjetivo(obj) {
       <div class="card-body">
         <h5 class="mb-3">${obj.nome}</h5>
         <div class="row g-3">${itens.join('')}</div>
+        <p class="small text-secondary mt-3 mb-0">Estimativa com o que você já guardou, rendendo IPCA + 3,5% ao ano. É uma projeção, não uma garantia de rentabilidade.</p>
       </div>
     </div>`;
   quadro.classList.remove('d-none');
