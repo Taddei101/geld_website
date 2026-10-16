@@ -8,16 +8,18 @@ function mostrarObjetivo(obj) {
   const aporte = obj.aporte_mensal == null ? '-'
     : obj.aporte_mensal === 0 ? 'Nenhum, você está no caminho'
     : reais(obj.aporte_mensal) + ' por mês';
-  const item = (rotulo, valor) => `
+  const item = (rotulo, valor, dica) => `
     <div class="col-6 col-md-4">
-      <div class="small text-secondary">${rotulo}</div>
+      <div class="small text-secondary">${dica
+        ? `<span data-bs-toggle="tooltip" data-bs-title="${dica}" style="cursor: help;">${rotulo} <i class="bi bi-info-circle"></i></span>`
+        : rotulo}</div>
       <div class="fw-semibold">${valor}</div>
     </div>`;
   const itens = [
     item('Início', mesAno(obj.data_inicial)),
     item('Prazo', mesAno(obj.data_alvo)),
     item('Valor desejado', reais(obj.valor_desejado)),
-    item('Corrigido pela inflação', reais(obj.valor_alvo)),
+    item('Corrigido pela inflação', reais(obj.valor_alvo),'Seu valor desejado considerando o acumulado Da inflação projetada para a data final'),
     item('Você tem hoje', reais(atual)),
     item('Estimativa no prazo', reais(obj.valor_estimado) + pctMeta),
     item('Para completar, aporte', aporte),    
