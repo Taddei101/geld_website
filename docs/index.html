@@ -611,6 +611,41 @@
   <script src="js/simulacao_aposentadoria.js"></script>
   
   
+ <!-- Botão flutuante "Entre em contato" -->
+  <a href="https://wa.me/5521971395110" target="_blank" rel="noopener" class="fab-contato" id="fabContato">
+    <i class="bi bi-whatsapp"></i> Entre em contato
+  </a>
+
+  <style>
+    .fab-contato {
+      position: fixed; right: 15px; bottom: 75px; z-index: 996;
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 20px; border-radius: 999px;
+      background: #008374; color: #fff; font-weight: 600; text-decoration: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+      will-change: transform;
+    }
+    .fab-contato:hover { background: #00a08d; color: #fff; }
+    .fab-contato i { font-size: 1.2em; }
+  </style>
+
+  <script>
+    (() => {
+      const fab = document.getElementById('fabContato');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let atual = scrollY;
+      const SUAVIDADE = 0.08;
+      const LIMITE = 60;
+      function quadro() {
+        atual += (scrollY - atual) * SUAVIDADE;
+        const desvio = Math.max(-LIMITE, Math.min(LIMITE, atual - scrollY));
+        fab.style.transform = `translateY(${desvio}px)`;
+        requestAnimationFrame(quadro);
+      }
+      requestAnimationFrame(quadro);
+    })();
+  </script>
+
 
 </body>
 </html>
