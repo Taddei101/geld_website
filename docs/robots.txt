@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /$
+Allow: /index.html
+Disallow: /login.html
+Disallow: /trocar_senha.html
+Disallow: /cliente_dashboard.html
+
+Sitemap: https://www.geldfp.com.br/sitemap.xml
