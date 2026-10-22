@@ -64,6 +64,10 @@ async function carregarGraficos() {
   if (dados.cdi_reais) {
     reais.push({ ...comDegrau(dados.cdi_reais), name: 'CDI', mode: 'lines', hoverinfo: 'none', line: { color: CINZA, width: 1.5, dash: 'dot' } });
   }
+  const valoresY = reais.flatMap(t => t.y).filter(v => v != null);
+  const minY = Math.min(...valoresY);
+  const maxY = Math.max(...valoresY);
+  const folga = (maxY - minY) * 0.1 || maxY * 0.05;
 
   const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const pilula = document.getElementById('leitura-valor');
@@ -93,7 +97,7 @@ async function carregarGraficos() {
   };
   leitura(datas.length - 1);
 
-  Plotly.newPlot('grafico-reais', reais, layout('', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true }), opcoes).then(grafico => {
+  Plotly.newPlot('grafico-reais', reais, layout('', { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true, range: [minY - folga, maxY + folga] }), opcoes).then(grafico => {
     const apontar = e => {
       if (!e.points || !e.points.length) return;
       const i = datas.indexOf(e.points[0].x);

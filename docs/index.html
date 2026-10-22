@@ -631,21 +631,26 @@
   </style>
 
   <script>
-    (() => {
-      const fab = document.getElementById('fabContato');
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      let atual = scrollY;
-      const SUAVIDADE = 0.08;
-      const LIMITE = 60;
-      function quadro() {
-        atual += (scrollY - atual) * SUAVIDADE;
-        const desvio = Math.max(-LIMITE, Math.min(LIMITE, atual - scrollY));
-        fab.style.transform = `translateY(${desvio}px)`;
-        requestAnimationFrame(quadro);
-      }
-      requestAnimationFrame(quadro);
-    })();
-  </script>
+(() => {
+  const fab = document.getElementById('fabContato');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let atual = scrollY;
+  const SUAVIDADE = 0.06; 
+  const LIMITE = 150;
+
+  function quadro() {
+    const destinoIdeal = scrollY;
+    atual = Math.max(destinoIdeal - LIMITE, Math.min(destinoIdeal + LIMITE, atual));
+    atual += (destinoIdeal - atual) * SUAVIDADE;
+    const desvio = atual - destinoIdeal;
+    fab.style.transform = `translateY(${desvio}px)`;
+    requestAnimationFrame(quadro);
+  }
+
+  requestAnimationFrame(quadro);
+})();
+</script>
 
 
 </body>
