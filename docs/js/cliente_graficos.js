@@ -36,7 +36,7 @@ async function carregarGraficos() {
     margin: { t: titulo ? 50 : 5, r: 30, l: 50, b: 40 },
     legend: { orientation: 'h', y: -0.2 },
   });
-  const opcoes = { responsive: true, displayModeBar: false };
+  const opcoes = { responsive: true, displayModeBar: false, doubleClick: false };
 
   const retorno = [
     { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines', line: { color: AZUL, width: 1.5 } },
