@@ -111,6 +111,7 @@ async function carregarGraficos() {
   });
   const carrossel = document.getElementById('carrossel-graficos');
   bootstrap.Carousel.getOrCreateInstance(carrossel);
+  carrossel.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
   carrossel.addEventListener('slide.bs.carousel', () => {
     requestAnimationFrame(() => {
       Plotly.Plots.resize('grafico-retorno');
