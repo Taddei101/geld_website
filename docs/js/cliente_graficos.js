@@ -7,7 +7,9 @@ async function carregarGraficos() {
   if (dados.pontos.length < 2) return;
 
   const AZUL = '#0057FF';
-  const CINZA = '#98A2B3';
+  const CORES_BENCHMARK = ['#98A2B3', '#F79009', '#7A5AF8'];
+  const benchmarks = Object.entries(dados.benchmarks || {});
+  const estilo = i => ({ color: CORES_BENCHMARK[i % CORES_BENCHMARK.length], width: 1.5, dash: 'dot' });
   const datas = dados.pontos.map(p => p.data);
   const MIN_MESES = 6;
   const MAX_ROTULOS = 4;
@@ -41,9 +43,9 @@ async function carregarGraficos() {
   const retorno = [
     { x: datas, y: dados.retorno_carteira, name: 'Carteira', mode: 'lines', line: { color: AZUL, width: 1.5 } },
   ];
-  if (dados.retorno_cdi) {
-    retorno.push({ x: datas, y: dados.retorno_cdi, name: 'CDI', mode: 'lines', line: { color: CINZA, width: 1.5, dash: 'dot' } });
-  }
+  benchmarks.forEach(([nome, b], i) => {
+    retorno.push({ x: datas, y: b.retorno, name: nome, mode: 'lines', line: estilo(i) });
+  });
   Plotly.newPlot('grafico-retorno', retorno, layout('Retorno acumulado (%)', { ticksuffix: '%' }), opcoes);
 
   const atual = dados.pontos.map(p => p.valor);
@@ -51,7 +53,7 @@ async function carregarGraficos() {
   const comDegrau = valores => {
     const x = [], y = [];
     valores.forEach((v, i) => {
-      if (fluxo[i] !== 0) { x.push(datas[i]); y.push(v - fluxo[i]); }
+      if (fluxo[i] !== 0 && v != null) { x.push(datas[i]); y.push(v - fluxo[i]); }
       x.push(datas[i]); y.push(v);
     });
     return { x, y };
@@ -61,9 +63,9 @@ async function carregarGraficos() {
     { x: datas, y: dados.investido, name: 'Investido', mode: 'lines', hoverinfo: 'none', line: { color: '#146c43', width: 1.5, shape: 'hv' }, fill: 'tozeroy', fillcolor: 'rgba(20, 108, 67, 0.12)' },
     { ...comDegrau(atual), name: 'Atual', mode: 'lines', hoverinfo: 'none', line: { color: AZUL, width: 1.5 }, fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.12)' },
   ];
-  if (dados.cdi_reais) {
-    reais.push({ ...comDegrau(dados.cdi_reais), name: 'CDI', mode: 'lines', hoverinfo: 'none', line: { color: CINZA, width: 1.5, dash: 'dot' } });
-  }
+  benchmarks.forEach(([nome, b], i) => {
+    reais.push({ ...comDegrau(b.reais), name: nome, mode: 'lines', hoverinfo: 'none', line: estilo(i) });
+  });
   const valoresY = reais.flatMap(t => t.y).filter(v => v != null);
   const minY = Math.min(...valoresY);
   const maxY = Math.max(...valoresY);
