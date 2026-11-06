@@ -56,9 +56,26 @@ function atualizarSoma() {
   return ok;
 }
 
+// Arredonda para 2 casas sem perder a soma de 100: os centésimos que faltam
+// vão para quem teve a maior parte cortada no arredondamento.
+function arredondarPara100(valores) {
+  const centesimos = valores.map((v) => v * 100);
+  const base = centesimos.map((v) => Math.floor(v + 1e-9));
+  const falta = Math.round(10000 - base.reduce((s, v) => s + v, 0));
+  if (falta > 0 && falta <= valores.length) {
+    centesimos
+      .map((v, i) => [v - base[i], i])
+      .sort((a, b) => b[0] - a[0])
+      .slice(0, falta)
+      .forEach(([, i]) => { base[i] += 1; });
+  }
+  return base.map((v) => v / 100);
+}
+
 function preencher(funcao) {
+  const valores = arredondarPara100(ativos.map(funcao));
   document.querySelectorAll('.rebal-input-alvo').forEach((el, i) => {
-    el.value = funcao(ativos[i]).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+    el.value = valores[i].toLocaleString('pt-BR', { maximumFractionDigits: 2 });
   });
   atualizarSoma();
   salvarAlvo();
