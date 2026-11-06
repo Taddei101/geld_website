@@ -36,6 +36,9 @@
     /* Newsletter: lista de edições com rolagem interna quando ficar longa */
     .navmenu .dropdown ul.newsletter-list { max-height: 60vh; overflow-y: auto; }
     .rebal .rebal-input-alvo { max-width: 6rem; margin-left: auto; }
+    .rebal .rebal-abas .nav-link { font-size: .9rem; transition: none; }
+    .rebal .rebal-manual-ticker { max-width: 8rem; text-transform: uppercase; }
+    .rebal .rebal-manual-qtd { max-width: 7rem; margin-left: auto; }
     .rebal h4 { font-family: 'Poppins', sans-serif; margin-bottom: 1rem; }
   </style>
   <link href="css/main.css" rel="stylesheet">
@@ -67,7 +70,6 @@
         <nav id="navmenu" class="navmenu">
   <ul>
     <li><a href="/#hero">Início</a></li>
-    <li><a href="/#about">A Geld</a></li>
     <li><a href="/#services">Serviços</a></li>
     <li><a href="/#how">Dúvidas Frequentes</a></li>
     <li><a href="/#team">Equipe</a></li>
@@ -80,7 +82,11 @@
         <!-- <li><a href="newsletter/DEZ2026.pdf" target="_blank" rel="noopener noreferrer">Dez2026</a></li> -->
       </ul>
     </li>
-    <li><a href="rebalanceamento.html" class="active">Rebalanceamento</a></li>
+    <li class="dropdown"><a href="javascript:void(0)" class="active"><span>Ferramentas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+      <ul>
+        <li><a href="rebalanceamento.html">Rebalanceamento de carteira</a></li>
+      </ul>
+    </li>
     <li><a href="/#contact">Contato</a></li>
   </ul>
   <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -111,18 +117,49 @@
         <div class="row justify-content-center">
           <div class="col-lg-10">
 
-            <!-- 1. Upload -->
+            <!-- 1. Carteira -->
             <div class="card mb-4">
               <div class="card-body p-4">
-                <h4>1. Envie sua posição da B3</h4>
-                <p class="mb-2">Na <a href="https://www.investidor.b3.com.br" target="_blank" rel="noopener">Área do Investidor da B3</a>:
-                  <strong>Minha carteira → Visão geral da carteira → Posição</strong>, e exporte em Excel.</p>
-                <p class="small text-muted mb-3">Consideramos ações, FIIs e ETFs. Renda fixa e Tesouro ficam de fora desta análise.</p>
-                <input type="file" class="form-control" id="rebal-arquivo" accept=".xlsx">
-                <p class="small text-muted mt-2 mb-0"><i class="bi bi-shield-lock"></i>
-                  Seu arquivo é lido e descartado na hora — nada é gravado nos nossos servidores.
-                  As porcentagens que você definir ficam salvas só neste navegador.</p>
-                <p id="rebal-erro-arquivo" class="text-danger small mt-2 mb-0 d-none"></p>
+                <h4>1. Informe sua carteira</h4>
+                <ul class="nav nav-pills mb-3 rebal-abas">
+                  <li class="nav-item"><button type="button" class="nav-link active" data-aba="extrato">Enviar extrato da B3</button></li>
+                  <li class="nav-item"><button type="button" class="nav-link" data-aba="manual">Digitar meus ativos</button></li>
+                  <li class="nav-item"><button type="button" class="nav-link" data-aba="exemplo">Ver um exemplo</button></li>
+                </ul>
+
+                <div data-painel="extrato">
+                  <p class="mb-2">Na <a href="https://www.investidor.b3.com.br" target="_blank" rel="noopener">Área do Investidor da B3</a>:
+                    <strong>Minha carteira → Visão geral da carteira → Posição</strong>, e exporte em Excel.</p>
+                  <p class="small text-muted mb-3">Consideramos ações, FIIs e ETFs. Renda fixa e Tesouro ficam de fora desta análise.</p>
+                  <input type="file" class="form-control" id="rebal-arquivo" accept=".xlsx">
+                  <p class="small text-muted mt-2 mb-0"><i class="bi bi-shield-lock"></i>
+                    Seu arquivo é lido e descartado na hora — nada é gravado nos nossos servidores.
+                    As porcentagens que você definir ficam salvas só neste navegador.</p>
+                  <p id="rebal-erro-arquivo" class="text-danger small mt-2 mb-0 d-none"></p>
+                </div>
+
+                <div data-painel="manual" class="d-none">
+                  <p class="small text-muted mb-2">Digite o código e a quantidade de cada ação, FII ou ETF. O preço é o último fechamento da B3.</p>
+                  <div class="table-responsive">
+                    <table class="table table-sm align-middle rebal-tabela mb-2">
+                      <thead><tr><th>Ativo</th><th class="text-end">Quantidade</th><th>Classe</th><th class="text-end">Preço</th><th></th></tr></thead>
+                      <tbody id="rebal-corpo-manual"></tbody>
+                    </table>
+                  </div>
+                  <datalist id="rebal-lista-tickers"></datalist>
+                  <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="rebal-adicionar"><i class="bi bi-plus-lg"></i> Adicionar ativo</button>
+                    <button type="button" class="btn btn-get-started btn-sm" id="rebal-usar-manual">Continuar</button>
+                    <span class="small text-muted" id="rebal-data-pregao"></span>
+                  </div>
+                  <p id="rebal-erro-manual" class="text-danger small mt-2 mb-0 d-none"></p>
+                </div>
+
+                <div data-painel="exemplo" class="d-none">
+                  <p class="mb-2">Uma carteira fictícia, só para você ver a ferramenta funcionando. <strong>Não é sugestão de investimento.</strong></p>
+                  <button type="button" class="btn btn-get-started btn-sm" id="rebal-usar-exemplo">Carregar exemplo</button>
+                  <p id="rebal-erro-exemplo" class="text-danger small mt-2 mb-0 d-none"></p>
+                </div>
               </div>
             </div>
 
