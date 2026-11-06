@@ -8,11 +8,7 @@ const API = location.hostname.endsWith('geldfp.com.br')
 const CHAVE_ALVO = 'geld_rebalanceamento_alvo';
 
 let ativos = [];
-let modoExemplo = false;
 let cotacoes = null;
-
-// Carteira fictícia do botão "Ver um exemplo" (ticker: quantidade).
-const EXEMPLO = { ITUB4: 300, WEGE3: 150, VALE3: 100, BOVA11: 40, KNRI11: 25, HGLG11: 30 };
 
 const $ = (id) => document.getElementById(id);
 const brl = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -37,7 +33,6 @@ function lerAlvoSalvo() {
 }
 
 function salvarAlvo() {
-  if (modoExemplo) return;
   const alvo = lerAlvoSalvo();
   document.querySelectorAll('.rebal-input-alvo').forEach((el) => { alvo[el.dataset.ticker] = el.value; });
   try { localStorage.setItem(CHAVE_ALVO, JSON.stringify(alvo)); } catch (e) { /* aba anônima */ }
@@ -140,7 +135,6 @@ async function enviarArquivo() {
     const dados = await resposta.json();
     if (!resposta.ok) return erro('rebal-erro-arquivo', dados.erro);
     if (!dados.ativos.length) return erro('rebal-erro-arquivo', 'Não encontramos ações, FIIs ou ETFs neste arquivo.');
-    modoExemplo = false;
     montarAlvo(dados);
   } catch (e) {
     erro('rebal-erro-arquivo', 'Não foi possível falar com o servidor. Tente de novo em instantes.');
@@ -210,7 +204,7 @@ $('rebal-atual').addEventListener('click', () => {
 $('rebal-venda').addEventListener('change', (e) => mostrar('rebal-aviso-ir', e.target.checked));
 $('rebal-calcular').addEventListener('click', calcular);
 
-// ---- carteira digitada e exemplo ---------------------------------------------
+// ---- carteira digitada ---------------------------------------------
 
 async function carregarCotacoes() {
   if (cotacoes) return cotacoes;
@@ -275,8 +269,7 @@ function ativosDaCarteira(quantidades) {
   });
 }
 
-function usarCarteira(ativosNovos, exemplo) {
-  modoExemplo = exemplo;
+function usarCarteira(ativosNovos) {
   montarAlvo({ ativos: ativosNovos, direitos: [], abas_ignoradas: [] });
   $('rebal-passo-alvo').scrollIntoView({ behavior: 'smooth' });
 }
@@ -295,18 +288,7 @@ function usarManual() {
     quantidades[ticker] = (quantidades[ticker] || 0) + qtd;
   }
   if (!Object.keys(quantidades).length) return erro('rebal-erro-manual', 'Adicione pelo menos um ativo.');
-  usarCarteira(ativosDaCarteira(quantidades), false);
-}
-
-async function usarExemplo() {
-  erro('rebal-erro-exemplo');
-  try {
-    await carregarCotacoes();
-  } catch (e) {
-    return erro('rebal-erro-exemplo', 'Não foi possível carregar as cotações. Tente de novo em instantes.');
-  }
-  const quantidades = Object.fromEntries(Object.entries(EXEMPLO).filter(([t]) => cotacoes.papeis[t]));
-  usarCarteira(ativosDaCarteira(quantidades), true);
+  usarCarteira(ativosDaCarteira(quantidades));
 }
 
 async function abrirAba(aba) {
@@ -326,4 +308,3 @@ async function abrirAba(aba) {
 document.querySelectorAll('.rebal-abas .nav-link').forEach((b) => b.addEventListener('click', () => abrirAba(b.dataset.aba)));
 $('rebal-adicionar').addEventListener('click', () => adicionarLinhaManual());
 $('rebal-usar-manual').addEventListener('click', usarManual);
-$('rebal-usar-exemplo').addEventListener('click', usarExemplo);
