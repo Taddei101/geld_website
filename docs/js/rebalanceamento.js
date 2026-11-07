@@ -201,7 +201,6 @@ $('rebal-atual').addEventListener('click', () => {
   const total = ativos.reduce((s, a) => s + a.valor, 0);
   preencher((a) => (total ? (a.valor / total) * 100 : 0));
 });
-$('rebal-venda').addEventListener('change', (e) => mostrar('rebal-aviso-ir', e.target.checked));
 $('rebal-calcular').addEventListener('click', calcular);
 
 // ---- carteira digitada ---------------------------------------------
