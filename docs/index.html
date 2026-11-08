@@ -51,10 +51,6 @@
   <!-- Main CSS File -->
   <link href="css/main.css" rel="stylesheet">
   <link href="css/geld.css" rel="stylesheet">
-  <style>
-    /* Newsletter: lista de edições com rolagem interna quando ficar longa */
-    .navmenu .dropdown ul.newsletter-list { max-height: 60vh; overflow-y: auto; }
-  </style>
 </head>
 
 <body class="index-page">
@@ -85,17 +81,7 @@
             <li><a href="#services">Serviços</a></li>
             <li><a href="#how">Dúvidas Frequentes</a></li>
             <li><a href="#team">Equipe</a></li>
-            <li class="dropdown"><a href="#"><span>Newsletter</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul class="newsletter-list">
-
-                <li><a href="newsletter/AGO2026.pdf" target="_blank" rel="noopener noreferrer">Ago2026</a></li>
-                <li><a href="newsletter/SET2026.pdf" target="_blank" rel="noopener noreferrer">Set2026</a></li>
-                <li><a href="newsletter/OUT2026.pdf" target="_blank" rel="noopener noreferrer">Out2026</a></li>
-                <!-- <li><a href="newsletter/NOV2026.pdf" target="_blank" rel="noopener noreferrer">Nov2026</a></li> -->
-                 <!-- <li><a href="newsletter/DEZ2026.pdf" target="_blank" rel="noopener noreferrer">Dez2026</a></li> -->
-
-              </ul>
-            </li>
+            <li><a href="newsletter/">Newsletter</a></li>
 
             <li class="dropdown"><a href="javascript:void(0)"><span>Ferramentas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
@@ -612,7 +598,7 @@
   <script src="vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="js/main.js"></script>
   <script>
-  /* Newsletter dropdown: no mobile, tocar no texto do item pai expande o submenu
+  /* Dropdowns do menu: no mobile, tocar no texto do item pai expande o submenu
      (sem isso o main.js fecharia o painel). No desktop, o hover cuida da abertura. */
   (function () {
     var nav = document.getElementById('navmenu');
