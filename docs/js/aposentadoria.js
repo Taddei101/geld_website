@@ -3,7 +3,7 @@
 'use strict';
 (function () {
 
-const defaults = { age: 35, retire: 65, end: 95, initial: 150000, contribution: 2500, desired: 10000, other: 2000, rate: 3, postRate: 3 };
+const defaults = { age: 35, retire: 65, end: 95, initial: 150000, contribution: 2500, desired: 10000, other: 2000, rate: 10, postRate: 3 };
 const config = [
   ['age', 'Idade atual', 'anos', 18, 99, 1],
   ['retire', 'Aposentadoria aos', 'anos', 19, 100, 1],
