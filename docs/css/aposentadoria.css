@@ -1,0 +1,37 @@
+/* Simulador de aposentadoria (aposentadoria.html) */
+.apos h4 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; }
+.apos .apos-intro { font-size: 1.1rem; max-width: 46rem; }
+.apos .form-label { font-size: .8rem; font-weight: 600; margin-bottom: .25rem; }
+.apos .apos-objetivo { border: 1px solid #dee2e6; border-radius: .5rem; padding: .75rem 1rem 1rem; }
+.apos .apos-objetivo legend { float: none; width: auto; font-size: .85rem; font-weight: 600; padding: 0 .25rem; margin: 0; }
+
+.apos .apos-destaque {
+  background: #0D1426; color: #fff; border-radius: 1rem; padding: 1.5rem 1.75rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+}
+.apos .apos-grande { font-family: 'Poppins', sans-serif; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 600; margin: .25rem 0; }
+.apos .apos-realce { color: #7FA8FF; }
+.apos .apos-ajuda { font-size: .8rem; color: #C3CCE0; }
+
+.apos .apos-metrica span:first-child { display: block; }
+.apos .apos-metrica strong { display: block; font-family: 'Poppins', sans-serif; font-size: 1.6rem; margin: .35rem 0; color: #0D1426; }
+
+.apos .apos-legenda { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .8rem; color: #475467; }
+.apos .apos-ponto { display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; margin-right: .35rem; }
+.apos .apos-grafico { width: 100%; height: auto; display: block; margin-top: .75rem; }
+
+.apos details summary { cursor: pointer; font-weight: 600; }
+.apos .apos-tabela { max-height: 300px; overflow: auto; }
+.apos .apos-tabela th { position: sticky; top: 0; background: #fff; }
+
+@media (max-width: 575px) {
+  .apos .apos-destaque { grid-template-columns: 1fr; }
+}
+
+@media print {
+  #header, #footer, .faixa-cliente, .apos-cta, .apos-acoes, #scroll-top, #preloader { display: none !important; }
+  .apos { padding-top: 0; }
+  .apos .apos-destaque { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .apos .apos-tabela { max-height: none; }
+  .apos .card, .apos .apos-destaque { break-inside: avoid; }
+}

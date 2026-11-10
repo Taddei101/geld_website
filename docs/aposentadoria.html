@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Simulador de Aposentadoria — Ferramenta Gratuita | Geld</title>
+  <meta name="description" content="Simule quanto guardar por mês para se aposentar com a renda que você quer. Veja a evolução do patrimônio, o aporte necessário e objetivos no caminho. Gratuito e sem cadastro.">
+  <link rel="canonical" href="https://www.geldfp.com.br/aposentadoria.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Geld Finanças Pessoais">
+  <meta property="og:title" content="Simulador de Aposentadoria — Ferramenta Gratuita | Geld">
+  <meta property="og:description" content="Simule quanto guardar por mês para se aposentar com a renda que você quer. Veja a evolução do patrimônio, o aporte necessário e objetivos no caminho. Gratuito e sem cadastro.">
+  <meta property="og:url" content="https://www.geldfp.com.br/aposentadoria.html">
+  <meta property="og:image" content="https://www.geldfp.com.br/img/logo_geld.png">
+
+  <!-- Favicons -->
+  <link href="img/favicon.png" rel="icon">
+  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="vendor/aos/aos.css" rel="stylesheet">
+  <link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/geld.css" rel="stylesheet">
+  <link href="css/aposentadoria.css" rel="stylesheet">
+</head>
+
+<body class="aposentadoria-page">
+
+  <header id="header" class="header fixed-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:geld.fp@gmail.com">geld.fp@gmail.com</a></i>
+          <i class="bi bi-whatsapp d-flex align-items-center ms-4"><span>(21) 97139-5110</span></i>
+        </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+          <a href="https://instagram.com/geld_fp" class="instagram"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="branding d-flex align-items-center">
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="/" class="logo d-flex align-items-center">
+          <img src="img/logo-claro.png" alt="Geld Finanças Pessoais">
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+  <ul>
+    <li><a href="/#hero">Início</a></li>
+    <li><a href="/#services">Serviços</a></li>
+    <li><a href="/#how">Dúvidas Frequentes</a></li>
+    <li><a href="/#team">Equipe</a></li>
+    <li><a href="newsletter/">Newsletter</a></li>
+    <li class="dropdown"><a href="javascript:void(0)" class="active"><span>Ferramentas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+      <ul>
+        <li><a href="rebalanceamento.html">Rebalanceamento de carteira</a></li>
+        <li><a href="aposentadoria.html">Simulador de aposentadoria</a></li>
+      </ul>
+    </li>
+    <li><a href="/#contact">Contato</a></li>
+    <li><a href="login.html">Login</a></li>
+  </ul>
+  <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+</nav>
+      </div>
+    </div>
+
+  </header>
+
+
+
+  <main class="main">
+
+    <div class="hero section accent-background faixa-cliente" style="height: 15rem">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center align-items-center text-center">
+            <div class="col-lg-8">
+              <h1 style="color:#fff; font-family:'Poppins',sans-serif; margin-block: clamp(1.5rem, 5vh, 4rem);">Simule sua aposentadoria</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="aposentadoria" class="section apos">
+      <div class="container">
+        <p class="apos-intro mb-4">Veja como o patrimônio de hoje e os aportes mensais podem se transformar em renda para o futuro.</p>
+        <div class="row g-4 align-items-start">
+
+          <!-- Entradas -->
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body p-4">
+                <form id="apos-form" novalidate>
+                  <h4>Seu cenário</h4>
+                  <div class="row g-3" id="apos-campos"></div>
+
+                  <hr class="my-4">
+                  <h4>Objetivos antes da aposentadoria</h4>
+                  <p class="small text-muted">Até dois objetivos. Deixe o valor em zero para desativar.</p>
+                  <fieldset class="apos-objetivo mb-3">
+                    <legend>Objetivo 1</legend>
+                    <div class="mb-2">
+                      <label class="form-label" for="apos-goalName1">Nome (opcional)</label>
+                      <input class="form-control" id="apos-goalName1" maxlength="60" placeholder="Ex.: viagem, imóvel, estudos">
+                    </div>
+                    <div class="row g-2">
+                      <div class="col-6"><label class="form-label" for="apos-goalValue1">Valor (R$ de hoje)</label>
+                        <input class="form-control" id="apos-goalValue1" type="number" value="0" min="0" max="1000000000" step="1000"></div>
+                      <div class="col-6"><label class="form-label" for="apos-goalAge1">Realizar aos (anos)</label>
+                        <input class="form-control" id="apos-goalAge1" type="number" min="19" max="99" step="1" placeholder="Idade"></div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="apos-objetivo mb-3">
+                    <legend>Objetivo 2</legend>
+                    <div class="mb-2">
+                      <label class="form-label" for="apos-goalName2">Nome (opcional)</label>
+                      <input class="form-control" id="apos-goalName2" maxlength="60" placeholder="Ex.: viagem, imóvel, estudos">
+                    </div>
+                    <div class="row g-2">
+                      <div class="col-6"><label class="form-label" for="apos-goalValue2">Valor (R$ de hoje)</label>
+                        <input class="form-control" id="apos-goalValue2" type="number" value="0" min="0" max="1000000000" step="1000"></div>
+                      <div class="col-6"><label class="form-label" for="apos-goalAge2">Realizar aos (anos)</label>
+                        <input class="form-control" id="apos-goalAge2" type="number" min="19" max="99" step="1" placeholder="Idade"></div>
+                    </div>
+                  </fieldset>
+
+                  <hr class="my-4">
+                  <h4>Premissas</h4>
+                  <div class="row g-3 mb-3" id="apos-premissas"></div>
+                  <div class="mb-3">
+                    <label class="form-label" for="apos-mode">Como usar o patrimônio?</label>
+                    <select class="form-select" id="apos-mode">
+                      <option value="consume">Consumir ao longo da aposentadoria</option>
+                      <option value="preserve">Preservar o patrimônio</option>
+                    </select>
+                  </div>
+                  <div class="mb-3" id="apos-legacyField">
+                    <label class="form-label" for="apos-legacy">Herança desejada ao final (R$ de hoje)</label>
+                    <input class="form-control" id="apos-legacy" type="number" min="0" max="1000000000" step="10000" value="0">
+                  </div>
+                  <p class="small text-muted">Taxas reais já descontam a inflação. Use uma hipótese líquida de impostos e custos.</p>
+                  <div class="d-flex flex-wrap gap-2 apos-acoes">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="apos-reset">Restaurar exemplo</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="apos-print"><i class="bi bi-printer"></i> Imprimir / PDF</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resultados -->
+          <div class="col-lg-8" aria-label="Resultados">
+            <div id="apos-error" class="alert alert-danger" role="alert" hidden></div>
+            <div id="apos-output">
+              <div class="apos-destaque mb-3">
+                <div>
+                  <div>Patrimônio na aposentadoria</div>
+                  <div class="apos-grande apos-realce" id="apos-wealth"></div>
+                  <div class="apos-ajuda" id="apos-horizon"></div>
+                </div>
+                <div>
+                  <div>Patrimônio necessário</div>
+                  <div class="apos-grande" id="apos-target"></div>
+                  <div class="apos-ajuda" id="apos-targetHelp"></div>
+                </div>
+              </div>
+
+              <div id="apos-status" class="alert mb-3" aria-live="polite"></div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <div class="card h-100"><div class="card-body p-4 apos-metrica">
+                    <span>Aporte mensal necessário</span>
+                    <strong id="apos-required"></strong>
+                    <span class="small text-muted" id="apos-extra"></span>
+                  </div></div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card h-100"><div class="card-body p-4 apos-metrica">
+                    <span>Renda mensal que o plano sustenta</span>
+                    <strong id="apos-income"></strong>
+                    <span class="small text-muted">Inclui INSS e outras rendas informadas.</span>
+                  </div></div>
+                </div>
+              </div>
+
+              <div class="card mb-3">
+                <div class="card-body p-4">
+                  <div class="d-md-flex justify-content-between align-items-start gap-3">
+                    <div>
+                      <h4 class="mb-1">O caminho do seu patrimônio</h4>
+                      <p class="small text-muted mb-2">Valores em reais de hoje</p>
+                    </div>
+                    <div class="apos-legenda">
+                      <span><i class="apos-ponto" style="background:#0057FF"></i>Seu plano</span>
+                      <span><i class="apos-ponto" style="background:#F79009"></i>Consumo</span>
+                      <span><i class="apos-ponto" style="background:#7A5AF8"></i>Perpetuação</span>
+                    </div>
+                  </div>
+                  <svg class="apos-grafico" id="apos-chart" viewBox="0 0 800 330" role="img" aria-label="Evolução do patrimônio por idade"></svg>
+                  <div class="d-flex justify-content-between small text-muted"><span id="apos-chartStart"></span><span id="apos-chartEnd"></span></div>
+                  <p class="small text-muted mt-3 mb-1" id="apos-depletion"></p>
+                  <p class="small text-muted mb-1" id="apos-references"></p>
+                  <p class="small text-muted mb-0" id="apos-goalSummary"></p>
+                </div>
+              </div>
+
+              <div class="card mb-3">
+                <div class="card-body p-4">
+                  <details>
+                    <summary>Ver projeção por ano</summary>
+                    <div class="apos-tabela table-responsive mt-2">
+                      <table class="table table-sm align-middle">
+                        <thead><tr><th>Idade</th><th>Fase</th><th class="text-end">Saldo projetado</th></tr></thead>
+                        <tbody id="apos-annual"></tbody>
+                      </table>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="apos-csv">Baixar projeção (CSV)</button>
+                  </details>
+                  <hr>
+                  <details>
+                    <summary>Entenda os cálculos e as simplificações</summary>
+                    <ul class="small text-muted mt-2">
+                      <li>A taxa real anual é convertida em mensal por (1 + taxa anual)^(1/12) − 1. Aportes e retiradas ocorrem no fim de cada mês.</li>
+                      <li>O aporte mantém seu poder de compra: deve ser reajustado pela inflação ao longo do tempo. As rendas informadas também são constantes em termos reais e começam na aposentadoria.</li>
+                      <li>No modo de consumo, o capital necessário financia a diferença entre a renda desejada e as outras rendas até a idade final, além da herança. No modo de preservação, essa diferença é coberta pelos juros reais mensais, sem consumir o principal.</li>
+                      <li>O gráfico usa o aporte informado e, na aposentadoria, retira a diferença de renda. Quando as outras rendas cobrem o objetivo, não há retiradas nem novos aportes. O saldo mínimo é zero; eventuais necessidades após o esgotamento não são financiadas.</li>
+                      <li>Os dois objetivos são retiradas pontuais ao fim do mês em que se atinge a idade indicada, após o aporte. O aporte necessário também garante recursos nas datas dos objetivos. Não contempla dívidas, outras alterações de fluxo, variações de mercado ou regras específicas de tributação e benefícios. A herança só é considerada no modo de consumo.</li>
+                    </ul>
+                  </details>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-3 apos-cta">
+              <div class="card-body p-4 text-center">
+                <h5>Quer um plano feito para a sua vida?</h5>
+                <p class="mb-3">A Geld monta o seu planejamento financeiro e acompanha o caminho até os seus objetivos.</p>
+                <a class="btn btn-get-started" target="_blank" rel="noopener"
+                   href="https://wa.me/5521971395110?text=Ol%C3%A1%2C%20usei%20o%20simulador%20de%20aposentadoria%20e%20quero%20saber%20mais.">Fale com a Geld</a>
+              </div>
+            </div>
+
+            <p class="small text-muted">Simulação ilustrativa com taxas constantes, sem garantia de rentabilidade. Não é recomendação de investimento
+              e não substitui um planejamento individual. Os cálculos são feitos no seu navegador; nenhum dado é enviado ou salvo.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer id="footer" class="footer accent-background">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="/" class="logo d-flex align-items-center">
+            <img src="img/logo-escuro.png" alt="Geld Finanças Pessoais" class="footer-logo-img">
+          </a>
+          <p>Planejamento financeiro e gestão patrimonial para pessoas e famílias que desejam tomar decisões mais conscientes e usar melhor o próprio dinheiro.</p>
+          <p class="mt-2 footer-tagline">— Faça Hoje Seu Futuro —</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://instagram.com/geld_fp"><i class="bi bi-instagram"></i></a>
+            <a href="https://wa.me/5521971395110"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contato</h4>
+          <p class="mt-2"><strong>WhatsApp:</strong> <span>(21) 97139-5110</span></p>
+          <p><strong>E-mail:</strong> <span>geld.fp@gmail.com</span></p>
+          <p><strong>Instagram:</strong> <span>@geld_fp</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <div class="credits">
+        Desenvolvido com <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="vendor/php-email-form/validate.js"></script> -->
+  <script src="vendor/aos/aos.js"></script>
+  <script src="vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/aposentadoria.js"></script>
+
+</body>
+
+</html>
