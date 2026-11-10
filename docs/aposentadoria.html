@@ -113,7 +113,7 @@
 
                   <hr class="my-4">
                   <h4>Objetivos antes da aposentadoria</h4>
-                  <p class="small text-muted">Até dois objetivos. Deixe o valor em zero para desativar.</p>
+                  <p class="small text-muted">Até dois objetivos, como viagem, imóvel ou estudos. Deixe o valor em zero para desativar.</p>
                   <fieldset class="apos-objetivo mb-3">
                     <legend>Objetivo 1</legend>
                     <div class="mb-2">
@@ -127,7 +127,8 @@
                         <input class="form-control" id="apos-goalAge1" type="number" min="19" max="99" step="1" placeholder="Idade"></div>
                     </div>
                   </fieldset>
-                  <fieldset class="apos-objetivo mb-3">
+                  <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="apos-addGoal2"><i class="bi bi-plus-lg"></i> Adicionar outro objetivo</button>
+                  <fieldset class="apos-objetivo mb-3" id="apos-goal2" hidden>
                     <legend>Objetivo 2</legend>
                     <div class="mb-2">
                       <label class="form-label" for="apos-goalName2">Nome (opcional)</label>
@@ -139,6 +140,7 @@
                       <div class="col-6"><label class="form-label" for="apos-goalAge2">Realizar aos (anos)</label>
                         <input class="form-control" id="apos-goalAge2" type="number" min="19" max="99" step="1" placeholder="Idade"></div>
                     </div>
+                    <button type="button" class="btn btn-link btn-sm text-danger p-0 mt-2" id="apos-removeGoal2"><i class="bi bi-x-lg"></i> Remover objetivo</button>
                   </fieldset>
 
                   <hr class="my-4">

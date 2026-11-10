@@ -183,11 +183,24 @@ function draw(p, c) {
     + '. Consumo considera a herança informada; perpetuação preserva o capital. Os objetivos estão incluídos nas curvas de referência. O aporte pode ser zero quando o patrimônio já cobre os objetivos e a meta.';
 }
 
+function showGoal2(show) {
+  $('goal2').hidden = !show;
+  $('addGoal2').hidden = show;
+}
+
+function clearGoal(i) {
+  $('goalName' + i).value = '';
+  $('goalValue' + i).value = 0;
+  $('goalAge' + i).value = '';
+}
+
 function reset() {
   for (const id in defaults) $(id).value = defaults[id];
   $('legacy').value = 0;
   $('mode').value = 'consume';
-  for (const i of [1, 2]) { $('goalName' + i).value = ''; $('goalValue' + i).value = 0; $('goalAge' + i).value = ''; }
+  clearGoal(1);
+  clearGoal(2);
+  showGoal2(false);
   update();
 }
 
@@ -217,6 +230,8 @@ $('form').addEventListener('submit', e => e.preventDefault());
 $('form').addEventListener('input', update);
 $('form').addEventListener('change', update);
 $('reset').addEventListener('click', reset);
+$('addGoal2').addEventListener('click', () => { showGoal2(true); $('goalName2').focus(); });
+$('removeGoal2').addEventListener('click', () => { clearGoal(2); showGoal2(false); update(); });
 $('print').addEventListener('click', () => window.print());
 $('csv').addEventListener('click', downloadCsv);
 update();
