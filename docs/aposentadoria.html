@@ -122,7 +122,7 @@
                     </div>
                     <div class="row g-2">
                       <div class="col-6"><label class="form-label" for="apos-goalValue1">Valor (R$ de hoje)</label>
-                        <input class="form-control" id="apos-goalValue1" type="number" value="0" min="0" max="1000000000" step="1000"></div>
+                        <input class="form-control" id="apos-goalValue1" type="text" inputmode="decimal" data-money="opcional" value="0"></div>
                       <div class="col-6"><label class="form-label" for="apos-goalAge1">Realizar aos (anos)</label>
                         <input class="form-control" id="apos-goalAge1" type="number" min="19" max="99" step="1" placeholder="Idade"></div>
                     </div>
@@ -136,7 +136,7 @@
                     </div>
                     <div class="row g-2">
                       <div class="col-6"><label class="form-label" for="apos-goalValue2">Valor (R$ de hoje)</label>
-                        <input class="form-control" id="apos-goalValue2" type="number" value="0" min="0" max="1000000000" step="1000"></div>
+                        <input class="form-control" id="apos-goalValue2" type="text" inputmode="decimal" data-money="opcional" value="0"></div>
                       <div class="col-6"><label class="form-label" for="apos-goalAge2">Realizar aos (anos)</label>
                         <input class="form-control" id="apos-goalAge2" type="number" min="19" max="99" step="1" placeholder="Idade"></div>
                     </div>
@@ -155,7 +155,7 @@
                   </div>
                   <div class="mb-3" id="apos-legacyField">
                     <label class="form-label" for="apos-legacy">Herança desejada ao final (R$ de hoje)</label>
-                    <input class="form-control" id="apos-legacy" type="number" min="0" max="1000000000" step="10000" value="0">
+                    <input class="form-control" id="apos-legacy" type="text" inputmode="decimal" data-money="opcional" value="0">
                   </div>
                   <p class="small text-muted mb-0">Taxas reais já descontam a inflação. Use uma hipótese líquida de impostos e custos.</p>
                 </form>
@@ -207,9 +207,9 @@
                       <p class="small text-muted mb-2">Valores em reais de hoje</p>
                     </div>
                     <div class="apos-legenda">
-                      <span><i class="apos-ponto" style="background:#0057FF"></i>Seu plano</span>
-                      <span><i class="apos-ponto" style="background:#F79009"></i>Consumo</span>
-                      <span><i class="apos-ponto" style="background:#7A5AF8"></i>Perpetuação</span>
+                      <span data-serie="Seu plano"><i class="apos-ponto" style="background:#0057FF"></i>Seu plano</span>
+                      <span data-serie="Consumo"><i class="apos-ponto" style="background:#F79009"></i>Consumo</span>
+                      <span data-serie="Perpetuação"><i class="apos-ponto" style="background:#7A5AF8"></i>Perpetuação</span>
                     </div>
                   </div>
                   <svg class="apos-grafico" id="apos-chart" viewBox="0 0 800 330" role="img" aria-label="Evolução do patrimônio por idade"></svg>

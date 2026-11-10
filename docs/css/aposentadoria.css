@@ -17,6 +17,7 @@
 .apos .apos-metrica strong { display: block; font-family: 'Poppins', sans-serif; font-size: 1.6rem; margin: .35rem 0; color: #0D1426; }
 
 .apos .apos-legenda { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .8rem; color: #475467; }
+.apos .apos-legenda [data-serie] { cursor: help; border-bottom: 1px dotted #98A2B3; }
 .apos .apos-ponto { display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; margin-right: .35rem; }
 .apos .apos-grafico { width: 100%; height: auto; display: block; margin-top: .75rem; }
 

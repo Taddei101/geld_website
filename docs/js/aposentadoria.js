@@ -16,16 +16,39 @@ const config = [
   ['postRate', 'Retorno real na aposentadoria', '% ao ano', -10, 20, .1],
 ];
 const CORES = { plano: '#0057FF', consumo: '#F79009', perpetuacao: '#7A5AF8', marco: '#B78D4D', area: '#E6EEFF', grade: '#E7EAF0', texto: '#475467' };
+const DESCR = {
+  'Seu plano': 'O caminho do patrimônio com o aporte que você informou.',
+  'Consumo': 'Com o aporte necessário para gastar o patrimônio aos poucos até a idade final, deixando só a herança informada.',
+  'Perpetuação': 'Com o aporte necessário para viver só dos rendimentos, sem gastar o patrimônio.',
+};
 
 const $ = (id) => document.getElementById('apos-' + id);
 const money = (n) => Number.isFinite(n) ? n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }) : 'Não viável';
+const fmt = (n) => n.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+// "150.000", "1.234,5" e "12,5" (pt-BR) ou "12.5"; ponto só é milhar se vier em grupos de 3
+const numero = (texto) => {
+  let t = String(texto).trim().replace(/\s|R\$/g, '');
+  if (t === '') return NaN;
+  if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.');
+  else if (/^-?\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, '');
+  return Number(t);
+};
 
 for (const [id, label, unit, min, max, step] of config) {
   const col = document.createElement('div');
   col.className = id === 'other' ? 'col-12' : 'col-6';
+  const attrs = unit === 'R$'
+    ? `type="text" inputmode="decimal" data-money value="${fmt(defaults[id])}"`
+    : `type="number" min="${min}" max="${max}" step="${step}" value="${defaults[id]}"`;
   col.innerHTML = `<label class="form-label" for="apos-${id}">${label} (${unit})</label>`
-    + `<input class="form-control" id="apos-${id}" type="number" min="${min}" max="${max}" step="${step}" value="${defaults[id]}">`;
+    + `<input class="form-control" id="apos-${id}" ${attrs}>`;
   $(id === 'rate' || id === 'postRate' ? 'premissas' : 'campos').append(col);
+}
+
+for (const el of document.querySelectorAll('.apos-legenda [data-serie]')) {
+  el.title = DESCR[el.dataset.serie];
+  el.tabIndex = 0;
+  if (window.bootstrap) new bootstrap.Tooltip(el);
 }
 
 function annuity(r, n) { return Math.abs(r) < 1e-12 ? n : -Math.expm1(-n * Math.log1p(r)) / r; }
@@ -68,25 +91,49 @@ function calculate(p) {
   return { target, wealth, required, income: p.other + sustainable, rows, depleted, n, unfunded, goals };
 }
 
+// Campo opcional vazio (objetivo, herança) vale zero.
+const opcional = (id) => $(id).value.trim() === '' ? 0 : numero($(id).value);
+
 function readInputs() {
   const p = {};
-  let error = '';
+  let error = null;
+  const fail = (field, msg) => { error = { field, msg }; };
   for (const [id, label, , min, max] of config) {
-    p[id] = Number($(id).value);
-    if ($(id).value.trim() === '' || !Number.isFinite(p[id]) || p[id] < min || p[id] > max) error = `Revise o campo “${label}” (entre ${min} e ${max}).`;
+    p[id] = numero($(id).value);
+    if (!Number.isFinite(p[id]) || p[id] < min || p[id] > max) fail(id, `Revise o campo “${label}” (entre ${fmt(min)} e ${fmt(max)}).`);
   }
-  p.goals = [1, 2].map(i => ({ name: $('goalName' + i).value.trim() || 'Objetivo ' + i, value: Number($('goalValue' + i).value), age: Number($('goalAge' + i).value) }));
-  for (const [i, g] of p.goals.entries()) {
-    if ($('goalValue' + (i + 1)).value.trim() === '' || !Number.isFinite(g.value) || g.value < 0 || g.value > 1e9) error = 'Informe um valor entre zero e R$ 1 bilhão no objetivo ' + (i + 1) + '.';
-    else if (g.value > 0 && (!Number.isInteger(g.age) || g.age <= p.age || g.age >= p.retire)) error = 'A idade do objetivo ' + (i + 1) + ' deve ser inteira, depois da idade atual e antes da aposentadoria.';
+  p.goals = [1, 2].map(i => ({ name: $('goalName' + i).value.trim() || 'Objetivo ' + i, value: opcional('goalValue' + i), age: Number($('goalAge' + i).value) }));
+  for (const [k, g] of p.goals.entries()) {
+    const i = k + 1;
+    if (!Number.isFinite(g.value) || g.value < 0 || g.value > 1e9) fail('goalValue' + i, 'Informe um valor entre zero e R$ 1 bilhão no objetivo ' + i + '.');
+    else if (g.value > 0 && (!Number.isInteger(g.age) || g.age <= p.age || g.age >= p.retire)) fail('goalAge' + i, 'A idade do objetivo ' + i + ' deve ser inteira, depois da idade atual e antes da aposentadoria.');
   }
-  p.legacy = Number($('legacy').value);
+  p.legacy = opcional('legacy');
   p.mode = $('mode').value;
   $('legacyField').hidden = p.mode === 'preserve';
-  if (p.mode === 'consume' && ($('legacy').value === '' || !Number.isFinite(p.legacy) || p.legacy < 0 || p.legacy > 1e9)) error = 'Informe uma herança entre R$ 0 e R$ 1 bilhão.';
-  if (![p.age, p.retire, p.end].every(Number.isInteger)) error = 'Informe as idades em anos inteiros.';
-  if (p.retire <= p.age || p.end <= p.retire) error = 'A aposentadoria deve ser depois da idade atual, e a idade final deve ser depois da aposentadoria.';
+  if (p.mode === 'consume' && (!Number.isFinite(p.legacy) || p.legacy < 0 || p.legacy > 1e9)) fail('legacy', 'Informe uma herança entre R$ 0 e R$ 1 bilhão.');
+  const naoInteira = ['age', 'retire', 'end'].find(id => !Number.isInteger(p[id]));
+  if (naoInteira) fail(naoInteira, 'Informe as idades em anos inteiros.');
+  const msgIdades = 'A aposentadoria deve ser depois da idade atual, e a idade final deve ser depois da aposentadoria.';
+  if (p.retire <= p.age) fail('retire', msgIdades);
+  else if (p.end <= p.retire) fail('end', msgIdades);
   return { p, error };
+}
+
+// Mostra o erro no topo dos resultados e também embaixo do campo, que é onde a pessoa está olhando.
+function showError(error) {
+  for (const el of document.querySelectorAll('#apos-form .is-invalid')) el.classList.remove('is-invalid');
+  for (const el of document.querySelectorAll('#apos-form .apos-feedback')) el.remove();
+  $('error').hidden = !error;
+  $('error').textContent = error ? error.msg : '';
+  $('output').hidden = !!error;
+  if (!error) return;
+  const input = $(error.field);
+  input.classList.add('is-invalid');
+  const fb = document.createElement('div');
+  fb.className = 'invalid-feedback apos-feedback';
+  fb.textContent = error.msg;
+  input.after(fb);
 }
 
 function setStatus(ok, text) {
@@ -96,9 +143,7 @@ function setStatus(ok, text) {
 
 function update() {
   const { p, error } = readInputs();
-  $('error').hidden = !error;
-  $('error').textContent = error;
-  $('output').hidden = !!error;
+  showError(error);
   if (error) return;
 
   const c = calculate(p);
@@ -138,7 +183,7 @@ function update() {
 
 function referencePlans(p) {
   return ['consume', 'preserve'].map(mode => {
-    const input = { ...p, mode, legacy: mode === 'preserve' ? 0 : Number($('legacy').value) }, goal = calculate(input);
+    const input = { ...p, mode, legacy: mode === 'preserve' ? 0 : p.legacy }, goal = calculate(input);
     return {
       label: mode === 'consume' ? 'Consumo' : 'Perpetuação',
       color: mode === 'consume' ? CORES.consumo : CORES.perpetuacao,
@@ -167,7 +212,7 @@ function draw(p, c) {
   const points = s => s.plan.rows.map(r => x(r.age) + ',' + y(r.balance)).join(' ');
   svg += `<polygon points="${left},${y(0)} ${points(series[0])} ${x(p.end)},${y(0)}" fill="${CORES.area}"/>`;
   series.forEach((s, i) => {
-    svg += `<polyline points="${points(s)}" fill="none" stroke="${s.color}" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${['none', '9 4', '3 4'][i]}"><title>${s.label}</title></polyline>`;
+    svg += `<polyline points="${points(s)}" fill="none" stroke="${s.color}" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${['none', '9 4', '3 4'][i]}"><title>${s.label}: ${DESCR[s.label]}</title></polyline>`;
   });
   svg += `<line x1="${x(p.retire)}" x2="${x(p.retire)}" y1="${top}" y2="${h - bottom}" stroke="${CORES.marco}" stroke-dasharray="5 5"/>`
     + `<text x="${Math.min(w - 150, x(p.retire) + 7)}" y="16" fill="#906D34" font-size="12">Aposentadoria · ${p.retire}</text>`;
@@ -194,6 +239,13 @@ function clearGoal(i) {
 $('form').addEventListener('submit', e => e.preventDefault());
 $('form').addEventListener('input', update);
 $('form').addEventListener('change', update);
+// Ao sair de um campo em R$, reescreve com separador de milhar.
+$('form').addEventListener('focusout', (e) => {
+  const el = e.target;
+  if (!el.matches('[data-money]')) return;
+  const n = el.value.trim() === '' && el.dataset.money === 'opcional' ? 0 : numero(el.value);
+  if (Number.isFinite(n)) el.value = fmt(n);
+});
 $('addGoal2').addEventListener('click', () => { showGoal2(true); $('goalName2').focus(); });
 $('removeGoal2').addEventListener('click', () => { clearGoal(2); showGoal2(false); update(); });
 update();
