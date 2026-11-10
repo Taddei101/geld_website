@@ -157,11 +157,7 @@
                     <label class="form-label" for="apos-legacy">Herança desejada ao final (R$ de hoje)</label>
                     <input class="form-control" id="apos-legacy" type="number" min="0" max="1000000000" step="10000" value="0">
                   </div>
-                  <p class="small text-muted">Taxas reais já descontam a inflação. Use uma hipótese líquida de impostos e custos.</p>
-                  <div class="d-flex flex-wrap gap-2 apos-acoes">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="apos-reset">Restaurar exemplo</button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="apos-print"><i class="bi bi-printer"></i> Imprimir / PDF</button>
-                  </div>
+                  <p class="small text-muted mb-0">Taxas reais já descontam a inflação. Use uma hipótese líquida de impostos e custos.</p>
                 </form>
               </div>
             </div>
@@ -226,17 +222,6 @@
 
               <div class="card mb-3">
                 <div class="card-body p-4">
-                  <details>
-                    <summary>Ver projeção por ano</summary>
-                    <div class="apos-tabela table-responsive mt-2">
-                      <table class="table table-sm align-middle">
-                        <thead><tr><th>Idade</th><th>Fase</th><th class="text-end">Saldo projetado</th></tr></thead>
-                        <tbody id="apos-annual"></tbody>
-                      </table>
-                    </div>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="apos-csv">Baixar projeção (CSV)</button>
-                  </details>
-                  <hr>
                   <details>
                     <summary>Entenda os cálculos e as simplificações</summary>
                     <ul class="small text-muted mt-2">

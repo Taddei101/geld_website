@@ -21,17 +21,14 @@
 .apos .apos-grafico { width: 100%; height: auto; display: block; margin-top: .75rem; }
 
 .apos details summary { cursor: pointer; font-weight: 600; }
-.apos .apos-tabela { max-height: 300px; overflow: auto; }
-.apos .apos-tabela th { position: sticky; top: 0; background: #fff; }
 
 @media (max-width: 575px) {
   .apos .apos-destaque { grid-template-columns: 1fr; }
 }
 
 @media print {
-  #header, #footer, .faixa-cliente, .apos-cta, .apos-acoes, #scroll-top, #preloader { display: none !important; }
+  #header, #footer, .faixa-cliente, .apos-cta, #scroll-top, #preloader { display: none !important; }
   .apos { padding-top: 0; }
   .apos .apos-destaque { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  .apos .apos-tabela { max-height: none; }
   .apos .card, .apos .apos-destaque { break-inside: avoid; }
 }

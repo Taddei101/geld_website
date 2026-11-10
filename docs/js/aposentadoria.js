@@ -94,7 +94,6 @@ function setStatus(ok, text) {
   $('status').textContent = text;
 }
 
-let current;
 function update() {
   const { p, error } = readInputs();
   $('error').hidden = !error;
@@ -103,7 +102,6 @@ function update() {
   if (error) return;
 
   const c = calculate(p);
-  current = { p, c };
   $('wealth').textContent = money(c.wealth);
   $('target').textContent = money(c.target);
   $('horizon').textContent = `Aos ${p.retire} anos · ${p.retire - p.age} anos de acumulação`;
@@ -129,7 +127,6 @@ function update() {
   }
   $('chartStart').textContent = `Hoje · ${p.age} anos`;
   $('chartEnd').textContent = `Horizonte · ${p.end} anos`;
-  $('annual').innerHTML = c.rows.map(row => `<tr><td>${row.age}</td><td>${row.phase}</td><td class="text-end">${money(row.balance)}</td></tr>`).join('');
   $('goalSummary').textContent = c.goals.length
     ? 'Objetivos: ' + c.goals.map(g => g.name + ' — ' + money(g.value) + ' aos ' + g.age + ' anos').join(' · ') + '. '
       + (c.unfunded.length
@@ -194,46 +191,11 @@ function clearGoal(i) {
   $('goalAge' + i).value = '';
 }
 
-function reset() {
-  for (const id in defaults) $(id).value = defaults[id];
-  $('legacy').value = 0;
-  $('mode').value = 'consume';
-  clearGoal(1);
-  clearGoal(2);
-  showGoal2(false);
-  update();
-}
-
-function downloadCsv() {
-  if (!current) return;
-  const { p, c } = current;
-  const lines = [
-    'Projeção simplificada;Valores em reais de hoje',
-    ...p.goals.filter(g => g.value > 0).map((g, i) => 'Objetivo ' + (i + 1) + ';' + g.value + ';Idade;' + g.age),
-    'Idade;Fase;Saldo',
-    ...c.rows.map(r => `${r.age};${r.phase};${r.balance.toFixed(2).replace('.', ',')}`),
-    '',
-    `Idade atual;${p.age}`, `Idade de aposentadoria;${p.retire}`, `Idade final;${p.end}`,
-    `Patrimônio inicial;${p.initial}`, `Aporte mensal;${p.contribution}`, `Renda desejada;${p.desired}`,
-    `INSS e outras rendas;${p.other}`, `Retorno real anual acumulação (%);${p.rate}`, `Retorno real anual aposentadoria (%);${p.postRate}`,
-    `Modo;${p.mode === 'preserve' ? 'Preservação' : 'Consumo'}`, `Herança desejada (somente consumo);${p.mode === 'consume' ? p.legacy : 0}`,
-  ];
-  const url = URL.createObjectURL(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }));
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'projecao-aposentadoria.csv';
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
 $('form').addEventListener('submit', e => e.preventDefault());
 $('form').addEventListener('input', update);
 $('form').addEventListener('change', update);
-$('reset').addEventListener('click', reset);
 $('addGoal2').addEventListener('click', () => { showGoal2(true); $('goalName2').focus(); });
 $('removeGoal2').addEventListener('click', () => { clearGoal(2); showGoal2(false); update(); });
-$('print').addEventListener('click', () => window.print());
-$('csv').addEventListener('click', downloadCsv);
 update();
 
 })();
