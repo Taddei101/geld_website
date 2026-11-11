@@ -72,7 +72,7 @@
 
   </header>
 
-  
+
 
   <main class="main">
 
@@ -83,12 +83,12 @@
           <div class="row d-flex justify-content-center align-items-center text-center ">
             <div class="col-lg-8" >
               <h1 style="color:#fff; font-family:'Poppins',sans-serif; margin-block: clamp(1.5rem, 5vh, 4rem);">Acesse sua conta Geld</h1>
-              
+
             </div>
           </div>
         </div>
       </div>
-      
+
     </div><!-- End Page Title -->
 
     <!-- Login Section -->
@@ -103,12 +103,12 @@
 
                   <div class="mb-3">
                     <label for="login-email" class="form-label">E-mail</label>
-                    <input type="email" class="form-control" name="email" id="login-email" required>
+                    <input type="email" class="form-control" name="email" id="login-email" required autocomplete="username">
                   </div>
 
                   <div class="mb-3">
                     <label for="login-password" class="form-label">Senha</label>
-                    <input type="password" class="form-control" name="password" id="login-password" required>
+                    <input type="password" class="form-control" name="password" id="login-password" required autocomplete="current-password">
                   </div>
 
                   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -121,7 +121,7 @@
 
                   <div class="text-center">
                     <button type="submit" class="btn btn-get-started w-100">Entrar</button>
-                    
+
                   </div>
                 <p id="login-erro" class="text-danger small text-center mt-3 mb-0 d-none"></p>
                 </form>
@@ -149,7 +149,7 @@
             <a href="https://wa.me/5521971395110"><i class="bi bi-whatsapp"></i></a>
           </div>
         </div>
-      
+
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
           <h4>Contato</h4>
@@ -184,7 +184,7 @@
   const API = location.hostname.endsWith('geldfp.com.br')
   ? 'https://geld.pythonanywhere.com'
   : 'http://127.0.0.1:5000';
-  
+
 
   document.getElementById('login-form').addEventListener('submit', async (evento) => {
     evento.preventDefault();
