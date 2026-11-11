@@ -99,7 +99,9 @@ async function carregarGraficos() {
     let texto, acima;
     if (nome === 'CDI') {
       acima = carteira >= indice;
-      texto = carteira > 1 && indice > 1 ? Math.round((carteira - 1) / (indice - 1) * 100) + '% do CDI' : (acima ? 'acima' : 'abaixo') + ' do CDI';
+      if (indice === 1) return '';
+      const razao = Math.round((carteira - 1) / (indice - 1) * 100);
+      texto = (razao < 0 ? '−' : '') + Math.abs(razao) + '% do CDI';
     } else {
       const excesso = (carteira / indice) ** (anual ? 12 / meses : 1) - 1;
       acima = excesso >= 0;
