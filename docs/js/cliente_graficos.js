@@ -49,7 +49,7 @@ async function carregarGraficos() {
   benchmarks.forEach(([nome, b]) => {
     retorno.push({ x: datas, y: b.retorno, name: nome, mode: 'lines', line: estilo(nome), visible: ligados.has(nome) });
   });
-  Plotly.newPlot('grafico-retorno', retorno, layout('Retorno acumulado (%)', { ticksuffix: '%' }), opcoes);
+  Plotly.newPlot('grafico-retorno', retorno, layout('', { ticksuffix: '%' }), opcoes);
 
   const atual = dados.pontos.map(p => p.valor);
   const fluxo = dados.investido.map((v, i) => i === 0 ? 0 : v - dados.investido[i - 1]);
@@ -84,7 +84,32 @@ async function carregarGraficos() {
     return `<button type="button" class="btn btn-sm rounded-pill border py-0 px-2 ${ligado ? 'bg-light fw-semibold' : 'text-secondary'}" data-benchmark="${nome}" aria-pressed="${ligado}">`
       + `<i class="bi bi-${ligado ? 'circle-fill' : 'circle'}" style="color: ${cor(nome)};"></i> ${nome}</button>`;
   }).join('');
+  const fmt = v => Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const comparar = (nome, b) => {
+    let k = datas.length - 1;
+    while (k > 0 && (b.retorno[k] == null || dados.retorno_carteira[k] == null)) k--;
+    if (k === 0) return '';
+    const [a0, m0] = datas[0].split('-').map(Number);
+    const [a1, m1] = datas[k].split('-').map(Number);
+    const meses = (a1 - a0) * 12 + (m1 - m0);
+    const carteira = 1 + dados.retorno_carteira[k] / 100;
+    const indice = 1 + b.retorno[k] / 100;
+    const anual = meses >= 12;
+    const prazo = anual ? 'a.a.' : 'no período';
+    let texto, acima;
+    if (nome === 'CDI') {
+      acima = carteira >= indice;
+      texto = carteira > 1 && indice > 1 ? Math.round((carteira - 1) / (indice - 1) * 100) + '% do CDI' : (acima ? 'acima' : 'abaixo') + ' do CDI';
+    } else {
+      const excesso = (carteira / indice) ** (anual ? 12 / meses : 1) - 1;
+      acima = excesso >= 0;
+      texto = `${nome} ${acima ? '+' : '−'} ${fmt(excesso * 100)}% ${prazo}`;
+    }
+    const titulo = `De ${dados.meses[0]} a ${dados.meses[k]}`;
+    return `<span class="d-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1" title="${titulo}" style="color: ${acima ? VERDE : '#b42318'};">${texto}</span>`;
+  };
   const desenharLegendas = () => {
+    document.getElementById('comparacao-retorno').innerHTML = benchmarks.filter(([nome]) => ligados.has(nome)).map(([nome, b]) => comparar(nome, b)).join('');
     document.getElementById('legenda-retorno').innerHTML = fixo('Carteira', AZUL) + pilulas();
     document.getElementById('legenda-reais').innerHTML = fixo('Investido', VERDE) + fixo('Atual', AZUL) + pilulas();
   };
