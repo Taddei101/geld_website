@@ -26,7 +26,8 @@ function mostrarObjetivo(obj) {
       <div class="card-body">
         <h5 class="mb-3">${obj.nome}</h5>
         <div class="row g-3">${itens.join('')}</div>
-        <div id="grafico-objetivo" class="mt-3" style="height: 220px;"></div>
+        <div id="periodo-objetivo" class="d-flex gap-2 mt-3"></div>
+        <div id="grafico-objetivo" class="mt-2" style="height: 220px;"></div>
         <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu assessor.' : ''}</p>
       </div>
     </div>`;
@@ -35,29 +36,57 @@ function mostrarObjetivo(obj) {
 
 function desenharGraficoObjetivo(obj) {
   const caixa = document.getElementById('grafico-objetivo');
-  if (obj.pontos.length < 2) return caixa.remove();
+  const periodos = document.getElementById('periodo-objetivo');
+  if (!obj.pontos.length) { caixa.remove(); periodos.remove(); return; }
+  const UM_ANO = 12;
+  const MIN_BARRAS = 6;
+  const MAX_ROTULOS = 6;
   const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
   const mes = iso => MESES[Number(iso.slice(5, 7)) - 1] + '/' + iso.slice(2, 4);
-  const MAX_ROTULOS = 6;
-  const meses = obj.pontos.map(p => mes(p.data));
-  const passo = Math.ceil(meses.length / MAX_ROTULOS);
-  const marcas = meses.filter((_, i) => (meses.length - 1 - i) % passo === 0);
-  const linha = {
-    x: meses,
-    y: obj.pontos.map(p => p.valor),
-    mode: meses.length <= 24 ? 'lines+markers' : 'lines',
-    line: { color: '#0057FF', width: 2 },
-    marker: { size: 6 },
-    hovertemplate: '%{x}: R$ %{y:,.2f}<extra></extra>',
+
+  const desenhar = pontos => {
+    const meses = pontos.map(p => mes(p.data));
+    const passo = Math.ceil(meses.length / MAX_ROTULOS);
+    const marcas = meses.filter((_, i) => (meses.length - 1 - i) % passo === 0);
+    const folga = Math.max(0, (MIN_BARRAS - meses.length) / 2);
+    const barras = {
+      type: 'bar',
+      x: meses,
+      y: pontos.map(p => p.valor),
+      marker: { color: '#0057FF' },
+      hovertemplate: '%{x}: R$ %{y:,.2f}<extra></extra>',
+    };
+    return Plotly.react(caixa, [barras], {
+      separators: ',.',
+      dragmode: false,
+      bargap: 0.3,
+      margin: { t: 5, r: 10, l: 10, b: 30 },
+      xaxis: { type: 'category', range: [-0.5 - folga, meses.length - 0.5 + folga], tickvals: marcas, ticktext: marcas, tickangle: 0, automargin: true, fixedrange: true },
+      yaxis: { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true, fixedrange: true },
+      showlegend: false,
+    }, { responsive: true, displayModeBar: false, doubleClick: false });
   };
-  return Plotly.newPlot(caixa, [linha], {
-    separators: ',.',
-    dragmode: false,
-    margin: { t: 5, r: 10, l: 10, b: 30 },
-    xaxis: { type: 'category', range: [-0.4, meses.length - 0.6], tickvals: marcas, ticktext: marcas, tickangle: 0, automargin: true, fixedrange: true },
-    yaxis: { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true, fixedrange: true },
-    showlegend: false,
-  }, { responsive: true, displayModeBar: false, doubleClick: false });
+
+  if (obj.pontos.length <= UM_ANO) { periodos.remove(); return desenhar(obj.pontos); }
+
+  const opcoes = [['1 ano', obj.pontos.slice(-UM_ANO)], ['Todo período', obj.pontos]];
+  periodos.innerHTML = opcoes.map(([nome], i) =>
+    `<button type="button" class="btn btn-sm rounded-pill border py-0 px-2" data-periodo="${i}">${nome}</button>`).join('');
+  const escolher = i => {
+    periodos.querySelectorAll('button').forEach(b => {
+      const ligado = Number(b.dataset.periodo) === i;
+      b.classList.toggle('bg-light', ligado);
+      b.classList.toggle('fw-semibold', ligado);
+      b.classList.toggle('text-secondary', !ligado);
+      b.setAttribute('aria-pressed', ligado);
+    });
+    return desenhar(opcoes[i][1]);
+  };
+  periodos.addEventListener('click', e => {
+    const botao = e.target.closest('button');
+    if (botao) escolher(Number(botao.dataset.periodo));
+  });
+  return escolher(0);
 }
 
 function ligarObjetivos(objetivos) {
