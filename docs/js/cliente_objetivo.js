@@ -22,21 +22,70 @@ function mostrarObjetivo(obj) {
   ];
   const quadro = document.getElementById('detalhe-objetivo');
   quadro.innerHTML = `
-    <div class="card">
+    <div class="card h-100">
       <div class="card-body">
         <h5 class="mb-3">${obj.nome}</h5>
         <div class="row g-3">${itens.join('')}</div>
         <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu assessor.' : ''}</p>
       </div>
     </div>`;
-  quadro.classList.remove('d-none');
   quadro.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
-  quadro.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function ligarObjetivos(objetivos) {
-  document.querySelectorAll('#objetivos .card').forEach((card, i) => {
+  const grade = document.getElementById('objetivos');
+  const foco = document.getElementById('foco');
+  const destaque = document.getElementById('foco-destaque');
+  const outros = document.getElementById('foco-outros');
+  const caixas = [...grade.children];
+  const cards = caixas.map(caixa => caixa.querySelector('.card'));
+  const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let aberto = null;
+
+  const animar = mudanca => {
+    if (!document.startViewTransition || semMovimento) return mudanca();
+    document.startViewTransition(mudanca);
+  };
+  const resumo = (card, mostrar) => card.querySelector('.card-body').classList.toggle('d-none', !mostrar);
+
+  const abrir = i => {
+    if (i === aberto) return;
+    animar(() => {
+      aberto = i;
+      mostrarObjetivo(objetivos[i]);
+      destaque.replaceChildren(cards[i]);
+      resumo(cards[i], false);
+      outros.replaceChildren(...cards.map((card, j) => {
+        if (j === i) return null;
+        const mini = document.createElement('div');
+        mini.className = 'col-3 col-lg-6';
+        mini.append(card);
+        resumo(card, false);
+        return mini;
+      }).filter(Boolean));
+      outros.parentElement.classList.toggle('d-none', cards.length === 1);
+      grade.classList.add('d-none');
+      foco.classList.remove('d-none');
+    });
+  };
+
+  const fechar = () => {
+    if (aberto === null) return;
+    animar(() => {
+      aberto = null;
+      cards.forEach((card, i) => { caixas[i].append(card); resumo(card, true); });
+      foco.classList.add('d-none');
+      grade.classList.remove('d-none');
+    });
+  };
+
+  cards.forEach((card, i) => {
     card.style.cursor = 'pointer';
-    card.addEventListener('click', () => mostrarObjetivo(objetivos[i]));
+    card.style.viewTransitionName = 'objetivo-' + i;
+    card.title = objetivos[i].nome;
+    card.addEventListener('click', () => abrir(i));
   });
+  document.getElementById('detalhe-objetivo').style.viewTransitionName = 'objetivo-detalhe';
+  document.getElementById('fechar-foco').addEventListener('click', fechar);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
 }
