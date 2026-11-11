@@ -214,6 +214,10 @@
   ? 'https://geld.pythonanywhere.com'
   : 'http://127.0.0.1:5000';
   
+  if (location.hash.startsWith('#ver=')) {
+    sessionStorage.setItem('geld_token', location.hash.slice(5));
+    history.replaceState(null, '', location.pathname);
+  }
   const token = sessionStorage.getItem('geld_token');
 
   function voltarParaLogin() {
