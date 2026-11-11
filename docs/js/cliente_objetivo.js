@@ -14,10 +14,10 @@ function mostrarObjetivo(obj) {
     item('Início', mesAno(obj.data_inicial)),
     item('Prazo', mesAno(obj.data_alvo)),
     item('Valor desejado', reais(obj.valor_desejado)),
-    item('Corrigido pela inflação', reais(obj.valor_alvo),
+    item('Corrigido', reais(obj.valor_alvo),
       'Seu valor desejado considerando o acumulado com a inflação projetada para a data desejada'),
-    item('Você tem hoje', reais(atual)),
-    item('Mesmo sem novos aportes', reais(obj.valor_estimado),
+    item('Valor atual', reais(atual)),
+    item('Valor futuro', reais(obj.valor_estimado),
       'Quanto o que você já guardou deve valer na data desejada, rendendo IPCA + 3,5% ao ano, sem considerar novos aportes nem saques. Cada aporte que você fizer aumenta esse valor.'),
   ];
   const quadro = document.getElementById('detalhe-objetivo');
