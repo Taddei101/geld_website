@@ -38,10 +38,14 @@ function desenharGraficoObjetivo(obj) {
   if (obj.pontos.length < 2) return caixa.remove();
   const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
   const mes = iso => MESES[Number(iso.slice(5, 7)) - 1] + '/' + iso.slice(2, 4);
+  const MAX_ROTULOS = 6;
+  const meses = obj.pontos.map(p => mes(p.data));
+  const passo = Math.ceil(meses.length / MAX_ROTULOS);
+  const marcas = meses.filter((_, i) => (meses.length - 1 - i) % passo === 0);
   const linha = {
-    x: obj.pontos.map(p => mes(p.data)),
+    x: meses,
     y: obj.pontos.map(p => p.valor),
-    mode: 'lines+markers',
+    mode: meses.length <= 24 ? 'lines+markers' : 'lines',
     line: { color: '#0057FF', width: 2 },
     marker: { size: 6 },
     hovertemplate: '%{x}: R$ %{y:,.2f}<extra></extra>',
@@ -50,7 +54,7 @@ function desenharGraficoObjetivo(obj) {
     separators: ',.',
     dragmode: false,
     margin: { t: 5, r: 10, l: 10, b: 30 },
-    xaxis: { type: 'category', range: [-0.4, obj.pontos.length - 0.6], fixedrange: true },
+    xaxis: { type: 'category', range: [-0.4, meses.length - 0.6], tickvals: marcas, ticktext: marcas, tickangle: 0, automargin: true, fixedrange: true },
     yaxis: { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true, fixedrange: true },
     showlegend: false,
   }, { responsive: true, displayModeBar: false, doubleClick: false });
