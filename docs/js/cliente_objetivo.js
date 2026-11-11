@@ -26,10 +26,34 @@ function mostrarObjetivo(obj) {
       <div class="card-body">
         <h5 class="mb-3">${obj.nome}</h5>
         <div class="row g-3">${itens.join('')}</div>
+        <div id="grafico-objetivo" class="mt-3" style="height: 220px;"></div>
         <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu assessor.' : ''}</p>
       </div>
     </div>`;
   quadro.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+}
+
+function desenharGraficoObjetivo(obj) {
+  const caixa = document.getElementById('grafico-objetivo');
+  if (obj.pontos.length < 2) return caixa.remove();
+  const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const mes = iso => MESES[Number(iso.slice(5, 7)) - 1] + '/' + iso.slice(2, 4);
+  const linha = {
+    x: obj.pontos.map(p => mes(p.data)),
+    y: obj.pontos.map(p => p.valor),
+    mode: 'lines+markers',
+    line: { color: '#0057FF', width: 2 },
+    marker: { size: 6 },
+    hovertemplate: '%{x}: R$ %{y:,.2f}<extra></extra>',
+  };
+  return Plotly.newPlot(caixa, [linha], {
+    separators: ',.',
+    dragmode: false,
+    margin: { t: 5, r: 10, l: 10, b: 30 },
+    xaxis: { type: 'category', range: [-0.4, obj.pontos.length - 0.6], fixedrange: true },
+    yaxis: { tickprefix: 'R$ ', tickformat: ',.0f', automargin: true, fixedrange: true },
+    showlegend: false,
+  }, { responsive: true, displayModeBar: false, doubleClick: false });
 }
 
 function ligarObjetivos(objetivos) {
@@ -66,6 +90,7 @@ function ligarObjetivos(objetivos) {
       outros.parentElement.classList.toggle('d-none', cards.length === 1);
       grade.classList.add('d-none');
       foco.classList.remove('d-none');
+      desenharGraficoObjetivo(objetivos[i]);
     });
   };
 
