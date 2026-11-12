@@ -29,7 +29,10 @@
   <style>
     #foco-destaque .card > .position-relative { flex: 1; display: flex; flex-direction: column; padding-bottom: .75rem; }
     #foco-destaque .card img { margin-bottom: .75rem; }
-    #foco-destaque .progress { position: relative !important; margin: auto .75rem !important; }
+    #foco-destaque .progress { position: relative !important; margin: auto .75rem 0 !important; }
+    .marca-ideal, .ritmo { display: none; }
+    #foco-destaque .marca-ideal { display: block; position: absolute; top: 0; bottom: 0; width: 3px; margin-left: -1.5px; background: #212529; }
+    #foco-destaque .ritmo { display: block; margin: .5rem .75rem auto; text-align: center; }
   </style>
 </head>
 
@@ -262,6 +265,16 @@
     return 'img/objetivos/generico.png';
   }
 
+  const TOLERANCIA_RITMO = 0.02;
+  function situacaoNoPlano(atual, ideal, alvo) {
+    if (ideal == null || !alvo) return null;
+    const marca = Math.min(100, ideal / alvo * 100);
+    const diferenca = atual - ideal;
+    const reais = Math.abs(diferenca).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+    if (Math.abs(diferenca) <= ideal * TOLERANCIA_RITMO) return { marca, texto: 'No ritmo do plano' };
+    return { marca, texto: (diferenca > 0 ? 'Adiantado ' : 'Atrasado ') + reais + ' em relação ao plano' };
+  }
+
   async function carregarObjetivos() {
     const resposta = await fetch(API + '/api/cliente/snapshots', {
       headers: { Authorization: 'Bearer ' + token },
@@ -280,6 +293,7 @@
       const pct = obj.valor_alvo ? atual / obj.valor_alvo * 100 : 0;
       const cor = pct >= 100 ? 'bg-success' : '';
       const pctTexto = pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
+      const ritmo = situacaoNoPlano(atual, obj.valor_ideal, obj.valor_alvo);
       area.innerHTML += `
         <div class="col-6 col-md-3 col-lg-2">
           <div class="card h-100 overflow-hidden">
@@ -288,7 +302,9 @@
               <div class="progress bg-secondary rounded-pill position-absolute bottom-0 start-0 end-0 m-2" style="height: 1.75rem">
                 <div class="progress-bar rounded-pill ${cor}" style="width: ${Math.min(100, pct)}%"></div>
                 <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white">${pctTexto}</span>
+                ${ritmo ? `<div class="marca-ideal" style="left: ${ritmo.marca}%" title="Onde o plano previa estar"></div>` : ''}
               </div>
+              ${ritmo ? `<small class="ritmo text-secondary">${ritmo.texto}</small>` : ''}
             </div>
             <div class="card-body p-3">
               <h6 class="mb-1">${obj.nome}</h6>
