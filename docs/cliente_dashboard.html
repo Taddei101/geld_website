@@ -268,6 +268,10 @@
   }
 
   const TOLERANCIA_RITMO = 0.02;
+  const EXPLICA_PLANO = '<b>Você:</b> quanto este objetivo já tem, em relação ao valor corrigido.<br>'
+    + '<b>Plano:</b> quanto deveria ter hoje com aportes iguais todo mês desde o início, rendendo IPCA + 3,5% ao ano.<br>'
+    + 'No começo, direcionamos a maior parte dos aportes para os objetivos mais próximos. '
+    + 'Por isso é normal os mais distantes aparecerem atrasados nessa fase.';
   function situacaoNoPlano(atual, ideal, alvo) {
     if (ideal == null || !alvo) return null;
     const marca = Math.min(100, ideal / alvo * 100);
@@ -312,7 +316,9 @@
                   <div class="progress-bar rounded-pill" style="width: ${ritmo.marca}%"></div>
                   <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white">Plano ${ritmo.pctTexto}</span>
                 </div>
-                <small class="d-block text-center text-secondary mt-2">${ritmo.texto}</small>
+                <small class="d-block text-center text-secondary mt-2">${ritmo.texto}
+                  <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${EXPLICA_PLANO}" style="cursor: help;"><i class="bi bi-info-circle"></i></span>
+                </small>
               </div>` : ''}
             </div>
             <div class="card-body p-3">
@@ -322,6 +328,7 @@
           </div>
         </div>`;
     }
+    area.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
     ligarObjetivos(dados.objetivos);
   }
 
