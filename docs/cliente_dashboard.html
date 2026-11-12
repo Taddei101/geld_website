@@ -30,9 +30,11 @@
     #foco-destaque .card > .position-relative { flex: 1; display: flex; flex-direction: column; padding-bottom: .75rem; }
     #foco-destaque .card img { margin-bottom: .75rem; }
     #foco-destaque .progress { position: relative !important; margin: auto .75rem 0 !important; }
-    .marca-ideal, .ritmo { display: none; }
-    #foco-destaque .marca-ideal { display: block; position: absolute; top: 0; bottom: 0; width: 3px; margin-left: -1.5px; background: #212529; }
-    #foco-destaque .ritmo { display: block; margin: .5rem .75rem auto; text-align: center; }
+    .so-no-foco { display: none !important; }
+    #foco-destaque .so-no-foco { display: inline !important; }
+    #foco-destaque .plano { display: block !important; margin: .5rem .75rem auto; }
+    #foco-destaque .plano .progress { margin: 0 !important; }
+    .plano .progress-bar { background: #8FB0F5; }
   </style>
 </head>
 
@@ -271,8 +273,9 @@
     const marca = Math.min(100, ideal / alvo * 100);
     const diferenca = atual - ideal;
     const reais = Math.abs(diferenca).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
-    if (Math.abs(diferenca) <= ideal * TOLERANCIA_RITMO) return { marca, texto: 'No ritmo do plano' };
-    return { marca, texto: (diferenca > 0 ? 'Adiantado ' : 'Atrasado ') + reais + ' em relação ao plano' };
+    const pctTexto = (ideal / alvo * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
+    if (Math.abs(diferenca) <= ideal * TOLERANCIA_RITMO) return { marca, pctTexto, texto: 'No ritmo do plano' };
+    return { marca, pctTexto, texto: (diferenca > 0 ? 'Adiantado ' : 'Atrasado ') + reais + ' em relação ao plano' };
   }
 
   async function carregarObjetivos() {
@@ -301,10 +304,16 @@
               <img src="${fotoDoObjetivo(obj.nome)}" class="w-100 object-fit-cover" style="aspect-ratio: 1 / 1" alt="">
               <div class="progress bg-secondary rounded-pill position-absolute bottom-0 start-0 end-0 m-2" style="height: 1.75rem">
                 <div class="progress-bar rounded-pill ${cor}" style="width: ${Math.min(100, pct)}%"></div>
-                <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white">${pctTexto}</span>
-                ${ritmo ? `<div class="marca-ideal" style="left: ${ritmo.marca}%" title="Onde o plano previa estar"></div>` : ''}
+                <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white"><span class="so-no-foco">Você </span>${pctTexto}</span>
               </div>
-              ${ritmo ? `<small class="ritmo text-secondary">${ritmo.texto}</small>` : ''}
+              ${ritmo ? `
+              <div class="plano so-no-foco">
+                <div class="progress bg-secondary rounded-pill" style="height: 1.75rem">
+                  <div class="progress-bar rounded-pill" style="width: ${ritmo.marca}%"></div>
+                  <span class="position-absolute top-50 start-0 translate-middle-y ms-3 fw-bold text-white">Plano ${ritmo.pctTexto}</span>
+                </div>
+                <small class="d-block text-center text-secondary mt-2">${ritmo.texto}</small>
+              </div>` : ''}
             </div>
             <div class="card-body p-3">
               <h6 class="mb-1">${obj.nome}</h6>
