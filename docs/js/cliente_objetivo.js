@@ -28,7 +28,7 @@ function mostrarObjetivo(obj) {
         <div class="row g-3">${itens.join('')}</div>
         <div id="periodo-objetivo" class="d-flex gap-2 mt-3"></div>
         <div id="grafico-objetivo" class="mt-2" style="height: 220px;"></div>
-        <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu assessor.' : ''}</p>
+        <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu gestor.' : ''}</p>
       </div>
     </div>`;
   quadro.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
