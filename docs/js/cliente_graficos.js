@@ -1,10 +1,21 @@
+function semGraficos(texto) {
+  document.querySelector('#patrimonio .row').innerHTML = `<p class="text-center">${texto}</p>`;
+}
+
 async function carregarGraficos() {
-  const resposta = await fetch(API + '/api/cliente/patrimonio', {
-    headers: { Authorization: 'Bearer ' + token },
-  });
-  if (!resposta.ok) return;
-  const dados = await resposta.json();
-  if (dados.pontos.length < 2) return;
+  let dados;
+  try {
+    const resposta = await fetch(API + '/api/cliente/patrimonio', {
+      headers: { Authorization: 'Bearer ' + token },
+    });
+    if (!resposta.ok) throw new Error(resposta.status);
+    dados = await resposta.json();
+  } catch (e) {
+    return semGraficos('Não foi possível carregar seus gráficos agora. Tente novamente mais tarde.');
+  }
+  if (dados.pontos.length < 2) {
+    return semGraficos('Seus gráficos aparecerão aqui a partir do segundo mês de acompanhamento.');
+  }
 
   const AZUL = '#0057FF';
   const VERDE = '#146c43';
