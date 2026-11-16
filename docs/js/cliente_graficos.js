@@ -32,7 +32,7 @@ async function carregarGraficos() {
   const todasDatas = dados.pontos.map(p => p.data);
   const anoMes = d => { const [a, m] = d.split('-').map(Number); return a * 12 + m; };
   const ultimoMes = anoMes(todasDatas[todasDatas.length - 1]);
-  const periodos = [['1 ano', 12], ['2 anos', 24], ['Todo período', 0]]
+  const periodos = [['12 meses', 12], ['24 meses', 24], ['Todo período', 0]]
     .filter(([, meses]) => !meses || anoMes(todasDatas[0]) < ultimoMes - meses);
   let periodo = periodos.length - 1;
   const inicioDe = meses => meses ? todasDatas.findIndex(d => anoMes(d) >= ultimoMes - meses) : 0;

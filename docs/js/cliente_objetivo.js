@@ -69,7 +69,7 @@ function desenharGraficoObjetivo(obj) {
 
   if (obj.pontos.length <= UM_ANO) { periodos.remove(); return desenhar(obj.pontos); }
 
-  const opcoes = [['1 ano', obj.pontos.slice(-UM_ANO)], ['Todo período', obj.pontos]];
+  const opcoes = [['12 meses', obj.pontos.slice(-UM_ANO)], ['Todo período', obj.pontos]];
   periodos.innerHTML = opcoes.map(([nome], i) =>
     `<button type="button" class="btn btn-sm rounded-pill border py-0 px-2" data-periodo="${i}">${nome}</button>`).join('');
   const escolher = i => {
