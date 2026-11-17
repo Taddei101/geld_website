@@ -178,8 +178,8 @@ async function carregarGraficos() {
     const efeito = Math.round((dinheiro - gestao) * 10) / 10;
     const titulo = `De ${v.meses[0]} a ${v.meses[n]}`;
     const caixa = 'd-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1';
-    return `<span class="${caixa} text-secondary" title="${titulo}">Gestão ${sinal(gestao)}% ${prazo}</span>`
-      + `<span class="${caixa} text-secondary" title="${titulo}">Seu dinheiro ${sinal(dinheiro)}% ${prazo}</span>`
+    return `<span class="${caixa} text-secondary" title="${titulo}">TWR ${sinal(gestao)}% ${prazo}</span>`
+      + `<span class="${caixa} text-secondary" title="${titulo}">MWR ${sinal(dinheiro)}% ${prazo}</span>`
       + `<span class="${caixa}" title="${titulo}" style="color: ${efeito >= 0 ? VERDE : '#b42318'};">Efeito dos aportes ${efeito >= 0 ? '+' : '−'}${fmt(efeito)} p.p.</span>`;
   };
 
