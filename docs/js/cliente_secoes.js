@@ -15,7 +15,7 @@ function mostrarSecao() {
 
   if (escolhida === 'patrimonio') {
     requestAnimationFrame(() => {
-      ['grafico-retorno', 'grafico-reais'].forEach(id => {
+      ['grafico-retorno', 'grafico-reais', 'grafico-alocacao'].forEach(id => {
         if (document.getElementById(id).data) Plotly.Plots.resize(id);
       });
     });

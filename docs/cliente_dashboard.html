@@ -170,6 +170,22 @@
             </button>
           </div>
         </div>
+        <div id="alocacao" class="row justify-content-center mt-5 d-none">
+          <div class="col-lg-8">
+            <div class="text-center mb-3">
+              <div class="fw-semibold">Onde está seu dinheiro</div>
+              <div id="alocacao-mes" class="small text-secondary"></div>
+            </div>
+            <div class="row align-items-center g-3">
+              <div class="col-md-5">
+                <div id="grafico-alocacao" style="height: 240px;"></div>
+              </div>
+              <div class="col-md-7">
+                <ul id="legenda-alocacao" class="list-unstyled mb-0"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -222,8 +238,9 @@
   <script src="https://cdn.plot.ly/plotly-basic-2.35.2.min.js"></script>
   <script src="js/cliente_graficos.js?v=20261117b"></script>
   <script src="js/cliente_resumo.js?v=20261111"></script>
-  <script src="js/cliente_secoes.js?v=20261114"></script>
+  <script src="js/cliente_secoes.js?v=20261117"></script>
   <script src="js/cliente_objetivo.js?v=20261116"></script>
+  <script src="js/cliente_alocacao.js?v=20261117"></script>
   <script>
   const API = location.hostname.endsWith('geldfp.com.br')
   ? 'https://geld.pythonanywhere.com'
@@ -349,6 +366,7 @@
        document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome.trim().split(' ')[0];
       await carregarObjetivos();
       carregarGraficos();
+      carregarAlocacao();
       carregarResumo();
     } catch (e) {
       document.getElementById('saudacao').textContent = 'Não foi possível conectar. Tente mais tarde.';
