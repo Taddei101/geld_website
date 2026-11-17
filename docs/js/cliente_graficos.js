@@ -150,6 +150,39 @@ async function carregarGraficos() {
     return `<span class="d-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1" title="${titulo}" style="color: ${acima ? VERDE : '#b42318'};">${texto}</span>`;
   };
 
+  const taxaInterna = (fluxos, meses) => {
+    const vpl = r => fluxos.reduce((soma, c, i) => soma + c / (1 + r) ** meses[i], 0);
+    let baixo = -0.5, alto = 0.5;
+    if (vpl(baixo) * vpl(alto) > 0) return null;
+    for (let i = 0; i < 100; i++) {
+      const meio = (baixo + alto) / 2;
+      if (vpl(baixo) * vpl(meio) <= 0) alto = meio; else baixo = meio;
+    }
+    return (baixo + alto) / 2;
+  };
+  const sinal = x => (x < 0 ? '−' : '') + fmt(x);
+  const efeitoAportes = v => {
+    const n = v.datas.length - 1;
+    const total = anoMes(v.datas[n]) - anoMes(v.datas[0]);
+    if (total < 1 || v.carteira[n] == null) return '';
+    const meses = v.datas.map(d => anoMes(d) - anoMes(v.datas[0]));
+    const fluxos = v.atual.map((_, i) => i === 0 ? -v.atual[0] : -(v.investido[i] - v.investido[i - 1]));
+    fluxos[n] += v.atual[n];
+    const mensal = taxaInterna(fluxos, meses);
+    if (mensal === null) return '';
+    const anual = total >= 12;
+    const prazo = anual ? 'a.a.' : 'no período';
+    const arred = x => Math.round(x * 1000) / 10;
+    const gestao = arred(fator(v.carteira[n]) ** (anual ? 12 / total : 1) - 1);
+    const dinheiro = arred((1 + mensal) ** (anual ? 12 : total) - 1);
+    const efeito = Math.round((dinheiro - gestao) * 10) / 10;
+    const titulo = `De ${v.meses[0]} a ${v.meses[n]}`;
+    const caixa = 'd-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1';
+    return `<span class="${caixa} text-secondary" title="${titulo}">Gestão ${sinal(gestao)}% ${prazo}</span>`
+      + `<span class="${caixa} text-secondary" title="${titulo}">Seu dinheiro ${sinal(dinheiro)}% ${prazo}</span>`
+      + `<span class="${caixa}" title="${titulo}" style="color: ${efeito >= 0 ? VERDE : '#b42318'};">Efeito dos aportes ${efeito >= 0 ? '+' : '−'}${fmt(efeito)} p.p.</span>`;
+  };
+
   const caixaPeriodos = document.getElementById('periodo-graficos');
   const desenharPeriodos = () => {
     if (periodos.length < 2) { caixaPeriodos.innerHTML = ''; return; }
@@ -195,6 +228,9 @@ async function carregarGraficos() {
     const reais = tracosReais(vista);
     document.getElementById('comparacao-retorno').innerHTML = vista.benchmarks
       .filter(([nome]) => ligados.has(nome)).map(([nome, b]) => comparar(vista, nome, b)).join('');
+    const aportes = efeitoAportes(vista);
+    document.getElementById('comparacao-reais').innerHTML = aportes;
+    document.getElementById('linha-aportes').classList.toggle('d-none', !aportes);
     document.getElementById('legenda-retorno').innerHTML = fixo('Carteira', AZUL) + pilulas();
     document.getElementById('legenda-reais').innerHTML = fixo('Investido', VERDE) + fixo('Atual', AZUL) + pilulas();
     desenharPeriodos();
