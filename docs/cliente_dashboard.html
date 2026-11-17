@@ -137,6 +137,21 @@
               <div class="carousel-inner">
                 <div class="carousel-item active">
                   <div class="text-center mb-2">
+                    <div id="leitura-titulo" class="small text-secondary"></div>
+                    <span id="leitura-valor" class="d-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1"></span>
+                  </div>
+                  <div id="grafico-reais" style="height: 360px;"></div>
+                  <div id="legenda-reais" class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2"></div>
+                  <div id="linha-aportes" class="small text-secondary text-center mb-1">
+                    <span id="comparacao-reais"></span>
+                    <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<p class='text-start mb-2'><b>TWR:</b> rendimento da carteira.</p><p class='text-start mb-2'><b>MWR:</b> rendimento considerando período e montante dos aportes.</p><p class='text-start mb-0'><b>Efeito dos aportes:</b> MWR − TWR.</p>" tabindex="0" style="cursor: help;"><i class="bi bi-info-circle"></i></span>
+                  </div>
+                  <p class="small text-secondary text-center mb-0">
+                    <span data-bs-toggle="tooltip" data-bs-title="As linhas pontilhadas mostram quanto você teria se cada aporte, nas mesmas datas, tivesse rendido como aquela referência. Aqui pesa quando o dinheiro entrou: um mês fraco com mais dinheiro aplicado conta mais. Por isso o resultado pode ser diferente do gráfico de rendimento." tabindex="0" style="cursor: help;">Seu dinheiro ao longo do tempo <i class="bi bi-info-circle"></i></span>
+                  </p>
+                </div>
+                <div class="carousel-item">
+                  <div class="text-center mb-2">
                     <div class="small text-secondary">Retorno acumulado (%)</div>
                     <div id="comparacao-retorno" class="d-flex flex-wrap justify-content-center gap-2"></div>
                   </div>
@@ -144,21 +159,6 @@
                   <div id="legenda-retorno" class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2"></div>
                   <p class="small text-secondary text-center mb-0">
                     <span data-bs-toggle="tooltip" data-bs-title="Quanto a carteira rendeu mês a mês. As linhas pontilhadas são referências que você liga e desliga nos botões: IPCA, CDI e Ibovespa. Acima do gráfico, o rendimento da carteira comparado a cada referência ligada, por ano. Acima do IPCA, seu dinheiro ganhou poder de compra." tabindex="0" style="cursor: help;">Rendimento da gestão <i class="bi bi-info-circle"></i></span>
-                  </p>
-                </div>
-                <div class="carousel-item">
-                  <div class="text-center mb-2">
-                    <div id="leitura-titulo" class="small text-secondary"></div>
-                    <span id="leitura-valor" class="d-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1"></span>
-                    <div id="linha-aportes" class="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-2">
-                      <div id="comparacao-reais" style="display: contents;"></div>
-                      <span class="small text-secondary" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<p class='text-start mb-2'><b>TWR:</b> rendimento da carteira.</p><p class='text-start mb-2'><b>MWR:</b> rendimento considerando período e montante dos aportes.</p><p class='text-start mb-0'><b>Efeito dos aportes:</b> MWR − TWR.</p>" tabindex="0" style="cursor: help;"><i class="bi bi-info-circle"></i></span>
-                    </div>
-                  </div>
-                  <div id="grafico-reais" style="height: 360px;"></div>
-                  <div id="legenda-reais" class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2"></div>
-                  <p class="small text-secondary text-center mb-0">
-                    <span data-bs-toggle="tooltip" data-bs-title="As linhas pontilhadas mostram quanto você teria se cada aporte, nas mesmas datas, tivesse rendido como aquela referência. Aqui pesa quando o dinheiro entrou: um mês fraco com mais dinheiro aplicado conta mais. Por isso o resultado pode ser diferente do gráfico de rendimento." tabindex="0" style="cursor: help;">Seu dinheiro ao longo do tempo <i class="bi bi-info-circle"></i></span>
                   </p>
                 </div>
               </div>
@@ -172,6 +172,7 @@
         </div>
         <div id="alocacao" class="row justify-content-center mt-5 d-none">
           <div class="col-lg-8">
+            <div class="card"><div class="card-body p-4">
             <div class="text-center mb-3">
               <div class="fw-semibold">Onde está seu dinheiro</div>
               <div id="alocacao-mes" class="small text-secondary"></div>
@@ -184,6 +185,7 @@
                 <ul id="legenda-alocacao" class="list-unstyled mb-0"></ul>
               </div>
             </div>
+            </div></div>
           </div>
         </div>
       </div>
@@ -236,7 +238,7 @@
   <script src="vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="js/main.js"></script>
   <script src="https://cdn.plot.ly/plotly-basic-2.35.2.min.js"></script>
-  <script src="js/cliente_graficos.js?v=20261117b"></script>
+  <script src="js/cliente_graficos.js?v=20261117c"></script>
   <script src="js/cliente_resumo.js?v=20261111"></script>
   <script src="js/cliente_secoes.js?v=20261117"></script>
   <script src="js/cliente_objetivo.js?v=20261116"></script>

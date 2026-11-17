@@ -177,10 +177,8 @@ async function carregarGraficos() {
     const dinheiro = arred((1 + mensal) ** (anual ? 12 : total) - 1);
     const efeito = Math.round((dinheiro - gestao) * 10) / 10;
     const titulo = `De ${v.meses[0]} a ${v.meses[n]}`;
-    const caixa = 'd-inline-block rounded-pill border bg-light small fw-semibold px-3 py-1';
-    return `<span class="${caixa} text-secondary" title="${titulo}">TWR ${sinal(gestao)}% ${prazo}</span>`
-      + `<span class="${caixa} text-secondary" title="${titulo}">MWR ${sinal(dinheiro)}% ${prazo}</span>`
-      + `<span class="${caixa}" title="${titulo}" style="color: ${efeito >= 0 ? VERDE : '#b42318'};">Efeito dos aportes ${efeito >= 0 ? '+' : '−'}${fmt(efeito)} p.p.</span>`;
+    return `<span title="${titulo}">TWR ${sinal(gestao)}% ${prazo} · MWR ${sinal(dinheiro)}% ${prazo} · Efeito dos aportes `
+      + `<span class="fw-semibold" style="color: ${efeito >= 0 ? VERDE : '#b42318'};">${efeito >= 0 ? '+' : '−'}${fmt(efeito)} p.p.</span></span>`;
   };
 
   const caixaPeriodos = document.getElementById('periodo-graficos');
