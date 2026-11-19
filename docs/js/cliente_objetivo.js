@@ -179,7 +179,7 @@ async function desenharLeque(obj) {
   const l = (await carregarLeques())[obj.nome];
   if (document.getElementById('leque-objetivo') !== caixa) return;
   if (!l) {
-    caixa.innerHTML = '<p class="small text-secondary mb-0">O leque deste objetivo aparece depois da próxima atualização da sua carteira.</p>';
+    caixa.remove();
     return;
   }
   const pct = (v, casas = 1) => (v >= 0 ? '+' : '−') + Math.abs(v * 100).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas }) + '%';
@@ -202,7 +202,7 @@ async function desenharLeque(obj) {
     + `<p class='text-start mb-2'><b>Inflação:</b> IPCA dos 12 meses anteriores, ${taxa(l.ipca_anual)} a.a. (Banco Central).</p>`
     + `<p class='text-start mb-2'><b>Juro real:</b> ${taxa(l.taxa_real_anual)} a.a. Centro do leque: ${taxa(nominal)} a.a.</p>`
     + `<p class='text-start mb-2'><b>Oscilação:</b> de ${taxa(l.sigma_inicial * 100)} a ${taxa(l.sigma_final * 100)} a.a., menor conforme o prazo se aproxima.</p>`
-    + `<p class='text-start mb-0'>A linha de baixo não é piso garantido: em 9 de cada 10 cenários o resultado fica acima dela.</p>`;
+    + `<p class='text-start mb-0'>A borda de baixo da faixa clara não é piso garantido: em 9 de cada 10 cenários o resultado fica acima dela.</p>`;
 
   caixa.innerHTML = `
     <div class="d-flex flex-wrap align-items-baseline gap-2 mb-1">
@@ -219,7 +219,7 @@ async function desenharLeque(obj) {
 
   const linha = (nome, q, extra) => ({ type: 'scatter', mode: 'lines', x, y: y(q), name: nome, hoverinfo: 'skip', line: { width: 0 }, ...extra });
   const tracos = [
-    linha('borda de baixo', 'p10', { line: { color: '#B54708', width: 1.5 } }),
+    linha('', 'p10'),
     linha('8 em 10 cenários', 'p90', { fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.10)' }),
     linha('', 'p25'),
     linha('metade dos cenários', 'p75', { fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.18)' }),
