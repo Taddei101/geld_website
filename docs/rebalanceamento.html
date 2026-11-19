@@ -5,13 +5,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Rebalanceamento de Carteira — Ferramenta Gratuita | Geld</title>
-  <meta name="description" content="Envie sua posição da B3 e veja quanto comprar ou vender de cada ação, FII e ETF para chegar à distribuição que você quer. Gratuito e sem cadastro.">
+  <meta name="description" content="Envie sua posição da B3 e veja quanto comprar ou vender de cada ação, FII e ETF para chegar à distribuição que você quer. Ferramenta gratuita.">
   <link rel="canonical" href="https://www.geldfp.com.br/rebalanceamento.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Geld Finanças Pessoais">
   <meta property="og:title" content="Rebalanceamento de Carteira — Ferramenta Gratuita | Geld">
-  <meta property="og:description" content="Envie sua posição da B3 e veja quanto comprar ou vender de cada ação, FII e ETF para chegar à distribuição que você quer. Gratuito e sem cadastro.">
+  <meta property="og:description" content="Envie sua posição da B3 e veja quanto comprar ou vender de cada ação, FII e ETF para chegar à distribuição que você quer. Ferramenta gratuita.">
   <meta property="og:url" content="https://www.geldfp.com.br/rebalanceamento.html">
   <meta property="og:image" content="https://www.geldfp.com.br/img/logo_geld.png">
 
@@ -37,6 +37,7 @@
     .rebal .rebal-abas .nav-link { font-size: .9rem; transition: none; }
     .rebal .rebal-manual-ticker { max-width: 8rem; text-transform: uppercase; }
     .rebal .rebal-manual-qtd { max-width: 7rem; margin-left: auto; }
+    .rebal .rebal-armadilha { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
     .rebal h4 { font-family: 'Poppins', sans-serif; margin-bottom: 1rem; }
   </style>
   <link href="css/main.css" rel="stylesheet">
@@ -109,8 +110,41 @@
         <div class="row justify-content-center">
           <div class="col-lg-10">
 
+            <!-- 0. Cadastro -->
+            <div class="card mb-4 d-none" id="rebal-passo-cadastro">
+              <div class="card-body p-4">
+                <h4>Antes de começar</h4>
+                <p class="border-start border-3 ps-3 mb-3"><strong>A ferramenta é gratuita. Para usá-la, pedimos seu nome, email e WhatsApp e sua autorização para que a Geld entre em contato com você.</strong>
+                  Usamos esses dados só para conversar sobre seus investimentos e os serviços da Geld. Não vendemos nem repassamos seus dados. Seu extrato da B3 não fica guardado.</p>
+                <form id="rebal-form-cadastro" novalidate>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label for="rebal-nome" class="form-label">Nome</label>
+                      <input type="text" class="form-control" id="rebal-nome" autocomplete="name" maxlength="100" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="rebal-email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="rebal-email" autocomplete="email" maxlength="254" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="rebal-whatsapp" class="form-label">WhatsApp (com DDD)</label>
+                      <input type="tel" class="form-control" id="rebal-whatsapp" autocomplete="tel-national" placeholder="(11) 90000-0000" required>
+                    </div>
+                  </div>
+                  <div class="rebal-armadilha" aria-hidden="true">
+                    <label for="rebal-fax">Fax</label>
+                    <input type="text" id="rebal-fax" name="fax" tabindex="-1" autocomplete="off">
+                  </div>
+                  <p class="small text-muted mt-3 mb-3">Ao informar meus dados, eu concordo com a <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+                  <button type="submit" class="btn btn-get-started" id="rebal-cadastrar">Usar a ferramenta</button>
+                  <p id="rebal-erro-cadastro" class="text-danger small mt-2 mb-0 d-none"></p>
+                </form>
+                <p class="small text-muted mt-3 mb-0">Já é cliente da Geld? <a href="login.html">Entre na sua área</a> e use a ferramenta sem cadastro.</p>
+              </div>
+            </div>
+
             <!-- 1. Carteira -->
-            <div class="card mb-4">
+            <div class="card mb-4 d-none" id="rebal-passo-carteira">
               <div class="card-body p-4">
                 <h4>1. Informe sua carteira</h4>
                 <ul class="nav nav-pills mb-3 rebal-abas">
@@ -241,6 +275,7 @@
             <img src="img/logo-escuro.png" alt="Geld Finanças Pessoais" class="footer-logo-img">
           </a>
           <p>Planejamento financeiro e gestão patrimonial para pessoas e famílias que desejam tomar decisões mais conscientes e usar melhor o próprio dinheiro.</p>
+          <p class="small"><a href="privacidade.html">Política de Privacidade e Termos de Uso</a></p>
           <p class="mt-2 footer-tagline">— Faça Hoje Seu Futuro —</p>
           <div class="social-links d-flex mt-4">
             <a href="https://instagram.com/geld_fp"><i class="bi bi-instagram"></i></a>

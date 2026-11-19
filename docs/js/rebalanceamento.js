@@ -1,11 +1,14 @@
 // Ferramenta de rebalanceamento: a posição fica só em memória; o alvo (%)
-// fica no localStorage deste navegador.
+// e o token do cadastro ficam no localStorage deste navegador. Cliente logado
+// usa o geld_token da área do cliente (sessionStorage) e não precisa de cadastro.
 
 const API = location.hostname.endsWith('geldfp.com.br')
   ? 'https://geld.pythonanywhere.com'
   : 'http://127.0.0.1:5000';
 
 const CHAVE_ALVO = 'geld_rebalanceamento_alvo';
+const CHAVE_TOKEN = 'geld_lead_token';
+let tokenEmMemoria = null;
 
 let ativos = [];
 let cotacoes = null;
@@ -27,6 +30,72 @@ function erro(id, mensagem) {
   $(id).textContent = mensagem || '';
   mostrar(id, Boolean(mensagem));
 }
+
+// ---- acesso (cadastro ou cliente logado) ---------------------------
+
+function tokenAcesso() {
+  try {
+    return localStorage.getItem(CHAVE_TOKEN) || sessionStorage.getItem('geld_token') || tokenEmMemoria;
+  } catch (e) { return tokenEmMemoria; }
+}
+
+function guardarToken(token) {
+  tokenEmMemoria = token;
+  try { localStorage.setItem(CHAVE_TOKEN, token); } catch (e) { /* aba anônima: vale só nesta visita */ }
+}
+
+function esquecerToken() {
+  tokenEmMemoria = null;
+  try { localStorage.removeItem(CHAVE_TOKEN); sessionStorage.removeItem('geld_token'); } catch (e) { /* nada */ }
+}
+
+function comAcesso(cabecalhos = {}) {
+  return { ...cabecalhos, Authorization: 'Bearer ' + tokenAcesso() };
+}
+
+function liberarFerramenta(liberada) {
+  mostrar('rebal-passo-cadastro', !liberada);
+  mostrar('rebal-passo-carteira', liberada);
+  if (!liberada) ['rebal-passo-alvo', 'rebal-passo-opcoes', 'rebal-passo-resultado'].forEach((id) => mostrar(id, false));
+}
+
+function acessoNegado() {
+  esquecerToken();
+  liberarFerramenta(false);
+  erro('rebal-erro-cadastro', 'Seu acesso expirou. Preencha seus dados de novo para continuar.');
+  $('rebal-passo-cadastro').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function cadastrar(evento) {
+  evento.preventDefault();
+  erro('rebal-erro-cadastro');
+  const nome = $('rebal-nome').value.trim();
+  const email = $('rebal-email').value.trim();
+  const whatsapp = $('rebal-whatsapp').value.trim();
+  if (!nome || !email || !whatsapp) return erro('rebal-erro-cadastro', 'Preencha nome, email e WhatsApp.');
+
+  const botao = $('rebal-cadastrar');
+  botao.disabled = true;
+  try {
+    const resposta = await fetch(API + '/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, email, whatsapp, ferramenta: 'rebalanceamento', fax: $('rebal-fax').value }),
+    });
+    const dados = await resposta.json();
+    if (!resposta.ok) return erro('rebal-erro-cadastro', dados.erro);
+    if (!dados.token) return;
+    guardarToken(dados.token);
+    liberarFerramenta(true);
+    $('rebal-passo-carteira').scrollIntoView({ behavior: 'smooth' });
+  } catch (e) {
+    erro('rebal-erro-cadastro', 'Não foi possível falar com o servidor. Tente de novo em instantes.');
+  } finally {
+    botao.disabled = false;
+  }
+}
+
+// ---- alvo ------------------------------------------------------------
 
 function lerAlvoSalvo() {
   try { return JSON.parse(localStorage.getItem(CHAVE_ALVO)) || {}; } catch (e) { return {}; }
@@ -131,7 +200,8 @@ async function enviarArquivo() {
   const form = new FormData();
   form.append('arquivo', arquivo);
   try {
-    const resposta = await fetch(API + '/api/ferramentas/posicao', { method: 'POST', body: form });
+    const resposta = await fetch(API + '/api/ferramentas/posicao', { method: 'POST', headers: comAcesso(), body: form });
+    if (resposta.status === 401) return acessoNegado();
     const dados = await resposta.json();
     if (!resposta.ok) return erro('rebal-erro-arquivo', dados.erro);
     if (!dados.ativos.length) return erro('rebal-erro-arquivo', 'Não encontramos ações, FIIs ou ETFs neste arquivo.');
@@ -184,9 +254,10 @@ async function calcular() {
   try {
     const resposta = await fetch(API + '/api/ferramentas/rebalancear', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: comAcesso({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ posicao, alvo, aporte, permitir_venda: $('rebal-venda').checked }),
     });
+    if (resposta.status === 401) return acessoNegado();
     const dados = await resposta.json();
     if (!resposta.ok) return erro('rebal-erro-calculo', dados.erro);
     montarResultado(dados);
@@ -195,6 +266,8 @@ async function calcular() {
   }
 }
 
+$('rebal-form-cadastro').addEventListener('submit', cadastrar);
+liberarFerramenta(Boolean(tokenAcesso()));
 $('rebal-arquivo').addEventListener('change', enviarArquivo);
 $('rebal-1n').addEventListener('click', () => preencher(() => 100 / ativos.length));
 $('rebal-atual').addEventListener('click', () => {
