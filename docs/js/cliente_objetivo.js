@@ -1,3 +1,25 @@
+const LEQUE_LIGADO = (() => {
+  try {
+    const chave = new URLSearchParams(location.search).get('leque');
+    if (chave === '1') localStorage.setItem('geld_leque', '1');
+    if (chave === '0') localStorage.removeItem('geld_leque');
+    return localStorage.getItem('geld_leque') === '1';
+  } catch (e) {
+    return false;
+  }
+})();
+let lequesCarregados = null;
+
+function carregarLeques() {
+  if (!lequesCarregados) {
+    lequesCarregados = fetch(API + '/api/cliente/leques', { headers: { Authorization: 'Bearer ' + token } })
+      .then(r => r.ok ? r.json() : { objetivos: [] })
+      .then(d => Object.fromEntries(d.objetivos.map(l => [l.nome, l])))
+      .catch(() => ({}));
+  }
+  return lequesCarregados;
+}
+
 function mostrarObjetivo(obj) {
   const mesAno = iso => iso ? iso.slice(5, 7) + '/' + iso.slice(0, 4) : '-';
   const reais = v => v === null || v === undefined ? '-' : brl(v);
@@ -28,6 +50,7 @@ function mostrarObjetivo(obj) {
         <div class="row g-3">${itens.join('')}</div>
         <div id="periodo-objetivo" class="d-flex gap-2 mt-3"></div>
         <div id="grafico-objetivo" class="mt-2" style="height: 220px;"></div>
+        ${LEQUE_LIGADO ? '<div id="leque-objetivo" class="mt-4"></div>' : ''}
         <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu gestor.' : ''}</p>
       </div>
     </div>`;
@@ -124,6 +147,7 @@ function ligarObjetivos(objetivos) {
       grade.classList.add('d-none');
       foco.classList.remove('d-none');
       desenharGraficoObjetivo(objetivos[i]);
+      if (LEQUE_LIGADO) desenharLeque(objetivos[i]);
     });
   };
 
@@ -146,4 +170,73 @@ function ligarObjetivos(objetivos) {
   document.getElementById('detalhe-objetivo').style.viewTransitionName = 'objetivo-detalhe';
   document.getElementById('fechar-foco').addEventListener('click', fechar);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
+}
+
+
+async function desenharLeque(obj) {
+  const caixa = document.getElementById('leque-objetivo');
+  if (!caixa) return;
+  const l = (await carregarLeques())[obj.nome];
+  if (document.getElementById('leque-objetivo') !== caixa) return;
+  if (!l) {
+    caixa.innerHTML = '<p class="small text-secondary mb-0">O leque deste objetivo aparece depois da próxima atualização da sua carteira.</p>';
+    return;
+  }
+  const pct = (v, casas = 1) => (v >= 0 ? '+' : '−') + Math.abs(v * 100).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas }) + '%';
+  const taxa = v => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+  const dataBr = iso => iso.slice(8, 10) + '/' + iso.slice(5, 7) + '/' + iso.slice(0, 4);
+  const [ano, mes] = l.congelado_em.split('-').map(Number);
+  const dia = Math.min(Number(l.congelado_em.slice(8, 10)), 28);
+  const dataDoMes = t => { const d = new Date(ano, mes - 1 + t, dia); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(dia).padStart(2, '0'); };
+  const mesesDesde = iso => (Number(iso.slice(0, 4)) - ano) * 12 + Number(iso.slice(5, 7)) - mes;
+
+  const x = l.leque.map(p => dataDoMes(p.mes));
+  const y = q => l.leque.map(p => p[q] * 100);
+  const ultimo = l.twr[l.twr.length - 1];
+  const hoje = ultimo ? Math.min(Math.max(mesesDesde(ultimo.data), 0), l.meses_total) : 0;
+  const faixa = l.leque[hoje];
+  const dentro = !ultimo || (ultimo.valor >= faixa.p10 && ultimo.valor <= faixa.p90);
+  const fim = l.leque[l.leque.length - 1];
+  const nominal = ((1 + l.ipca_anual / 100) * (1 + l.taxa_real_anual / 100) - 1) * 100;
+  const explica = `<p class='text-start mb-2'>Calculado em ${dataBr(l.congelado_em)} e fixo até o prazo ou o tipo do objetivo mudarem.</p>`
+    + `<p class='text-start mb-2'><b>Inflação:</b> IPCA dos 12 meses anteriores, ${taxa(l.ipca_anual)} a.a. (Banco Central).</p>`
+    + `<p class='text-start mb-2'><b>Juro real:</b> ${taxa(l.taxa_real_anual)} a.a. Centro do leque: ${taxa(nominal)} a.a.</p>`
+    + `<p class='text-start mb-2'><b>Oscilação:</b> de ${taxa(l.sigma_inicial * 100)} a ${taxa(l.sigma_final * 100)} a.a., menor conforme o prazo se aproxima.</p>`
+    + `<p class='text-start mb-0'>A linha de baixo não é piso garantido: em 9 de cada 10 cenários o resultado fica acima dela.</p>`;
+
+  caixa.innerHTML = `
+    <div class="d-flex flex-wrap align-items-baseline gap-2 mb-1">
+      <span class="fw-semibold">Rentabilidade dentro do previsto</span>
+      <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${explica}" tabindex="0" style="cursor: help;"><i class="bi bi-info-circle"></i></span>
+    </div>
+    <div class="small text-secondary mb-2">
+      ${ultimo ? `Desde ${dataBr(l.congelado_em)}: <b class="text-body">${pct(ultimo.valor)}</b> · previsto para agora entre ${pct(faixa.p10)} e ${pct(faixa.p90)}
+      <span class="badge rounded-pill border ${dentro ? 'text-success border-success' : 'text-warning-emphasis border-warning'} fw-semibold ms-1">${dentro ? 'dentro do previsto' : (ultimo.valor < faixa.p10 ? 'abaixo' : 'acima') + ' do previsto'}</span>` : ''}
+    </div>
+    <div id="grafico-leque" style="height: 260px;"></div>
+    <div class="small text-secondary mt-2">No prazo: centro ${pct(fim.p50, 0)} · em 9 de cada 10 cenários, acima de ${pct(fim.p10, 0)}.${dentro ? '' : ' Converse com seu gestor.'}</div>`;
+  caixa.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+
+  const linha = (nome, q, extra) => ({ type: 'scatter', mode: 'lines', x, y: y(q), name: nome, hoverinfo: 'skip', line: { width: 0 }, ...extra });
+  const tracos = [
+    linha('borda de baixo', 'p10', { line: { color: '#B54708', width: 1.5 } }),
+    linha('8 em 10 cenários', 'p90', { fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.10)' }),
+    linha('', 'p25'),
+    linha('metade dos cenários', 'p75', { fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.18)' }),
+    linha('centro', 'p50', { line: { color: '#0057FF', width: 1.5, dash: 'dash' }, hovertemplate: 'Centro: %{y:.1f}%<extra></extra>', hoverinfo: undefined }),
+    {
+      type: 'scatter', mode: 'lines+markers', name: 'sua carteira',
+      x: l.twr.map(p => p.data), y: l.twr.map(p => p.valor * 100),
+      line: { color: '#101828', width: 2.5 }, marker: { size: 6, color: '#101828' },
+      hovertemplate: '%{x|%d/%m/%Y}: %{y:.1f}%<extra></extra>',
+    },
+  ];
+  Plotly.react(document.getElementById('grafico-leque'), tracos, {
+    separators: ',.',
+    dragmode: false,
+    margin: { t: 5, r: 10, l: 10, b: 30 },
+    xaxis: { type: 'date', tickformat: '%m/%y', automargin: true, fixedrange: true },
+    yaxis: { ticksuffix: '%', tickformat: '.0f', zeroline: true, zerolinecolor: '#D0D5DD', automargin: true, fixedrange: true },
+    showlegend: false,
+  }, { responsive: true, displayModeBar: false, doubleClick: false });
 }
