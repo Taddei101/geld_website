@@ -191,7 +191,9 @@ async function desenharLeque(obj) {
   const explica = `<p class='text-start mb-2'>Calculado em ${dataBr(l.congelado_em)} e fixo até o prazo ou o tipo do objetivo mudarem.</p>`
     + `<p class='text-start mb-2'><b>Inflação:</b> IPCA dos 12 meses anteriores, ${taxa(l.ipca_anual)} a.a. (Banco Central).</p>`
     + `<p class='text-start mb-2'><b>Juro real:</b> ${taxa(l.taxa_real_anual)} a.a. Centro do leque: ${taxa(nominal)} a.a.</p>`
-    + `<p class='text-start mb-2'><b>Oscilação:</b> de ${taxa(l.sigma_inicial * 100)} a ${taxa(l.sigma_final * 100)} a.a., menor conforme o prazo se aproxima.</p>`
+    + (l.sigma_inicial === l.sigma_final
+      ? `<p class='text-start mb-2'><b>Oscilação:</b> ${taxa(l.sigma_inicial * 100)} a.a.</p>`
+      : `<p class='text-start mb-2'><b>Oscilação:</b> de ${taxa(l.sigma_inicial * 100)} a ${taxa(l.sigma_final * 100)} a.a., menor conforme o prazo se aproxima.</p>`)
     + `<p class='text-start mb-0'>A borda de baixo da faixa clara não é piso garantido: em 9 de cada 10 cenários o resultado fica acima dela.</p>`;
 
   caixa.innerHTML = `
