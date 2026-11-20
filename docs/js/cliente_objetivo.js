@@ -1,13 +1,3 @@
-const LEQUE_LIGADO = (() => {
-  try {
-    const chave = new URLSearchParams(location.search).get('leque');
-    if (chave === '1') localStorage.setItem('geld_leque', '1');
-    if (chave === '0') localStorage.removeItem('geld_leque');
-    return localStorage.getItem('geld_leque') === '1';
-  } catch (e) {
-    return false;
-  }
-})();
 let lequesCarregados = null;
 
 function carregarLeques() {
@@ -50,7 +40,7 @@ function mostrarObjetivo(obj) {
         <div class="row g-3">${itens.join('')}</div>
         <div id="periodo-objetivo" class="d-flex gap-2 mt-3"></div>
         <div id="grafico-objetivo" class="mt-2" style="height: 220px;"></div>
-        ${LEQUE_LIGADO ? '<div id="leque-objetivo" class="mt-4"></div>' : ''}
+        <div id="leque-objetivo" class="mt-4"></div>
         <p class="small text-secondary mt-3 mb-0">Projeção, não garantia de rentabilidade.${abaixoDaMeta ? ' Quer chegar lá mais rápido? Converse com seu gestor.' : ''}</p>
       </div>
     </div>`;
@@ -147,7 +137,7 @@ function ligarObjetivos(objetivos) {
       grade.classList.add('d-none');
       foco.classList.remove('d-none');
       desenharGraficoObjetivo(objetivos[i]);
-      if (LEQUE_LIGADO) desenharLeque(objetivos[i]);
+      desenharLeque(objetivos[i]);
     });
   };
 
