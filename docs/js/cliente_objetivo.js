@@ -205,6 +205,7 @@ async function desenharLeque(obj) {
       ${ultimo ? `Desde ${dataBr(l.congelado_em)}: <b class="text-body">${pct(ultimo.valor)}</b> · previsto para agora entre ${pct(faixa.p10)} e ${pct(faixa.p90)}
       <span class="badge rounded-pill border ${dentro ? 'text-success border-success' : 'text-warning-emphasis border-warning'} fw-semibold ms-1">${dentro ? 'dentro do previsto' : (ultimo.valor < faixa.p10 ? 'abaixo' : 'acima') + ' do previsto'}</span>` : ''}
     </div>
+    <div id="periodo-leque" class="d-flex gap-2 mb-2"></div>
     <div id="grafico-leque" style="height: 260px;"></div>
     <div class="small text-secondary mt-2">No prazo: centro ${pct(fim.p50, 0)} · em 9 de cada 10 cenários, acima de ${pct(fim.p10, 0)}.${dentro ? '' : ' Converse com seu gestor.'}</div>`;
   caixa.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
@@ -217,18 +218,58 @@ async function desenharLeque(obj) {
     linha('metade dos cenários', 'p75', { fill: 'tonexty', fillcolor: 'rgba(0, 87, 255, 0.18)' }),
     linha('centro', 'p50', { line: { color: '#0057FF', width: 1.5, dash: 'dash' }, hovertemplate: 'Centro: %{y:.1f}%<extra></extra>', hoverinfo: undefined }),
     {
-      type: 'scatter', mode: 'lines+markers', name: 'sua carteira',
+      type: 'scatter', mode: 'lines', name: 'sua carteira',
       x: l.twr.map(p => p.data), y: l.twr.map(p => p.valor * 100),
-      line: { color: '#101828', width: 2.5 }, marker: { size: 6, color: '#101828' },
+      line: { color: '#101828', width: 2.5 },
       hovertemplate: '%{x|%d/%m/%Y}: %{y:.1f}%<extra></extra>',
     },
   ];
-  Plotly.react(document.getElementById('grafico-leque'), tracos, {
-    separators: ',.',
-    dragmode: false,
-    margin: { t: 5, r: 10, l: 10, b: 30 },
-    xaxis: { type: 'date', tickformat: '%m/%y', automargin: true, fixedrange: true },
-    yaxis: { ticksuffix: '%', tickformat: '.0f', zeroline: true, zerolinecolor: '#D0D5DD', automargin: true, fixedrange: true },
-    showlegend: false,
-  }, { responsive: true, displayModeBar: false, doubleClick: false });
+  if (ultimo) tracos.push({
+    type: 'scatter', mode: 'markers', x: [ultimo.data], y: [ultimo.valor * 100],
+    marker: { size: 7, color: '#101828' }, hoverinfo: 'skip',
+  });
+
+  const grafico = document.getElementById('grafico-leque');
+  const desenhar = fimMes => {
+    const fimData = ultimo && ultimo.data > x[fimMes] ? ultimo.data : x[fimMes];
+    const visiveis = [
+      ...l.leque.slice(0, fimMes + 1).flatMap(p => [p.p10, p.p90]),
+      ...l.twr.filter(p => p.data <= fimData).map(p => p.valor),
+    ].map(v => v * 100);
+    const baixo = Math.min(...visiveis), alto = Math.max(...visiveis), folga = (alto - baixo) * 0.06 || 1;
+    return Plotly.react(grafico, tracos, {
+      separators: ',.',
+      dragmode: false,
+      margin: { t: 5, r: 10, l: 10, b: 30 },
+      xaxis: { type: 'date', tickformat: '%m/%y', range: [x[0], new Date(Date.parse(fimData) + (Date.parse(fimData) - Date.parse(x[0])) * 0.02)], automargin: true, fixedrange: true },
+      yaxis: { ticksuffix: '%', tickformat: '.0f', range: [baixo - folga, alto + folga], zeroline: true, zerolinecolor: '#D0D5DD', automargin: true, fixedrange: true },
+      showlegend: false,
+    }, { responsive: true, displayModeBar: false, doubleClick: false });
+  };
+
+  const opcoes = [];
+  if (l.twr.length >= 2 && hoje > 0) opcoes.push(['Até hoje', hoje]);
+  for (const [nome, meses] of [['+1 ano', 12], ['+2 anos', 24]]) {
+    const fimMes = Math.min(hoje + meses, l.meses_total);
+    if (!opcoes.length || fimMes > opcoes[opcoes.length - 1][1]) opcoes.push([nome, fimMes]);
+  }
+  const periodos = document.getElementById('periodo-leque');
+  if (opcoes.length === 1) { periodos.remove(); return desenhar(opcoes[0][1]); }
+  periodos.innerHTML = opcoes.map(([nome], i) =>
+    `<button type="button" class="btn btn-sm rounded-pill border py-0 px-2" data-periodo="${i}">${nome}</button>`).join('');
+  const escolher = i => {
+    periodos.querySelectorAll('button').forEach(b => {
+      const ligado = Number(b.dataset.periodo) === i;
+      b.classList.toggle('bg-light', ligado);
+      b.classList.toggle('fw-semibold', ligado);
+      b.classList.toggle('text-secondary', !ligado);
+      b.setAttribute('aria-pressed', ligado);
+    });
+    return desenhar(opcoes[i][1]);
+  };
+  periodos.addEventListener('click', e => {
+    const botao = e.target.closest('button');
+    if (botao) escolher(Number(botao.dataset.periodo));
+  });
+  escolher(0);
 }
