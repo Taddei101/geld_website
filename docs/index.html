@@ -20,15 +20,41 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "FinancialService",
-    "name": "Geld Finanças Pessoais",
-    "url": "https://www.geldfp.com.br/",
-    "logo": "https://www.geldfp.com.br/img/logo_geld.png",
-    "description": "Planejamento financeiro e gestão patrimonial para pessoas e famílias que desejam tomar decisões mais conscientes e usar melhor o próprio dinheiro.",
-    "email": "geld.fp@gmail.com",
-    "telephone": "+55-21-97139-5110",
-    "areaServed": "BR",
-    "sameAs": ["https://instagram.com/geld_fp"]
+    "@graph": [
+      {
+        "@type": "FinancialService",
+        "@id": "https://www.geldfp.com.br/#geld",
+        "name": "Geld Finanças Pessoais",
+        "alternateName": ["Geld - Finanças Pessoais", "Geld FP"],
+        "url": "https://www.geldfp.com.br/",
+        "logo": "https://www.geldfp.com.br/img/logo_geld.png",
+        "description": "Planejamento financeiro e gestão patrimonial para pessoas e famílias que desejam tomar decisões mais conscientes e usar melhor o próprio dinheiro. Investimento baseado em objetivos (goal-based investing).",
+        "disambiguatingDescription": "Geld - Finanças Pessoais: escritório independente de finanças pessoais, fundado em 2019, site geldfp.com.br.",
+        "knowsAbout": ["Investimento baseado em objetivos", "Goal-based investing", "Planejamento financeiro pessoal", "Gestão de investimentos", "Aposentadoria"],
+        "foundingDate": "2019",
+        "founder": {"@id": "https://www.geldfp.com.br/#claudio"},
+        "feesAndCommissionsSpecification": "Gestão de investimentos: até 1% ao ano sobre o patrimônio administrado, com taxa decrescente conforme o patrimônio cresce; calculada diariamente e cobrada mensalmente por Pix ou débito automático. Mentoria e planejamento financeiro: valor fixo por serviço. Sem comissão sobre produtos de investimento.",
+        "email": "geld.fp@gmail.com",
+        "telephone": "+55-21-97139-5110",
+        "areaServed": "BR",
+        "sameAs": ["https://instagram.com/geld_fp"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.geldfp.com.br/#claudio",
+        "name": "Claudio Loiola",
+        "jobTitle": "Administrador de carteiras autorizado pela CVM",
+        "worksFor": {"@id": "https://www.geldfp.com.br/#geld"},
+        "hasCredential": [
+          {"@type": "EducationalOccupationalCredential", "name": "CGA — Certificação de Gestores ANBIMA", "recognizedBy": {"@type": "Organization", "name": "ANBIMA"}},
+          {"@type": "EducationalOccupationalCredential", "name": "CFG — Certificação de Fundamentos em Gestão", "recognizedBy": {"@type": "Organization", "name": "ANBIMA"}},
+          {"@type": "EducationalOccupationalCredential", "name": "Administrador de carteiras de valores mobiliários (pessoa física)", "recognizedBy": {"@type": "GovernmentOrganization", "name": "Comissão de Valores Mobiliários (CVM)"}}
+        ],
+        "sameAs": ["https://www.linkedin.com/in/claudio-loiola/"]
+      },
+      {"@type": "WebApplication", "name": "Simulador de Aposentadoria", "url": "https://www.geldfp.com.br/aposentadoria.html", "applicationCategory": "FinanceApplication", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"}, "provider": {"@id": "https://www.geldfp.com.br/#geld"}},
+      {"@type": "WebApplication", "name": "Rebalanceamento de Carteira", "url": "https://www.geldfp.com.br/rebalanceamento.html", "applicationCategory": "FinanceApplication", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"}, "provider": {"@id": "https://www.geldfp.com.br/#geld"}}
+    ]
   }
   </script>
 
@@ -340,6 +366,39 @@
       </div>
     </section>
 
+
+    <!-- Ferramentas Section -->
+    <section id="ferramentas" class="services section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Ferramentas Gratuitas</h2>
+        <p>Para qualquer pessoa usar, cliente ou não</p>
+      </div>
+
+      <div class="container">
+        <div class="row gy-4 justify-content-center">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-hourglass-split"></i></div>
+              <h3>Simulador de Aposentadoria</h3>
+              <p>Descubra quanto guardar por mês para se aposentar com a renda que você quer. Mostra a evolução do patrimônio e os objetivos no caminho. Gratuito e sem cadastro.</p>
+              <a href="aposentadoria.html" class="readmore stretched-link">Usar agora <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-sliders"></i></div>
+              <h3>Rebalanceamento de Carteira</h3>
+              <p>Envie sua posição da B3 e veja quanto comprar ou vender de cada ação, FII e ETF para chegar à distribuição que você quer. Gratuito, com cadastro rápido (nome, e-mail e WhatsApp).</p>
+              <a href="rebalanceamento.html" class="readmore stretched-link">Usar agora <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- How It Works Section -->
     <section id="how" class="faq section">
       <div class="container">
@@ -449,6 +508,35 @@
         <p style="font-size:small; margin-top: 1rem;">O investimento em Fundos de Investimento não é garantido pelo Fundo Garantidor de Crédito - FGC</p>
       </div>
 
+    </section>
+
+    <!-- Transparência Section -->
+    <section id="transparencia" class="section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Transparência</h2>
+        <p>Quem responde pela Geld, como atuamos e quanto cobramos</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <h4>Quem responde pela Geld</h4>
+            <p>A Geld é conduzida por <strong>Claudio Loiola</strong>, administrador de carteiras pessoa física autorizado pela CVM, com as certificações ANBIMA <strong>CGA</strong> (Certificação de Gestores) e <strong>CFG</strong> (Certificação de Fundamentos em Gestão).</p>
+            <p>Confira as certificações dele na <a href="https://anbimaedu.com.br/consulta-certificado?idCertificado=07be6687-e1f3-4d46-959a-4d7cf7ff1315" target="_blank" rel="noopener">consulta oficial da ANBIMA</a>.</p>
+          </div>
+          <div class="col-lg-4">
+            <h4>Como atuamos</h4>
+            <p>Trabalhamos com <strong>investimento baseado em objetivos</strong> (goal-based investing): cada objetivo seu (aposentadoria, imóvel, reserva, educação dos filhos) tem prazo, valor e estratégia próprios.</p>
+            <p>A Geld ainda não tem CNPJ. O serviço de gestão é prestado pelo Claudio como pessoa física, sob a autorização dele junto à CVM. Você mantém os investimentos nas suas próprias contas.</p>
+          </div>
+          <div class="col-lg-4">
+            <h4>Quanto cobramos</h4>
+            <p>Gestão de investimentos: <strong>até 1% ao ano</strong> sobre o patrimônio administrado. A taxa diminui conforme o seu patrimônio cresce. É calculada diariamente e cobrada mensalmente, por Pix ou débito automático.</p>
+            <p>Mentoria e planejamento financeiro têm valor fixo por serviço.</p>
+            <p>Não recebemos comissão sobre produtos de investimento.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Contact Section -->

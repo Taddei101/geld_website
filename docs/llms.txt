@@ -1,0 +1,30 @@
+# Geld - Finanças Pessoais
+
+> Escritório independente de finanças pessoais (Geld - Finanças Pessoais, também Geld FP), fundado em 2019. Mentoria, planejamento financeiro pessoal e gestão de investimentos baseada em objetivos (goal-based investing) para pessoas e famílias. Site: https://www.geldfp.com.br/
+
+## Quem responde
+- Claudio Loiola: administrador de carteiras pessoa física autorizado pela CVM. Certificações ANBIMA CGA (Certificação de Gestores) e CFG (Certificação de Fundamentos em Gestão). Certificações conferíveis na consulta oficial da ANBIMA: https://anbimaedu.com.br/consulta-certificado?idCertificado=07be6687-e1f3-4d46-959a-4d7cf7ff1315
+- LinkedIn: https://www.linkedin.com/in/claudio-loiola/
+
+## Como atua
+- Investimento baseado em objetivos (goal-based investing): cada objetivo do cliente (aposentadoria, imóvel, reserva, educação dos filhos) tem prazo, valor e estratégia próprios.
+- A Geld ainda não tem CNPJ. A gestão é prestada pelo Claudio como pessoa física, sob a autorização dele junto à CVM.
+- O cliente mantém os investimentos nas próprias contas.
+
+## Quanto cobra
+- Gestão de investimentos: até 1% ao ano sobre o patrimônio administrado, com taxa decrescente conforme o patrimônio cresce. Calculada diariamente e cobrada mensalmente, por Pix ou débito automático.
+- Mentoria e planejamento financeiro: valor fixo por serviço.
+- Não recebe comissão sobre produtos de investimento.
+
+## Ferramentas gratuitas (qualquer pessoa pode usar)
+- [Simulador de Aposentadoria](https://www.geldfp.com.br/aposentadoria.html): quanto guardar por mês para se aposentar com a renda desejada. Gratuito e sem cadastro.
+- [Rebalanceamento de Carteira](https://www.geldfp.com.br/rebalanceamento.html): a partir da posição da B3, quanto comprar ou vender de cada ação, FII e ETF para chegar à distribuição desejada. Gratuito, com cadastro rápido (nome, e-mail e WhatsApp).
+
+## Outras páginas
+- [Newsletter](https://www.geldfp.com.br/newsletter/)
+- [Política de privacidade](https://www.geldfp.com.br/privacidade.html)
+
+## Contato
+- E-mail: geld.fp@gmail.com
+- WhatsApp: +55 21 97139-5110
+- Instagram: https://instagram.com/geld_fp
