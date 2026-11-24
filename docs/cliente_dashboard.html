@@ -290,9 +290,9 @@
   function fotoDoObjetivo(nome) {
     const limpo = semAcento(nome);
     for (const [arquivo, palavras] of FOTOS) {
-      if (palavras.some(p => limpo.includes(p))) return 'img/objetivos/' + arquivo + '.png';
+      if (palavras.some(p => limpo.includes(p))) return 'img/objetivos/' + arquivo + '.webp';
     }
-    return 'img/objetivos/generico.png';
+    return 'img/objetivos/generico.webp';
   }
 
   const TOLERANCIA_RITMO = 0.02;
