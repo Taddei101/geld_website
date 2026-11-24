@@ -686,3 +686,32 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 600; c
   color: #a7b4cc;
   margin-top: 4px;
 }
+
+/* --- Ferramentas gratuitas com imagem --- */
+.services .service-item.ferramenta {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+}
+.ferramenta-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: #f4f8fe;
+  transition: transform 0.4s ease;
+}
+.services .service-item.ferramenta:hover .ferramenta-img {
+  transform: scale(1.03);
+}
+.ferramenta-corpo {
+  padding: 28px 32px 32px;
+}
+.services .service-item.ferramenta .readmore {
+  margin-top: 18px;
+  font-weight: 600;
+  color: #0057FF;
+}
