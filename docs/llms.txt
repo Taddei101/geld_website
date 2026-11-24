@@ -12,7 +12,7 @@
 - O cliente mantém os investimentos nas próprias contas.
 
 ## Quanto cobra
-- Gestão de investimentos: até 1% ao ano sobre o patrimônio administrado, com taxa decrescente conforme o patrimônio cresce. Calculada diariamente e cobrada mensalmente, por Pix ou débito automático.
+- Gestão de investimentos: de 1% a 0,5% ao ano sobre o patrimônio administrado; a taxa diminui conforme o patrimônio cresce. Valor mínimo de R$ 200,00 por mês. Calculada diariamente e cobrada mensalmente, por Pix ou débito automático.
 - Mentoria e planejamento financeiro: valor fixo por serviço.
 - Não recebe comissão sobre produtos de investimento.
 
