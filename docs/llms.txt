@@ -8,7 +8,7 @@
 
 ## Como atua
 - Investimento baseado em objetivos (goal-based investing): cada objetivo do cliente (aposentadoria, imóvel, reserva, educação dos filhos) tem prazo, valor e estratégia próprios.
-- A Geld ainda não tem CNPJ. A gestão é prestada pelo Claudio como pessoa física, sob a autorização dele junto à CVM.
+- Enquanto a Geld conclui a abertura do CNPJ e a análise junto à CVM, a gestão é prestada pelo Claudio como pessoa física, sob a autorização dele junto à CVM.
 - O cliente mantém os investimentos nas próprias contas.
 
 ## Quanto cobra
