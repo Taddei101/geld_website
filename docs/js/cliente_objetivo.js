@@ -128,7 +128,7 @@ function ligarObjetivos(objetivos) {
       outros.replaceChildren(...cards.map((card, j) => {
         if (j === i) return null;
         const mini = document.createElement('div');
-        mini.className = 'col-3 col-lg-6';
+        mini.className = 'col-12 col-sm-6 col-md-4 col-lg-6';
         mini.append(card);
         resumo(card, false);
         return mini;

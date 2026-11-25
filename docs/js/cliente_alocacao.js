@@ -41,7 +41,7 @@ async function desenharRosca(obj, card) {
     bloco = document.createElement('div');
     bloco.className = 'rosca-objetivo so-no-foco';
     bloco.innerHTML = `
-      <div class="small text-secondary text-center">Onde está · Posição de ${mes}</div>
+      <div class="small text-secondary text-center">Posição de ${mes}</div>
       <div class="grafico-rosca mx-auto" style="height: 140px; width: 140px;"></div>
       <ul class="list-unstyled small mb-0"></ul>`;
     card.querySelector('.position-relative').append(bloco);
