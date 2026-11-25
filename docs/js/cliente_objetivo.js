@@ -138,6 +138,7 @@ function ligarObjetivos(objetivos) {
       foco.classList.remove('d-none');
       desenharGraficoObjetivo(objetivos[i]);
       desenharLeque(objetivos[i]);
+      desenharRosca(objetivos[i], cards[i]);
     });
   };
 

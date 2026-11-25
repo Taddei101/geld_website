@@ -8,43 +8,56 @@ const GRUPOS_ALOCACAO = [
 ];
 const COR_OUTROS = '#D0D5DD';
 
-async function carregarAlocacao() {
-  let dados;
-  try {
-    const resposta = await fetch(API + '/api/cliente/alocacao', {
-      headers: { Authorization: 'Bearer ' + token },
-    });
-    if (!resposta.ok) return;
-    dados = await resposta.json();
-  } catch (e) {
-    return;
-  }
+let alocacoesCarregadas = null;
 
+function carregarAlocacoes() {
+  if (!alocacoesCarregadas) {
+    alocacoesCarregadas = fetch(API + '/api/cliente/alocacao', { headers: { Authorization: 'Bearer ' + token } })
+      .then(r => r.ok ? r.json() : {})
+      .then(d => ({ mes: d.mes, porNome: Object.fromEntries((d.objetivos || []).map(o => [o.nome, o.classes])) }))
+      .catch(() => ({ porNome: {} }));
+  }
+  return alocacoesCarregadas;
+}
+
+function fatiasPorGrupo(classes) {
   const somas = new Map();
-  (dados.classes || []).forEach(({ classe, valor }) => {
+  classes.forEach(({ classe, valor }) => {
     const grupo = GRUPOS_ALOCACAO.find(([, , pertence]) => pertence(classe || ''));
     const nome = grupo ? grupo[0] : 'Outros';
     somas.set(nome, (somas.get(nome) || 0) + valor);
   });
-  const fatias = [...somas].filter(([, valor]) => valor > 0).sort((a, b) => b[1] - a[1]);
+  return [...somas].filter(([, valor]) => valor > 0).sort((a, b) => b[1] - a[1]);
+}
+
+async function desenharRosca(obj, card) {
+  const { mes, porNome } = await carregarAlocacoes();
+  const fatias = fatiasPorGrupo(porNome[obj.nome] || []);
   const total = fatias.reduce((s, [, valor]) => s + valor, 0);
   if (!total) return;
 
+  let bloco = card.querySelector('.rosca-objetivo');
+  if (!bloco) {
+    bloco = document.createElement('div');
+    bloco.className = 'rosca-objetivo so-no-foco';
+    bloco.innerHTML = `
+      <div class="small text-secondary text-center">Onde está · Posição de ${mes}</div>
+      <div class="grafico-rosca mx-auto" style="height: 140px; width: 140px;"></div>
+      <ul class="list-unstyled small mb-0"></ul>`;
+    card.querySelector('.position-relative').append(bloco);
+  }
+
   const cor = nome => (GRUPOS_ALOCACAO.find(([n]) => n === nome) || [, COR_OUTROS])[1];
   const pct = valor => (valor / total * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
-  const brl = x => x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-  document.getElementById('alocacao').classList.remove('d-none');
-  document.getElementById('alocacao-mes').textContent = 'Posição de ' + dados.mes;
-  document.getElementById('legenda-alocacao').innerHTML = fatias.map(([nome, valor]) =>
-    `<li class="d-flex align-items-center gap-2 py-1 small">`
-    + `<i class="bi bi-circle-fill" style="color: ${cor(nome)};"></i>`
+  bloco.querySelector('ul').innerHTML = fatias.map(([nome, valor]) =>
+    `<li class="d-flex align-items-center gap-2">`
+    + `<i class="bi bi-circle-fill" style="color: ${cor(nome)}; font-size: .6em;"></i>`
     + `<span class="flex-grow-1">${nome}</span>`
     + `<span class="fw-semibold" style="font-variant-numeric: tabular-nums;">${pct(valor)}</span>`
-    + `<span class="text-secondary text-end" style="font-variant-numeric: tabular-nums; min-width: 8.5em;">${brl(valor)}</span>`
     + `</li>`).join('');
 
-  Plotly.newPlot('grafico-alocacao', [{
+  Plotly.react(bloco.querySelector('.grafico-rosca'), [{
     type: 'pie',
     hole: 0.62,
     labels: fatias.map(([nome]) => nome),
@@ -58,5 +71,5 @@ async function carregarAlocacao() {
     margin: { t: 0, r: 0, b: 0, l: 0 },
     showlegend: false,
     separators: ',.',
-  }, { responsive: true, displayModeBar: false });
+  }, { displayModeBar: false });
 }

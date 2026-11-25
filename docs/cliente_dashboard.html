@@ -35,6 +35,9 @@
     #foco-destaque .plano { display: block !important; margin: .5rem .75rem auto; }
     #foco-destaque .plano .progress { margin: 0 !important; }
     .plano .progress-bar { background: #8FB0F5; }
+    #foco-destaque .rosca-objetivo { display: block !important; margin: 1.25rem .75rem auto; }
+    #foco-destaque .position-relative:has(.rosca-objetivo) > .progress { margin-top: 0 !important; }
+    #foco-destaque .position-relative:has(.rosca-objetivo) > .plano { margin-bottom: 0; }
   </style>
 </head>
 
@@ -174,24 +177,6 @@
             </button>
           </div>
         </div>
-        <div id="alocacao" class="row justify-content-center mt-5 d-none">
-          <div class="col-lg-8">
-            <div class="card"><div class="card-body p-4">
-            <div class="text-center mb-3">
-              <div class="fw-semibold">Onde está seu dinheiro</div>
-              <div id="alocacao-mes" class="small text-secondary"></div>
-            </div>
-            <div class="row align-items-center g-3">
-              <div class="col-md-5">
-                <div id="grafico-alocacao" style="height: 240px;"></div>
-              </div>
-              <div class="col-md-7">
-                <ul id="legenda-alocacao" class="list-unstyled mb-0"></ul>
-              </div>
-            </div>
-            </div></div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -245,9 +230,9 @@
   <script src="https://cdn.plot.ly/plotly-basic-2.35.2.min.js"></script>
   <script src="js/cliente_graficos.js?v=20261117c"></script>
   <script src="js/cliente_resumo.js?v=20261111"></script>
-  <script src="js/cliente_secoes.js?v=20261117"></script>
-  <script src="js/cliente_objetivo.js?v=20261119b"></script>
-  <script src="js/cliente_alocacao.js?v=20261117"></script>
+  <script src="js/cliente_secoes.js?v=20261125"></script>
+  <script src="js/cliente_objetivo.js?v=20261125"></script>
+  <script src="js/cliente_alocacao.js?v=20261125"></script>
   <script>
   const API = location.hostname.endsWith('geldfp.com.br')
   ? 'https://geld.pythonanywhere.com'
@@ -373,7 +358,6 @@
        document.getElementById('saudacao').textContent = 'Olá, ' + dados.nome.trim().split(' ')[0];
       await carregarObjetivos();
       carregarGraficos();
-      carregarAlocacao();
       carregarResumo();
     } catch (e) {
       document.getElementById('saudacao').textContent = 'Não foi possível conectar. Tente mais tarde.';
